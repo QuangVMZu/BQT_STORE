@@ -1,0 +1,92 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #e8f5e9;
+    margin: 0;
+    padding: 0;
+}
+.container {
+    width: 400px;
+    margin: 80px auto;
+    padding: 30px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 128, 0, 0.2);
+    border-radius: 10px;
+}
+.header h1 {
+    color: #2e7d32;
+    margin-bottom: 10px;
+    text-align: center;
+}
+.header h2 {
+    color: #66bb6a;
+    font-weight: normal;
+    font-size: 16px;
+    text-align: center;
+    margin-bottom: 30px;
+}
+.form-group {
+    margin-bottom: 20px;
+}
+.form-group label {
+    display: block;
+    color: #388e3c;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #a5d6a7;
+    border-radius: 5px;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+}
+.form-group input:focus {
+    border-color: #43a047;
+    outline: none;
+}
+.remember-password {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+.remember-password label {
+    margin-left: 8px;
+    color: #4caf50;
+}
+.forgot-password {
+    text-align: right;
+    margin-bottom: 20px;
+}
+.forgot-password a {
+    color: #388e3c;
+    text-decoration: none;
+    font-size: 14px;
+}
+.forgot-password a:hover {
+    text-decoration: underline;
+}
+.btn-login button,
+.btn-register button {
+    width: 100%;
+    padding: 12px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-bottom: 15px;
+    transition: background-color 0.3s;
+}
+.btn-login button:hover,
+.btn-register button:hover {
+    background-color: #388e3c;
+}
+
+.error-message {
+    color: red;
+    text-align: center;
+    margin-bottom: 15px;
+    font-weight: bold;
+}

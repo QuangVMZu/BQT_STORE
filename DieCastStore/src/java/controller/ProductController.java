@@ -6,6 +6,7 @@ package controller;
 
 import dao.BrandDAO;
 import dao.ModelCarDAO;
+import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -14,9 +15,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import model.BrandModel;
+import model.ImageModel;
 import model.ModelCar;
+import utils.AuthUtils;
 
 /**
  *
@@ -34,9 +38,10 @@ public class ProductController extends HttpServlet {
             if (action != null) {
                 switch (action) {
                     case "list":
-                        if (action == null || action.equals("list")) {
-                            url = handleList(request, response);
-                        }
+                        url = handleList(request, response);
+                        break;
+                    case "listEdit":
+                        url = handleListEdit(request, response);
                         break;
                     case "detail":
                         url = handleDetails(request, response);
@@ -44,11 +49,23 @@ public class ProductController extends HttpServlet {
                     case "search":
                         url = handleSearch(request, response);
                         break;
+                    case "searchID":
+                        url = handleSearchID(request, response);
+                        break;
+                    case "productAdding":
+                        url = handleProductAdding(request, response);
+                        break;
+                    case "changeQuantity":
+                        url = handleChangeQuantity(request, response);
+                        break;
+                    case "productUpdating":
+                        url = handleProductUpdating(request, response);
+                        break;
+                    case "editProduct":
+                        url = handleEditProduct(request, response);
+                        break;
                     case "addToCart":
                         url = handleAddToCart(request, response);
-                        break;
-                    case "new":
-                        url = handleNewProducts(request, response);
                         break;
                     default:
                         request.setAttribute("message", "Invalid product action: " + action);
@@ -175,27 +192,212 @@ public class ProductController extends HttpServlet {
                     }
 
                 } else {
-                    request.setAttribute("message", "Không tìm thấy sản phẩm với ID: " + modelId);
+                    request.setAttribute("message", "No products found with ModelID: " + modelId);
                     url = "productList.jsp";
                 }
             } else {
-                request.setAttribute("message", "Thiếu thông tin mã sản phẩm.");
+                request.setAttribute("message", "Missing product ModelID information.");
                 url = "productList.jsp";
             }
 
         } catch (Exception e) {
             e.printStackTrace();
             url = "error.jsp";
-            request.setAttribute("message", "Lỗi khi tải chi tiết sản phẩm: " + e.getMessage());
+            request.setAttribute("message", "Error loading product details: " + e.getMessage());
         }
 
         return url;
     }
 
-    private String handleNewProducts(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+    private String handleListEdit(HttpServletRequest request, HttpServletResponse response) {
+        if (!AuthUtils.isAdmin(request)) {
+            request.setAttribute("message", "Sorry, you do not have permission to access this page.");
+            return "error.jsp";
+        }
         ModelCarDAO dao = new ModelCarDAO();
-        List<ModelCar> newProducts = dao.getLatestProducts(4);  // Lấy 4 sản phẩm mới
-        request.setAttribute("productListNew", newProducts);
-        return "productCarousel.jsp";  // Trả về tên JSP chứ không forward tại đây
+        List<ModelCar> list = dao.getAll();
+        request.setAttribute("productListEdit", list);
+        return "editProduct.jsp";
     }
+
+    private String handleSearchID(HttpServletRequest request, HttpServletResponse response) throws SQLException, ClassNotFoundException, ServletException, IOException {
+        ModelCarDAO dao = new ModelCarDAO();
+        String keyword = request.getParameter("keyword");
+        List<ModelCar> list = dao.searchByModelId(keyword);
+        request.setAttribute("listToEdit", list);
+        request.setAttribute("keyword", keyword);
+        RequestDispatcher rd = request.getRequestDispatcher("editProduct.jsp");
+        rd.forward(request, response);
+        return "editProduct.jsp";
+    }
+
+    private String handleChangeQuantity(HttpServletRequest request, HttpServletResponse response) {
+        if (!AuthUtils.isAdmin(request)) {
+            request.setAttribute("message", "Sorry, you do not have permission to access this page.");
+            return "error.jsp";
+        }
+        ModelCarDAO dao = new ModelCarDAO();
+        String productId = request.getParameter("productId");
+
+        if (AuthUtils.isAdmin(request)) {
+            dao.updateQuantity(productId);  // gọi hàm DAO đã fix ở trên
+        }
+
+        // Reload danh sách sản phẩm để hiển thị lại
+        String keyword = request.getParameter("keyword"); // giữ lại keyword nếu có
+        List<ModelCar> updatedList = dao.searchByName(keyword != null ? keyword : "");
+
+        request.setAttribute("keyword", keyword);
+        request.setAttribute("productListEdit", updatedList);
+
+        return "editProduct.jsp"; // forward đến trang hiển thị
+    }
+
+    private String handleEditProduct(HttpServletRequest request, HttpServletResponse response) {
+        if (!AuthUtils.isAdmin(request)) {
+            request.setAttribute("message", "Sorry, you do not have permission to access this page.");
+            return "error.jsp";
+        }
+
+        String modelId = request.getParameter("modelId");
+        if (modelId == null || modelId.trim().isEmpty()) {
+            request.setAttribute("message", "Missing product ModelID.");
+            return "error.jsp";
+        }
+
+        ModelCarDAO dao = new ModelCarDAO();
+        ModelCar product = dao.getById(modelId);
+        if (product == null) {
+            request.setAttribute("message", "No products found with ModelID: " + modelId);
+            return "error.jsp";
+        }
+
+        request.setAttribute("product", product);
+        return "productsUpdate.jsp";
+    }
+
+    private String handleProductUpdating(HttpServletRequest request, HttpServletResponse response) {
+        if (!AuthUtils.isAdmin(request)) {
+            request.setAttribute("message", "You do not have permission to edit the product.");
+            return "error.jsp";
+        }
+
+        try {
+            // Lấy dữ liệu từ form
+            String modelId = request.getParameter("modelId");
+            String modelName = request.getParameter("modelName");
+            int scaleId = Integer.parseInt(request.getParameter("scale"));
+            int brandId = Integer.parseInt(request.getParameter("brandId"));
+            String description = request.getParameter("description");
+            String keyword = request.getParameter("keyword");
+
+            double price = Double.parseDouble(request.getParameter("price"));
+            int quantity = Integer.parseInt(request.getParameter("quantity"));
+
+            // Lấy dữ liệu ảnh
+            String[] imageIds = request.getParameterValues("imageId");
+            String[] imageUrls = request.getParameterValues("imageUrl");
+            String[] captions = request.getParameterValues("caption");
+
+            List<ImageModel> imageList = new ArrayList<>();
+            if (imageUrls != null) {
+                for (int i = 0; i < imageUrls.length; i++) {
+                    ImageModel img = new ImageModel();
+                    if (imageIds != null && i < imageIds.length) {
+                        img.setImageId(imageIds[i]);
+                    }
+                    img.setModelId(modelId); // chỉ dùng 1 modelId duy nhất
+                    img.setImageUrl(imageUrls[i]);
+                    if (captions != null && i < captions.length) {
+                        img.setCaption(captions[i]);
+                    }
+                    imageList.add(img);
+                }
+            }
+
+            // Tạo đối tượng ModelCar mới
+            ModelCar updatedProduct = new ModelCar(modelId, modelName, scaleId, brandId, price, description, quantity, imageList);
+
+            // Cập nhật vào DB
+            ModelCarDAO dao = new ModelCarDAO();
+            boolean success = dao.update(updatedProduct);
+            dao.updateImages(imageList, modelId);
+
+            if (success) {
+                request.setAttribute("message", "Product update successful.");
+            } else {
+                request.setAttribute("message", "Unable to update product.");
+            }
+
+            // Lấy lại sản phẩm đã cập nhật để hiển thị
+            ModelCar product = dao.getById(modelId);
+            request.setAttribute("product", product);
+            request.setAttribute("keyword", keyword);
+
+            return "productsUpdate.jsp";
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("message", "Error while updating product: " + e.getMessage());
+            return "error.jsp";
+        }
+    }
+
+    private String handleProductAdding(HttpServletRequest request, HttpServletResponse response) {
+        if (!AuthUtils.isAdmin(request)) {
+            request.setAttribute("message", "You do not have permission to add products.");
+            return "error.jsp";
+        }
+
+        try {
+            // Lấy dữ liệu từ form
+            String modelId = request.getParameter("modelId");
+            String modelName = request.getParameter("modelName");
+            int scaleId = Integer.parseInt(request.getParameter("scale"));
+            int brandId = Integer.parseInt(request.getParameter("brandId"));
+            String description = request.getParameter("description");
+            double price = Double.parseDouble(request.getParameter("price"));
+            int quantity = Integer.parseInt(request.getParameter("quantity"));
+
+            // Lấy dữ liệu ảnh
+            String[] imageUrls = request.getParameterValues("imageUrl");
+            String[] captions = request.getParameterValues("caption");
+
+            List<ImageModel> imageList = new ArrayList<>();
+            if (imageUrls != null) {
+                for (int i = 0; i < imageUrls.length; i++) {
+                    ImageModel img = new ImageModel();
+                    img.setModelId(modelId); // modelId dùng làm khoá chính để liên kết
+                    img.setImageUrl(imageUrls[i]);
+                    if (captions != null && i < captions.length) {
+                        img.setCaption(captions[i]);
+                    }
+                    imageList.add(img);
+                }
+            }
+
+            // Tạo đối tượng sản phẩm mới
+            ModelCar newProduct = new ModelCar(modelId, modelName, scaleId, brandId, price, description, quantity, imageList);
+
+            // Thêm vào database
+            ModelCarDAO dao = new ModelCarDAO();
+            boolean success = dao.create(newProduct);
+            dao.updateImages(imageList, modelId);// tương tự, cần hàm thêm ảnh
+
+            if (success) {
+                request.setAttribute("message", "New product added successfully.");
+            } else {
+                request.setAttribute("message", "Cannot add new products.");
+            }
+
+            request.setAttribute("product", null); // để hiển thị form trống nếu muốn thêm tiếp
+            return "productsUpdate.jsp";
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("message", "Error adding product: " + e.getMessage());
+            return "error.jsp";
+        }
+    }
+
 }

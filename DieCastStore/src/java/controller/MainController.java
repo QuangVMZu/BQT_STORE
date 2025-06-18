@@ -15,7 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author hqthi
  */
-@WebServlet(name = "MainController", urlPatterns = {"","/MainController"})
+@WebServlet(name = "MainController", urlPatterns = {"", "/MainController"})
 public class MainController extends HttpServlet {
 
     private static final String WELCOME = "home.jsp";
@@ -34,7 +34,12 @@ public class MainController extends HttpServlet {
     private boolean isProductAction(String action) {
         return "list".equals(action)
                 || "detail".equals(action)
-                || "search".equals(action);
+                || "search".equals(action)
+                || "productAdding".equals(action)
+                || "listEdit".equals(action)
+                || "editProduct".equals(action)
+                || "changeQuantity".equals(action)
+                || "productUpdating".equals(action);
     }
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)

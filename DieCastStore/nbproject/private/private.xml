@@ -3,19 +3,52 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/PRJ301/pr/DieCastStore/web/assects/image/logo@2x.png</file>
-            <file>file:/D:/PRJ301/pr/DieCastStore/web/assects/image/fb.png</file>
-            <file>file:/D:/PRJ301/pr/DieCastStore/web/assects/image/baner_2.jpg</file>
-            <file>file:/D:/PRJ301/pr/DieCastStore/web/home.jsp</file>
-            <file>file:/D:/PRJ301/pr/DieCastStore/src/java/controller/MainController.java</file>
-            <file>file:/D:/PRJ301/pr/DieCastStore/web/assects/image/ig.png</file>
+            <file>file:/D:/PRJ301/pr/DieCastStore/src/java/model/ModelCar.java</file>
+            <file>file:/D:/PRJ301/pr/DieCastStore/web/assects/CSS/error.css</file>
+            <file>file:/D:/PRJ301/pr/DieCastStore/web/productList.jsp</file>
+            <file>file:/D:/PRJ301/pr/DieCastStore/src/java/utils/DBUtils.java</file>
+            <file>file:/D:/PRJ301/pr/DieCastStore/src/java/dao/CustomerAccountDAO.java</file>
+            <file>file:/D:/PRJ301/pr/DieCastStore/data.sql</file>
+            <file>file:/D:/PRJ301/pr/DieCastStore/web/error.jsp</file>
+            <file>file:/D:/PRJ301/pr/DieCastStore/web/assects/CSS/productList.css</file>
             <file>file:/D:/PRJ301/pr/DieCastStore/web/login.jsp</file>
+            <file>file:/D:/PRJ301/pr/DieCastStore/web/forgot-password.jsp</file>
+            <file>file:/D:/PRJ301/pr/DieCastStore/src/java/model/ImageModel.java</file>
+            <file>file:/D:/PRJ301/pr/DieCastStore/web/about.jsp</file>
+            <file>file:/D:/PRJ301/pr/DieCastStore/web/contact.jsp</file>
+            <file>file:/D:/PRJ301/pr/DieCastStore/web/assects/JS/home.js</file>
+            <file>file:/D:/PRJ301/pr/DieCastStore/web/assects/JS/header.js</file>
+            <file>file:/D:/PRJ301/pr/DieCastStore/web/footer.jsp</file>
+            <file>file:/D:/PRJ301/pr/DieCastStore/web/assects/JS/login.js</file>
+            <file>file:/D:/PRJ301/pr/DieCastStore/web/assects/CSS/editProduct.css</file>
+            <file>file:/D:/PRJ301/pr/DieCastStore/web/assects/CSS/contact.css</file>
+            <file>file:/D:/PRJ301/pr/DieCastStore/web/assects/CSS/login.css</file>
+            <file>file:/D:/PRJ301/pr/DieCastStore/web/assects/CSS/header.css</file>
+            <file>file:/D:/PRJ301/pr/DieCastStore/web/assects/CSS/register.css</file>
+            <file>file:/D:/PRJ301/pr/DieCastStore/web/assects/CSS/about.css</file>
+            <file>file:/D:/PRJ301/pr/DieCastStore/src/java/controller/UserController.java</file>
+            <file>file:/D:/PRJ301/pr/DieCastStore/web/assects/CSS/forgot-password.css</file>
+            <file>file:/D:/PRJ301/pr/DieCastStore/web/sendContact.jsp</file>
+            <file>file:/D:/PRJ301/pr/DieCastStore/web/register.jsp</file>
+            <file>file:/D:/PRJ301/pr/DieCastStore/src/java/utils/AuthUtils.java</file>
+            <file>file:/D:/PRJ301/pr/DieCastStore/web/productsUpdate.jsp</file>
+            <file>file:/D:/PRJ301/pr/DieCastStore/web/assects/JS/productList.js</file>
+            <file>file:/D:/PRJ301/pr/DieCastStore/web/home.jsp</file>
+            <file>file:/D:/PRJ301/pr/DieCastStore/web/assects/JS/productDetail.js</file>
+            <file>file:/D:/PRJ301/pr/DieCastStore/src/java/controller/MainController.java</file>
+            <file>file:/D:/PRJ301/pr/DieCastStore/web/assects/CSS/home.css</file>
+            <file>file:/D:/PRJ301/pr/DieCastStore/web/reset-password.jsp</file>
+            <file>file:/D:/PRJ301/pr/DieCastStore/src/java/model/Order.java</file>
+            <file>file:/D:/PRJ301/pr/DieCastStore/web/header.jsp</file>
             <file>file:/D:/PRJ301/pr/DieCastStore/web/productSearch.jsp</file>
-            <file>file:/D:/PRJ301/pr/DieCastStore/web/assects/image/baner_1.jpg</file>
-            <file>file:/D:/PRJ301/pr/DieCastStore/web/assects/image/banner.jpg</file>
+            <file>file:/D:/PRJ301/pr/DieCastStore/web/assects/CSS/footer.css</file>
+            <file>file:/D:/PRJ301/pr/DieCastStore/web/assects/CSS/productDetail.css</file>
             <file>file:/D:/PRJ301/pr/DieCastStore/src/java/controller/ProductController.java</file>
+            <file>file:/D:/PRJ301/pr/DieCastStore/web/assects/CSS/productSearch.css</file>
+            <file>file:/D:/PRJ301/pr/DieCastStore/src/java/dao/ModelCarDAO.java</file>
+            <file>file:/D:/PRJ301/pr/DieCastStore/web/assects/CSS/productsUpdate.css</file>
+            <file>file:/D:/PRJ301/pr/DieCastStore/web/editProduct.jsp</file>
             <file>file:/D:/PRJ301/pr/DieCastStore/web/productDetail.jsp</file>
-            <file>file:/D:/PRJ301/pr/DieCastStore/web/assects/image/logoKS.png</file>
         </group>
     </open-files>
 </project-private>

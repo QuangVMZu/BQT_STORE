@@ -94,22 +94,6 @@ public class ModelCarDAO implements IDAO<ModelCar, String> {
         return list;
     }
 
-//    @Override
-//    public List<ModelCar> getAll() {
-//        List<ModelCar> list = new ArrayList<>();
-//
-//        ModelCar testCar = new ModelCar();
-//        testCar.setModelId("T001");
-//        testCar.setModelName("Test Car");
-//        testCar.setPrice(10.5);
-//        testCar.setDescription("This is a test.");
-//        testCar.setQuantity(1);
-//        testCar.setScaleId(1);
-//        testCar.setBrandId(1);
-//        list.add(testCar);
-//
-//        return list;
-//    }
     @Override
     public boolean create(ModelCar car) {
         String sql = "INSERT INTO modelCar (modelId, modelName, scaleId, brandId, price, description, quantity) VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -131,8 +115,51 @@ public class ModelCarDAO implements IDAO<ModelCar, String> {
     }
 
     @Override
-    public boolean update(ModelCar entity) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public boolean update(ModelCar car) {
+        String sql = "UPDATE ModelCar SET modelName = ?, scaleId = ?, brandId = ?, price = ?, description = ?, quantity = ? WHERE modelId = ?";
+        try (Connection conn = DBUtils.getConnection();  PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, car.getModelName());
+            stmt.setInt(2, car.getScaleId());
+            stmt.setInt(3, car.getBrandId());
+            stmt.setDouble(4, car.getPrice());
+            stmt.setString(5, car.getDescription());
+            stmt.setInt(6, car.getQuantity());
+            stmt.setString(7, car.getModelId());
+
+            int affectedRows = stmt.executeUpdate();
+            return affectedRows > 0;
+
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public void updateImages(List<ImageModel> images, String modelId) {
+        try ( Connection conn = DBUtils.getConnection()) {
+            // Xóa toàn bộ ảnh cũ
+            String deleteSql = "DELETE FROM Image WHERE modelId = ?";
+            try ( PreparedStatement ps = conn.prepareStatement(deleteSql)) {
+                ps.setString(1, modelId);
+                ps.executeUpdate();
+            }
+
+            // Thêm ảnh mới
+            String insertSql = "INSERT INTO Image (imageId, modelId, imageUrl, caption) VALUES (?, ?, ?, ?)";
+            try ( PreparedStatement ps = conn.prepareStatement(insertSql)) {
+                for (ImageModel img : images) {
+                    ps.setString(1, img.getImageId());
+                    ps.setString(2, modelId);
+                    ps.setString(3, img.getImageUrl());
+                    ps.setString(4, img.getCaption());
+                    ps.addBatch();
+                }
+                ps.executeBatch();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -216,5 +243,39 @@ public class ModelCarDAO implements IDAO<ModelCar, String> {
         }
 
         return list;
+    }
+
+    public List<ModelCar> searchByModelId(String keyword) throws SQLException, ClassNotFoundException {
+        List<ModelCar> list = new ArrayList<>();
+        String sql = "SELECT * FROM ModelCar WHERE modelId LIKE ?";
+        try ( Connection conn = DBUtils.getConnection();  PreparedStatement ps = conn.prepareStatement(SEARCH_BY_NAME)) {
+            ps.setString(1, "%" + keyword + "%"); // tìm kiếm gần đúng
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                ModelCar model = new ModelCar();
+                model.setModelId(rs.getString("modelId"));
+                model.setModelName(rs.getString("modelName"));
+                model.setScaleId(rs.getInt("scaleId"));
+                model.setBrandId(rs.getInt("brandId"));
+                model.setPrice(rs.getDouble("price"));
+                model.setDescription(rs.getString("description"));
+                model.setQuantity(rs.getInt("quantity"));
+                list.add(model);
+            }
+        }
+        return list;
+    }
+
+    public boolean updateQuantity(String modelId) {
+        String sql = "UPDATE modelCar SET quantity = 0 WHERE modelId = ?";
+        try ( Connection conn = DBUtils.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, modelId);
+            return ps.executeUpdate() > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

@@ -2,169 +2,16 @@
 <%@ page import="model.ModelCar" %>
 <%@ page import="model.ImageModel" %>
 <%@ page import="java.util.List" %>
-<jsp:include page="header.jsp" />
+
 <!DOCTYPE html>
 <html>
     <head>
         <title>All Products</title>
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-                background-color: #f1f8e9;
-                margin: 0;
-                padding: 0;
-            }
-
-            /* Giãn dòng cho chữ "All Products" */
-            h1.title {
-                margin-top: 25px;
-                margin-bottom: 10px;
-            }
-
-            /* Các style còn lại không thay đổi */
-            h1 {
-                text-align: center;
-                margin: 0;
-            }
-
-            /* Các class còn lại giữ nguyên */
-            .carousel-wrapper {
-                position: relative;
-                width: 90%;
-                margin: auto;
-                overflow: hidden;
-            }
-
-            .product-container {
-                display: flex;
-                transition: transform 0.5s ease-in-out;
-                scroll-behavior: smooth;
-                overflow-x: auto;
-                scrollbar-width: none; /* Firefox */
-            }
-            .product-container::-webkit-scrollbar {
-                display: none; /* Chrome, Safari */
-            }
-
-            .product-card {
-                flex: 0 0 25%;
-                box-sizing: border-box;
-                padding: 10px;
-            }
-
-            .card-inner {
-                border: 1px solid #ccc;
-                border-radius: 8px;
-                text-align: center;
-                background-color: #fff;
-                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-                transition: 0.3s;
-                height: 100%; /* đảm bảo full chiều cao nếu cần */
-            }
-
-
-            .card-inner:hover {
-                box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            }
-
-            .product-image {
-                width: 100%;
-                height: 200px; /* hoặc cao hơn nếu cần khung lớn hơn */
-                object-fit: contain;
-                background-color: transparent; /* nền trong suốt */
-                border-radius: 0;
-                display: block;
-            }
-
-            .product-info {
-                padding: 10px;
-            }
-
-            .product-name {
-                font-size: 16px;
-                font-weight: bold;
-                margin: 10px 0;
-                height: 48px;
-                overflow: hidden;
-            }
-
-            .product-price {
-                color: red;
-                font-size: 18px;
-                font-weight: bold;
-            }
-
-            .arrow {
-                position: absolute;
-                top: 50%;
-                transform: translateY(-50%);
-                font-size: 30px;
-                color: #333;
-                cursor: pointer;
-                user-select: none;
-                background: rgba(255,255,255,0.8);
-                padding: 5px 10px;
-                border-radius: 50%;
-                z-index: 10;
-            }
-
-            .arrow.left {
-                left: 10px;
-            }
-
-            .arrow.right {
-                right: 10px;
-            }
-
-            .no-products {
-                text-align: center;
-                color: red;
-            }
-
-            .brand-slider-wrapper {
-                display: flex;
-                overflow-x: auto;
-                scroll-behavior: smooth;
-                flex-grow: 1;
-                scrollbar-width: none;
-            }
-
-            .brand-slider-wrapper::-webkit-scrollbar {
-                display: none;
-            }
-
-            .brand-slider-wrapper img {
-                mix-blend-mode: multiply;
-            }
-            /* Hover cho các logo brand */
-            .brand-slider-wrapper a img:hover {
-                transform: scale(1.2); /* Phóng to khi hover */
-            }
-
-            /* Hover cho social media icons */
-            .brand-slider-wrapper a[title]:hover img {
-                transform: scale(1.3); /* Phóng to nhiều hơn một chút */
-            }
-            /*            .product-link-btn {
-                            background: none;
-                            border: none;
-                            padding: 0;
-                            margin: 0;
-                            width: 100%;
-                            text-align: left;
-                            cursor: pointer;
-                            color: inherit;
-                            font: inherit;
-                            display: block;
-                        }
-            
-                        .product-link-btn:hover {
-                            filter: brightness(0.95);  hiệu ứng hover nhẹ 
-                        }*/
-
-        </style>
+        <link rel="stylesheet" href="assects/CSS/productList.css">
+        <script src="assects/JS/productList.js"></script>
     </head>
     <body>
+        <jsp:include page="header.jsp" />
         <div style="width: 100%; margin: 0; padding: 0;">
             <img src="assects/image/banner.jpg" alt="Promotional Banner" style="width: 100%; height: 500px; display: block;">
         </div>
@@ -183,7 +30,7 @@
 
                 <div class="product-container" id="carousel">
                     <% for (ModelCar product : products) {
-                        String imageUrl = "https://via.placeholder.com/220x150?text=No+Image";
+                        String imageUrl = null;
                         List<ImageModel> images = product.getImages();
                         if (images != null && !images.isEmpty()) {
                             imageUrl = images.get(0).getImageUrl();
@@ -256,13 +103,6 @@
                 <img src="assects/image/ytb.png" alt="YouTube" style="width: 50px; height: 50px; transition: transform 0.3s;">
             </a>
         </div>
-        <script>
-            const carousel = document.getElementById('carousel');
-            function scrollCarousel(direction) {
-                const cardWidth = carousel.querySelector('.product-card').offsetWidth;
-                carousel.scrollBy({left: direction * cardWidth, behavior: 'smooth'});
-            }
-        </script>
         <jsp:include page="footer.jsp" />
     </body>
 </html>
