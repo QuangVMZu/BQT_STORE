@@ -1,5 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<link rel="stylesheet" href="assects/CSS/footer.css">
+<link rel="stylesheet" href="assets/CSS/footer.css">
 <footer>
     <div class="footer-container">
         <!-- Company description -->
@@ -13,14 +13,44 @@
             <h3><a href="contact.jsp" style="color: inherit; text-decoration: none;">Contact</a></h3>
             <p>📍 7 D1 Street, Long Thanh My, Thu Duc, Ho Chi Minh City</p>
             <p>✉️ support@vnauto.com</p>
-            <p>📞 0123 456 789</p>
+            <p>📞 0123 456 789</p><br>
+            <h3>Connect</h3>
+            <div class="brand" style="display: flex; justify-content: flex-start; gap: 10px; margin-bottom: 50px;">
+                <a title="Facebook">
+                    <img src="assets/image/fb.png" alt="Facebook" style="width: 45px; height: 45px; transition: transform 0.3s;">
+                </a>
+                <a title="Instagram">
+                    <img src="assets/image/ig.png" alt="Instagram" style="width: 45px; height: 45px; transition: transform 0.3s;">
+                </a>
+                <a title="TikTok">
+                    <img src="assets/image/tik.png" alt="TikTok" style="width: 45px; height: 45px; transition: transform 0.3s;">
+                </a>
+                <a title="YouTube">
+                    <img src="assets/image/ytb.png" alt="YouTube" style="width: 45px; height: 45px; transition: transform 0.3s;">
+                </a>
+            </div>
         </div>
 
         <!-- Working hours -->
         <div class="working-hours">
             <h3>Working Hours</h3>
             <p>Monday - Saturday: 8:00 AM - 8:00 PM</p>
-            <p>Sunday: 9:00 AM - 6:00 PM</p>
+            <p>Sunday: 9:00 AM - 6:00 PM</p><br>
+            <h3>Payment</h3>
+            <div class="brand" style="display: flex; justify-content: flex-start; gap: 10px; margin-bottom: 50px;">
+                <a title="Momo">
+                    <img src="assets/image/momo.png" alt="Instagram" style="width: 40px; height: 40px; transition: transform 0.3s;">
+                </a>
+                <a title="COD">
+                    <img src="assets/image/COD.png" alt="Facebook" style="width: 50px; height: 50px; transition: transform 0.3s;">
+                </a>    
+                <a title="Visa">
+                    <img src="assets/image/Visa.png" alt="TikTok" style="width: 45px; height: 45px; transition: transform 0.3s;">
+                </a>
+                <a title="VN">
+                    <img src="assets/image/VN.png" alt="YouTube" style="width: 50px; height: 50px; transition: transform 0.3s;">
+                </a>
+            </div>
         </div>
     </div>
 

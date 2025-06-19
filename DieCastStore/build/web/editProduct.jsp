@@ -1,9 +1,9 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="model.CustomerAccount"%>
-<%@page import="utils.AuthUtils"%>
-<%@page import="model.ModelCar"%>
-<%@page import="java.util.List"%>
-<%@page import="java.util.ArrayList"%>
+<%@ page import="model.CustomerAccount"%>
+<%@ page import="utils.AuthUtils"%>
+<%@ page import="model.ModelCar"%>
+<%@ page import="java.util.List"%>
+<%@ page import="java.util.ArrayList"%>
 
 <%
     final int ITEMS_PER_PAGE = 10;
@@ -39,7 +39,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Edit Product</title>
-    <link rel="stylesheet" href="assects/CSS/editProduct.css">
+    <link rel="stylesheet" href="assets/CSS/editProduct.css">
 </head>
 <body>
     <jsp:include page="header.jsp"/>

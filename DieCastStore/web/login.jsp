@@ -6,7 +6,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Trang Đăng Nhập</title>
-        <link rel="stylesheet" href="assects/CSS/login.css">
+        <link rel="stylesheet" href="assets/CSS/login.css">
         
     </head>
     <body>
@@ -63,5 +63,5 @@
         </div>
         <jsp:include page="footer.jsp" />
     </body>
-    <script src="assects/JS/login.js"></script>
+    <script src="assets/JS/login.js"></script>
 </html>

@@ -1,0 +1,188 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f1f8e9;
+    margin: 0;
+    padding: 0;
+}
+
+/* Giãn dòng cho chữ "All Products" */
+h1.title {
+    margin-top: 25px;
+    margin-bottom: 10px;
+}
+
+/* Các style còn lại không thay đổi */
+h1 {
+    text-align: center;
+    margin: 0;
+}
+
+/* Product carousel */
+.carousel-wrapper {
+    position: relative;
+    width: 90%;
+    margin: auto;
+    overflow: hidden;
+}
+
+.product-container {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    scroll-behavior: smooth;
+    overflow-x: auto;
+    scrollbar-width: none; /* Firefox */
+}
+.product-container::-webkit-scrollbar {
+    display: none; /* Chrome, Safari */
+}
+
+.product-card {
+    flex: 0 0 25%;
+    box-sizing: border-box;
+    padding: 10px;
+}
+
+.card-inner {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    text-align: center;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: 0.3s;
+    height: 100%;
+}
+
+.card-inner:hover {
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.product-image {
+    width: 100%;
+    height: 200px;
+    object-fit: contain;
+    background-color: transparent;
+    border-radius: 0;
+    display: block;
+}
+
+.product-info {
+    padding: 10px;
+}
+
+.product-name {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 10px 0;
+    height: 48px;
+    overflow: hidden;
+}
+
+.product-price {
+    color: red;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 30px;
+    color: #333;
+    cursor: pointer;
+    user-select: none;
+    background: rgba(255,255,255,0.8);
+    padding: 5px 10px;
+    border-radius: 50%;
+    z-index: 10;
+}
+
+.arrow.left {
+    left: 10px;
+}
+
+.arrow.right {
+    right: 10px;
+}
+
+.no-products {
+    text-align: center;
+    color: red;
+}
+
+/* Brand slider + social icons */
+.brand-slider-wrapper {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    flex-grow: 1;
+    scrollbar-width: none;
+}
+.brand-slider-wrapper::-webkit-scrollbar {
+    display: none;
+}
+
+.brand-slider-wrapper img {
+    mix-blend-mode: multiply;
+}
+
+.brand-slider-wrapper a img:hover {
+    transform: scale(1.2);
+}
+
+.brand-slider-wrapper a[title]:hover img {
+    transform: scale(1.3);
+}
+
+/* ==== Banner Slider Styles ==== */
+
+/* Container of the slider */
+.banner-slider {
+    position: relative;
+    overflow: hidden;
+    width: 1200px;        /* Đổi từ 1400px -> 1200px */
+    height: 300px;        /* Đổi từ 350px -> 300px */
+    margin: 0 auto;
+    border-radius: 8px;
+}
+
+.banner-track {
+    display: flex;
+    width: 100%;
+    flex-wrap: nowrap;
+    transition: transform 0.5s ease-in-out;
+}
+
+.banner-slide {
+    flex: 0 0 100%;
+    width: 100%;
+    height: 300px;        /* Đổi từ 350px -> 300px */
+    object-fit: cover;
+}
+
+/* Navigation buttons */
+.banner-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    font-size: 28px;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 10;
+    border-radius: 50%;
+    transition: background 0.3s;
+}
+.banner-btn:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.prev-btn {
+    left: 10px;
+}
+
+.next-btn {
+    right: 10px;
+}

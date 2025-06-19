@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <title>About Us</title>
-        <link rel="stylesheet" href="assects/CSS/about.css">
+        <link rel="stylesheet" href="assets/CSS/about.css">
     </head>
     <body>
         <jsp:include page="header.jsp" />

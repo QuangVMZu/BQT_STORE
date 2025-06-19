@@ -1,7 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="model.CustomerAccount"%>
 <%@page import="utils.AuthUtils"%>
-<link rel="stylesheet" href="assects/CSS/header.css">
+<link rel="stylesheet" href="assets/CSS/header.css">
 
 <header>
     <div class="header-container">
@@ -68,5 +68,5 @@
         </div>
     </div>
 </header>
-<script src="assects/JS/header.js"></script>
+<script src="assets/JS/header.js"></script>
 

@@ -7,13 +7,18 @@
 <html>
     <head>
         <title>All Products</title>
-        <link rel="stylesheet" href="assects/CSS/productList.css">
-        <script src="assects/JS/productList.js"></script>
+        <link rel="stylesheet" href="assets/CSS/productList.css">
     </head>
     <body>
         <jsp:include page="header.jsp" />
-        <div style="width: 100%; margin: 0; padding: 0;">
-            <img src="assects/image/banner.jpg" alt="Promotional Banner" style="width: 100%; height: 500px; display: block;">
+        <div class="banner-slider" style="margin-top: 30px">
+            <div class="banner-track">  
+                <img src="assets/image/BQT_STORE.png" class="banner-slide" alt="Banner 1">
+                <img src="assets/image/banner_2.png" class="banner-slide" alt="Banner 2">
+                <img src="assets/image/banner_3.png" class="banner-slide" alt="Banner 3">
+            </div>
+            <button class="banner-btn prev-btn">&#10094;</button>
+            <button class="banner-btn next-btn">&#10095;</button>
         </div>
 
         <div class="product-page">
@@ -58,51 +63,53 @@
                 }
             %>
         </div>
-        <h2 style="text-align:center; margin-top: 50px; margin-bottom: 20px; font-weight: bold; color: #333;">★  Our Partners  ★</h2>
-        <div class="brand-slider-wrapper" id="brandSlider" style="display: flex; justify-content: center; gap: 20px; padding: 10px 0;">
-            <a title="AutoArt">
-                <img src="assects/image/logoAA.jpg" alt="AutoArt" style="width: 120px; height: auto; cursor: pointer; transition: transform 0.3s;">
+
+        <h2 style="text-align:center; margin-top: 50px; margin-bottom: 20px; font-weight: bold; color: #333;">★  Social Media  ★</h2>
+        <div class="brand-slider-wrapper" style="display: flex; justify-content: center; gap: 20px; margin-bottom: 50px;">
+            <a title="Facebook">
+                <img src="assets/image/fb.png" alt="Facebook" style="width: 50px; height: 50px; transition: transform 0.3s;">
             </a>
-            <a title="Bburago">
-                <img src="assects/image/logoB.png" alt="Bburago" style="width: 120px; height: auto; cursor: pointer; transition: transform 0.3s;">
+            <a title="Instagram">
+                <img src="assets/image/ig.png" alt="Instagram" style="width: 50px; height: 50px; transition: transform 0.3s;">
             </a>
-            <a title="GreenLight">
-                <img src="assects/image/logoGL.png" alt="GreenLight" style="width: 120px; height: auto; cursor: pointer; transition: transform 0.3s;">
+            <a title="TikTok">
+                <img src="assets/image/tik.png" alt="TikTok" style="width: 50px; height: 50px; transition: transform 0.3s;">
             </a>
-            <a title="Hot Wheels">
-                <img src="assects/image/logoHW.png" alt="Hot Wheels" style="width: 120px; height: auto; cursor: pointer; transition: transform 0.3s;">
-            </a>
-            <a title="Kyosho">
-                <img src="assects/image/logoKS.png" alt="Kyosho" style="width: 120px; height: auto; cursor: pointer; transition: transform 0.3s;">
-            </a>
-            <a title="Maisto">
-                <img src="assects/image/logoMS.png" alt="Maisto" style="width: 120px; height: auto; cursor: pointer; transition: transform 0.3s;">
-            </a>
-            <a title="Minichamps">
-                <img src="assects/image/logoMini.png" alt="Minichamps" style="width: 120px; margin-top: 35px; height: auto; cursor: pointer; transition: transform 0.3s;">
-            </a>
-            <a title="Welly">
-                <img src="assects/image/logoW.png" alt="Welly" style="width: 120px; height: auto; cursor: pointer; transition: transform 0.3s;">
+            <a title="YouTube">
+                <img src="assets/image/ytb.png" alt="YouTube" style="width: 50px; height: 50px; transition: transform 0.3s;">
             </a>
         </div>
 
         <hr style="border: none; height: 2px; background-color: #c5e1a5; margin: 0 auto; width: 80%;">
 
-        <h2 style="text-align:center; margin-top: 50px; margin-bottom: 20px; font-weight: bold; color: #333;">★  Social Media  ★</h2>
-        <div class="brand-slider-wrapper" style="display: flex; justify-content: center; gap: 20px; margin-bottom: 50px;">
-            <a title="Facebook">
-                <img src="assects/image/fb.png" alt="Facebook" style="width: 50px; height: 50px; transition: transform 0.3s;">
+        <h2 style="text-align:center; margin-top: 50px; margin-bottom: 20px; font-weight: bold; color: #333;">★  Our Partners  ★</h2>
+        <div class="brand-slider-wrapper" id="brandSlider" style="display: flex; justify-content: center; gap: 20px; padding: 10px 0;">
+            <a title="AutoArt">
+                <img src="assets/image/logoAA.jpg" alt="AutoArt" style="width: 120px; height: auto; cursor: pointer; transition: transform 0.3s;">
             </a>
-            <a title="Instagram">
-                <img src="assects/image/ig.png" alt="Instagram" style="width: 50px; height: 50px; transition: transform 0.3s;">
+            <a title="Bburago">
+                <img src="assets/image/logoB.png" alt="Bburago" style="width: 120px; height: auto; cursor: pointer; transition: transform 0.3s;">
             </a>
-            <a title="TikTok">
-                <img src="assects/image/tik.png" alt="TikTok" style="width: 50px; height: 50px; transition: transform 0.3s;">
+            <a title="GreenLight">
+                <img src="assets/image/logoGL.png" alt="GreenLight" style="width: 120px; height: auto; cursor: pointer; transition: transform 0.3s;">
             </a>
-            <a title="YouTube">
-                <img src="assects/image/ytb.png" alt="YouTube" style="width: 50px; height: 50px; transition: transform 0.3s;">
+            <a title="Hot Wheels">
+                <img src="assets/image/logoHW.png" alt="Hot Wheels" style="width: 120px; height: auto; cursor: pointer; transition: transform 0.3s;">
+            </a>
+            <a title="Kyosho">
+                <img src="assets/image/logoKS.png" alt="Kyosho" style="width: 120px; height: auto; cursor: pointer; transition: transform 0.3s;">
+            </a>
+            <a title="Maisto">
+                <img src="assets/image/logoMS.png" alt="Maisto" style="width: 120px; height: auto; cursor: pointer; transition: transform 0.3s;">
+            </a>
+            <a title="Minichamps">
+                <img src="assets/image/logoMini.png" alt="Minichamps" style="width: 120px; margin-top: 35px; height: auto; cursor: pointer; transition: transform 0.3s;">
+            </a>
+            <a title="Welly">
+                <img src="assets/image/logoW.png" alt="Welly" style="width: 120px; height: auto; cursor: pointer; transition: transform 0.3s;">
             </a>
         </div>
         <jsp:include page="footer.jsp" />
+        <script src="assets/JS/productList.js"></script>
     </body>
 </html>

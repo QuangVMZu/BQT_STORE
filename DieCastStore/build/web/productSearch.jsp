@@ -15,13 +15,13 @@
     <head>
         <meta charset="UTF-8">
         <title>Kết quả tìm kiếm</title>
-        <link rel="stylesheet" href="assects/CSS/productSearch.css">
-
+        <link rel="stylesheet" href="assets/CSS/productSearch.css">
     </head>
     <body>
         <jsp:include page="header.jsp" />
-        <div style="width: 100%; margin: 0; padding: 0;">
-            <img src="assects/image/baner_2.jpg" alt="Promotional Banner" style="width: 100%; height: 500px; display: block;">
+        <div style="width: 100%; margin: 0; padding: 0; text-align: center; background-color: #f1f8e9;">
+            <img src="assets/image/BQT_STORE.png" alt="Promotional Banner"
+                 style="width: 1200px; height: 300px; display: inline-block;">
         </div>
         <main class="search-content"><br>
             <h2>Kết quả tìm kiếm cho: "<%= keyword %>"</h2>
@@ -75,28 +75,28 @@
             <h2 style="text-align:center; margin-top: 0; margin-bottom: 20px; font-weight: bold; color: #333;">★  Our Partners  ★</h2>
             <div class="brand-slider-wrapper" id="brandSlider" style="display: flex; justify-content: center; flex-wrap: wrap; gap: 20px; padding: 10px 0;">
                 <a title="AutoArt">
-                    <img src="assects/image/logoAA.jpg" alt="AutoArt" style="width: 120px; height: auto; cursor: pointer; transition: transform 0.3s;">
+                    <img src="assets/image/logoAA.jpg" alt="AutoArt" style="width: 120px; height: auto; cursor: pointer; transition: transform 0.3s;">
                 </a>
                 <a title="Bburago">
-                    <img src="assects/image/logoB.png" alt="Bburago" style="width: 120px; height: auto; cursor: pointer; transition: transform 0.3s;">
+                    <img src="assets/image/logoB.png" alt="Bburago" style="width: 120px; height: auto; cursor: pointer; transition: transform 0.3s;">
                 </a>
                 <a title="GreenLight">
-                    <img src="assects/image/logoGL.png" alt="GreenLight" style="width: 120px; height: auto; cursor: pointer; transition: transform 0.3s;">
+                    <img src="assets/image/logoGL.png" alt="GreenLight" style="width: 120px; height: auto; cursor: pointer; transition: transform 0.3s;">
                 </a>
                 <a title="Hot Wheels">
-                    <img src="assects/image/logoHW.png" alt="Hot Wheels" style="width: 120px; height: auto; cursor: pointer; transition: transform 0.3s;">
+                    <img src="assets/image/logoHW.png" alt="Hot Wheels" style="width: 120px; height: auto; cursor: pointer; transition: transform 0.3s;">
                 </a>
                 <a title="Kyosho">
-                    <img src="assects/image/logoKS.png" alt="Kyosho" style="width: 120px; height: auto; cursor: pointer; transition: transform 0.3s;">
+                    <img src="assets/image/logoKS.png" alt="Kyosho" style="width: 120px; height: auto; cursor: pointer; transition: transform 0.3s;">
                 </a>
                 <a title="Maisto">
-                    <img src="assects/image/logoMS.png" alt="Maisto" style="width: 120px; height: auto; cursor: pointer; transition: transform 0.3s;">
+                    <img src="assets/image/logoMS.png" alt="Maisto" style="width: 120px; height: auto; cursor: pointer; transition: transform 0.3s;">
                 </a>
                 <a title="Minichamps">
-                    <img src="assects/image/logoMini.png" alt="Minichamps" style="width: 120px; margin-top: 35px; height: auto; cursor: pointer; transition: transform 0.3s;">
+                    <img src="assets/image/logoMini.png" alt="Minichamps" style="width: 120px; margin-top: 35px; height: auto; cursor: pointer; transition: transform 0.3s;">
                 </a>
                 <a title="Welly">
-                    <img src="assects/image/logoW.png" alt="Welly" style="width: 120px; height: auto; cursor: pointer; transition: transform 0.3s;">
+                    <img src="assets/image/logoW.png" alt="Welly" style="width: 120px; height: auto; cursor: pointer; transition: transform 0.3s;">
                 </a>
             </div>
         </div>
@@ -108,19 +108,19 @@
             <h2 style="text-align:center; margin-top: 0; margin-bottom: 20px; font-weight: bold; color: #333;">★  Social Media  ★</h2>
             <div class="social-media-wrapper" style="display: flex; justify-content: center; gap: 20px;">
                 <a title="Facebook">
-                    <img src="assects/image/fb.png" alt="Facebook" style="width: 50px; height: 50px; transition: transform 0.3s;">
+                    <img src="assets/image/fb.png" alt="Facebook" style="width: 50px; height: 50px; transition: transform 0.3s;">
                 </a>
                 <a title="Instagram">
-                    <img src="assects/image/ig.png" alt="Instagram" style="width: 50px; height: 50px; transition: transform 0.3s;">
+                    <img src="assets/image/ig.png" alt="Instagram" style="width: 50px; height: 50px; transition: transform 0.3s;">
                 </a>
                 <a title="TikTok">
-                    <img src="assects/image/tik.png" alt="TikTok" style="width: 50px; height: 50px; transition: transform 0.3s;">
+                    <img src="assets/image/tik.png" alt="TikTok" style="width: 50px; height: 50px; transition: transform 0.3s;">
                 </a>
                 <a title="YouTube">
-                    <img src="assects/image/ytb.png" alt="YouTube" style="width: 50px; height: 50px; transition: transform 0.3s;">
+                    <img src="assets/image/ytb.png" alt="YouTube" style="width: 50px; height: 50px; transition: transform 0.3s;">
                 </a>
             </div>
         </div>
+        <jsp:include page="footer.jsp" />
     </body>
-    <jsp:include page="footer.jsp" />
 </html>

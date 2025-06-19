@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <title>Contact Us</title>
-        <link rel="stylesheet" href="assects/CSS/contact.css">
+        <link rel="stylesheet" href="assets/CSS/contact.css">
     </head>
     <jsp:include page="header.jsp" />
     <body class="contact-page">

@@ -5,7 +5,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Register Account</title>
-        <link rel="stylesheet" href="assects/CSS/register.css">
+        <link rel="stylesheet" href="assets/CSS/register.css">
     </head>
     <body>
         <jsp:include page="header.jsp" />

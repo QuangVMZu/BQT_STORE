@@ -5,7 +5,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Forgot Password</title>
-        <link rel="stylesheet" href="assects/CSS/forgot-password.css">
+        <link rel="stylesheet" href="assets/CSS/forgot-password.css">
     </head>
     <body>
         <jsp:include page="header.jsp" />

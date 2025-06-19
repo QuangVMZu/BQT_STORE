@@ -4,7 +4,7 @@
 <%@ page import="model.ImageModel" %>
 <jsp:include page="header.jsp" />
 
-<link rel="stylesheet" href="assects/CSS/productsUpdate.css">
+<link rel="stylesheet" href="assets/CSS/productsUpdate.css">
 
 <%
     ModelCar product = (ModelCar) request.getAttribute("product");
@@ -47,24 +47,36 @@
         <input type="number" name="quantity" value="<%= isEdit ? product.getQuantity() : "" %>" required>
 
         <label>Description:</label>
-        <textarea name="description" rows="4" cols="50"><%= isEdit ? product.getDescription() : "" %></textarea>
-
-        <% if (isEdit) { %>
-        <h3>Product images:</h3>
+        <textarea name="description" rows="4" cols="50"><%= isEdit ? product.getDescription() : "" %></textarea><br>
+        
+        <h3 style="margin-top: 10px">Product images:</h3>
         <%
-            List<ImageModel> images = product.getImages();
-            for (int i = 0; i < images.size(); i++) {
-                ImageModel img = images.get(i);
+            int numberOfImageInputs = 4; // Bạn muốn cho người dùng nhập tối đa 3 ảnh khi thêm mới
+            List<ImageModel> images = isEdit && product.getImages() != null ? product.getImages() : null;
+
+            for (int i = 0; i < (isEdit ? images.size() : numberOfImageInputs); i++) {
+                String imageId = "";
+                String imageUrl = "";
+                String caption = "";
+
+                if (isEdit && images != null && i < images.size()) {
+                    ImageModel img = images.get(i);
+                    imageId = String.valueOf(img.getImageId());
+                    imageUrl = img.getImageUrl();
+                    caption = img.getCaption() != null ? img.getCaption() : "";
+                }
         %>
         <div>
-            <input type="hidden" name="imageId" value="<%= img.getImageId() %>">
+            <% if (isEdit) { %>
+            <input type="hidden" name="imageId" value="<%= imageId %>">
+            <% } %>
             <label>URL img <%= (i + 1) %><span style="color: red">*</span></label>
-            <input type="text" name="imageUrl" value="<%= img.getImageUrl() %>">
+            <input type="text" name="imageUrl" value="<%= imageUrl %>">
             <label>Caption:</label>
-            <input type="text" name="caption" value="<%= img.getCaption() != null ? img.getCaption() : "" %>">
+            <input type="text" name="caption" value="<%= caption %>">
         </div>
         <% } %>
-        <% } %>
+
 
         <button type="submit"><%= isEdit ? "Update" : "Adding" %></button>
     </form>
