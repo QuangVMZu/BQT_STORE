@@ -294,6 +294,13 @@ public class ProductController extends HttpServlet {
             double price = Double.parseDouble(request.getParameter("price"));
             int quantity = Integer.parseInt(request.getParameter("quantity"));
 
+            if (quantity < -1) {
+                request.setAttribute("message", "Quantity cannot be less than -1.");
+                ModelCar existingProduct = new ModelCar(modelId, modelName, scaleId, brandId, price, description, quantity, null);
+                request.setAttribute("product", existingProduct);
+                request.setAttribute("keyword", request.getParameter("keyword"));
+                return "productsUpdate.jsp";
+            }
             // Lấy dữ liệu ảnh
             String[] imageIds = request.getParameterValues("imageId");
             String[] imageUrls = request.getParameterValues("imageUrl");
@@ -359,6 +366,11 @@ public class ProductController extends HttpServlet {
             double price = Double.parseDouble(request.getParameter("price"));
             int quantity = Integer.parseInt(request.getParameter("quantity"));
 
+            if (quantity < -1) {
+                request.setAttribute("message", "Quantity cannot be less than -1.");
+                request.setAttribute("product", null); // giữ lại form
+                return "productsUpdate.jsp";
+            }
             // Lấy dữ liệu ảnh
             String[] imageUrls = request.getParameterValues("imageUrl");
             String[] captions = request.getParameterValues("caption");

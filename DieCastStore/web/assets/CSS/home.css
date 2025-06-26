@@ -1,9 +1,15 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f1f8e9;
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8fbff; /* nền rất nhẹ */
+}
+
+/* ========== BRAND SLIDER ========== */
 
 .brand-slider-wrapper {
     display: flex;
@@ -21,27 +27,27 @@ body {
     mix-blend-mode: multiply;
 }
 
-/* Hover cho các logo brand */
 .brand-slider-wrapper a img:hover {
-    transform: scale(1.2); /* Phóng to khi hover */
+    transform: scale(1.2);
 }
 
-/* Hover cho social media icons */
 .brand-slider-wrapper a[title]:hover img {
-    transform: scale(1.3); /* Phóng to nhiều hơn một chút */
+    transform: scale(1.3);
 }
+
+/* ========== NEWS SECTION ========== */
 
 .news-section {
     padding: 30px;
-    background-color: #f9f9f9;
-    text-align: center;
-    background: #f1f8e9;
+    background-color: #f8fbff;
+    text-align: center
 }
+
 
 .news-title {
     font-size: 28px;
     margin-bottom: 20px;
-    color: #222;
+    color: #1c3d5a;
 }
 
 .news-carousel {
@@ -61,23 +67,21 @@ body {
 
 .news-card {
     width: 100%;
-    aspect-ratio: 4 / 4; /* Giữ tỉ lệ khung hình */
-    /*overflow: hidden;*/
-    padding: 0;
-    margin: 0;
-    background: none;
-    border: none;
-    box-shadow: none;
+    aspect-ratio: 4 / 4;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    transition: transform 0.3s;
+    transition: transform 0.3s, box-shadow 0.3s;
     text-decoration: none;
 }
 
 .news-card:hover {
     transform: scale(1.03);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
 }
 
 .news-card img {
@@ -85,21 +89,23 @@ body {
     height: 100%;
     object-fit: contain;
     mix-blend-mode: multiply;
+    padding: 10px;
 }
 
 .news-card h3 {
     margin: 10px;
     font-size: 18px;
-    color: #000;
+    color: #1c3d5a;
 }
 
 .news-card p {
     margin: 0 10px 10px;
     font-size: 14px;
-    color: #555;
+    color: #3d5a80;
 }
 
-/* Pagination buttons */
+/* ========== PAGINATION ========== */
+
 .news-pagination {
     margin-top: 20px;
 }
@@ -107,17 +113,26 @@ body {
 .news-page-btn {
     padding: 8px 16px;
     margin: 0 5px;
-    background-color: #ddd;
+    background-color: #d0ebff;
     border: none;
     border-radius: 8px;
     cursor: pointer;
     font-weight: bold;
+    color: #1c3d5a;
+    transition: all 0.3s ease;
+}
+
+.news-page-btn:hover {
+    background-color: #74c0fc;
+    color: #ffffff;
 }
 
 .news-page-btn.active {
-    background-color: #333;
+    background-color: #1c3d5a;
     color: white;
 }
+
+/* ========== SLIDER BUTTONS ========== */
 
 .prev-btn, .next-btn {
     position: absolute;
@@ -129,40 +144,34 @@ body {
     padding: 8px 12px;
     cursor: pointer;
     border-radius: 50%;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-}
-
-.prev-btn {
-    left: 10px;
-}
-
-.next-btn {
-    right: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    color: #1c3d5a;
+    transition: background-color 0.3s;
 }
 
 .prev-btn:hover, .next-btn:hover {
-    background-color: #e0e0e0;
+    background-color: #d0ebff;
 }
 
-/* Banner slider container */
+/* ========== BANNER SLIDER ========== */
+
 .banner-slider {
     position: relative;
     overflow: hidden;
-    width: 1200px;         /* 👈 cố định chiều rộng */
-    height: 300px;         /* 👈 chiều cao mong muốn */
-    margin: 30px auto;     /* 👈 căn giữa */
+    width: 1200px;
+    height: 300px;
+    margin: 30px auto;
     border-radius: 8px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
 }
 
-/* Track holding all slides */
 .banner-track {
     display: flex;
-    flex-wrap: nowrap;         /* Important: Prevents line break */
+    flex-wrap: nowrap;
     transition: transform 0.5s ease-in-out;
     width: 100%;
 }
 
-/* Each slide */
 .banner-slide {
     flex: 0 0 100%;
     width: 100%;
@@ -171,13 +180,12 @@ body {
     display: block;
 }
 
-/* Navigation buttons */
 .banner-btn {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background-color: rgba(0, 0, 0, 0.5);
-    color: white;
+    background-color: rgba(0, 0, 0, 0.3); /* nhạt vừa phải */
+    color: #ffffff;
     border: none;
     font-size: 28px;
     padding: 10px;
@@ -188,7 +196,7 @@ body {
 }
 
 .banner-btn:hover {
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(28, 61, 90, 0.9);
 }
 
 .prev-btn {
@@ -199,11 +207,59 @@ body {
     right: 10px;
 }
 
+/*=========== NEW =============*/
 
-/* Responsive cho máy tính bảng */
+.model-intro {
+    width: 80%;
+    margin: 40px auto;
+    text-align: center;
+    background-color: #ffffff;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.model-intro h3 {
+    font-size: 24px;
+    color: #2e7d32;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+.model-intro p {
+    font-size: 16px;
+    color: #444;
+    line-height: 1.6;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.model-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    justify-items: center;
+    margin-top: 30px;
+}
+
+.model-gallery img {
+    width: 100%;
+    max-width: 450px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease;
+}
+
+.model-gallery img:hover {
+    transform: scale(1.03);
+}
+
+/* ========== RESPONSIVE ========== */
+
 @media (max-width: 1024px) {
     .news-items {
-        grid-template-columns: repeat(2, 1fr); /* 2 items mỗi hàng */
+        grid-template-columns: repeat(2, 1fr);
     }
 
     .news-card h3 {
@@ -220,10 +276,9 @@ body {
     }
 }
 
-/* Responsive cho điện thoại di động */
 @media (max-width: 600px) {
     .news-items {
-        grid-template-columns: 1fr; /* 1 item mỗi hàng */
+        grid-template-columns: 1fr;
         gap: 15px;
     }
 
@@ -240,11 +295,11 @@ body {
     }
 
     .news-card {
-        aspect-ratio: 1 / 1; /* Làm khung vuông */
+        aspect-ratio: 1 / 1;
     }
 
     .prev-btn, .next-btn {
-        display: none; /* Ẩn nút điều hướng ở điện thoại nếu muốn */
+        display: none;
     }
 
     .news-pagination {

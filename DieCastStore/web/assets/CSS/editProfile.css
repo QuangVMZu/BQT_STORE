@@ -1,0 +1,307 @@
+:root {
+    --navy-blue: #2c3e50;
+    --light-pastel-blue: #a8cfd1;
+    --gray-teal: #5c7d7a;
+    --deep-sky-blue: #4a90e2;
+}
+
+body {
+    background: linear-gradient(135deg, var(--light-pastel-blue) 0%, #e8f4f8 100%);
+    min-height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 2rem 0;
+}
+
+.edit-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.page-title {
+    text-align: center;
+    color: var(--navy-blue);
+    font-weight: 700;
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+}
+
+.edit-card {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    overflow: hidden;
+    margin-bottom: 2rem;
+    border: 1px solid var(--light-pastel-blue);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: fit-content;
+}
+
+.edit-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+}
+
+.card-header {
+    background: linear-gradient(135deg, var(--navy-blue) 0%, var(--gray-teal) 100%);
+    color: white;
+    padding: 1.5rem 2rem;
+    border: none;
+}
+
+.card-header h3 {
+    margin: 0;
+    font-weight: 600;
+    font-size: 1.4rem;
+}
+
+.card-body {
+    padding: 2rem;
+}
+
+.password-card .card-body {
+    padding: 1.5rem 2rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.password-card .form-group {
+    margin-bottom: 1rem;
+}
+
+.form-label {
+    color: var(--navy-blue);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.required {
+    color: #dc3545;
+    font-weight: bold;
+}
+
+.form-control, .form-control:read-only {
+    border: 2px solid var(--light-pastel-blue);
+    border-radius: 10px;
+    padding: 12px 15px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background-color: #fafafa;
+}
+
+.form-control:read-only {
+    background-color: #f8f9fa;
+    color: var(--gray-teal);
+    cursor: not-allowed;
+}
+
+.form-control:focus {
+    border-color: var(--deep-sky-blue);
+    box-shadow: 0 0 0 0.2rem rgba(74, 144, 226, 0.25);
+    background-color: white;
+}
+
+.form-control::placeholder {
+    color: #999;
+    font-style: italic;
+}
+
+textarea.form-control {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.password-input-group {
+    position: relative;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    background: none;
+    color: var(--gray-teal);
+    cursor: pointer;
+    z-index: 10;
+    padding: 0;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+}
+
+.password-toggle:hover {
+    color: var(--deep-sky-blue);
+}
+
+.password-input-group input {
+    padding-right: 45px;
+}
+
+.alert {
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.alert-success {
+    background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%);
+    border: 1px solid #4caf50;
+    color: #2e7d32;
+}
+
+.alert-danger {
+    background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+    border: 1px solid #f44336;
+    color: #c62828;
+}
+
+.alert-info {
+    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+    border: 1px solid #2196f3;
+    color: #1565c0;
+}
+
+.error-message {
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    font-weight: 500;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--deep-sky-blue) 0%, #357abd 100%);
+    border: none;
+    color: white;
+    padding: 12px 25px;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 20px rgba(74, 144, 226, 0.3);
+    min-width: 150px;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #357abd 0%, var(--deep-sky-blue) 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(74, 144, 226, 0.4);
+    color: white;
+}
+
+.btn-secondary {
+    background: linear-gradient(135deg, var(--gray-teal) 0%, #4a6b68 100%);
+    border: none;
+    color: white;
+    padding: 12px 25px;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(92, 125, 122, 0.3);
+    min-width: 150px;
+}
+
+.btn-secondary:hover {
+    background: linear-gradient(135deg, #4a6b68 0%, var(--gray-teal) 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(92, 125, 122, 0.4);
+    color: white;
+}
+
+.btn:active {
+    transform: translateY(0) !important;
+}
+
+.btn-return {
+    background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+    border: none;
+    color: white;
+    padding: 12px 30px;
+    border-radius: 25px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3);
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1rem;
+}
+
+.btn-return:hover {
+    background: linear-gradient(135deg, #495057 0%, #6c757d 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(108, 117, 125, 0.4);
+    color: white;
+    text-decoration: none;
+}
+
+.return-section {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+/* Layout adjustments for side-by-side cards */
+.cards-row {
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+}
+
+.profile-card {
+    flex: 2;
+}
+
+.password-card {
+    flex: 1;
+    min-width: 350px;
+}
+
+@media (max-width: 992px) {
+    .cards-row {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .profile-card,
+    .password-card {
+        flex: 1;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 1rem 0;
+    }
+
+    .edit-container {
+        padding: 0 0.5rem;
+    }
+
+    .page-title {
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .card-body {
+        padding: 1.5rem;
+    }
+
+    .password-card .card-body {
+        padding: 1.5rem;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+
+    .password-card {
+        min-width: unset;
+    }
+}

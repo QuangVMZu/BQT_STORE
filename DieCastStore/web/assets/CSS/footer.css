@@ -5,8 +5,8 @@
 }
 
 footer {
-    background-color: #e0f7fa; /* light aqua */
-    color: #004d40; /* dark teal */
+    background: linear-gradient(to right, #A9CED9, #9dbfc8); /* nền giống ảnh */
+    color: #263238; /* text màu tối nhẹ */
     padding: 40px 0 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
@@ -23,15 +23,15 @@ footer {
 footer h3 {
     margin-bottom: 20px;
     font-size: 1.5rem;
-    color: #00695c; /* dark header */
-    border-bottom: 2px solid #80cbc4; /* lighter underline */
+    color: #263238; /* text đậm vừa phải */
+    border-bottom: 2px solid #5c7782; /* nhấn nhá */
     padding-bottom: 8px;
     width: fit-content;
 }
 
 footer p {
     font-size: 0.95rem;
-    color: #004d40;
+    color: #37474f; /* tone xanh xám tối */
     margin-bottom: 10px;
     line-height: 1.6;
 }
@@ -47,12 +47,12 @@ footer p {
 
 .bottom-footer {
     margin-top: 40px;
-    background-color: #00695c;
-    color: #e0f2f1;
+    background-color: #425b66; /* xanh navy-xám đậm như tab */
+    color: #ecf0f1;
     text-align: center;
     padding: 20px 20px;
     font-size: 1rem;
-    border-top: 1px solid #00796b;
+    border-top: 1px solid #607d8b;
 }
 
 .bottom-footer p {
@@ -62,44 +62,23 @@ footer p {
 }
 
 .bottom-footer a {
-    color: white;
+    color: #ffffff;
     text-decoration: none;
     transition: color 0.3s ease;
 }
 
 .bottom-footer a:hover {
-    color: #80cbc4;
+    color: #90caf9; /* xanh nhạt hover */
 }
 
-.brand {
-    background-color: transparent;
-}
-
-@media (max-width: 768px) {
-    .footer-container {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-    }
-
-    footer h3 {
-        font-size: 1.3rem;
-    }
-
-    footer p {
-        font-size: 1.05rem;
-    }
-
-    .footer-container {
-        gap: 30px; /* giảm xuống hợp lý cho mobile */
-    }
-}
+/* Responsive */
 @media (max-width: 768px) {
     .footer-container {
         flex-direction: column;
         align-items: flex-start;
         text-align: left;
-        margin: 0 20px; /* thêm margin hai bên để không sát lề quá */
+        margin: 0 20px;
+        gap: 30px;
     }
 
     .about-description,

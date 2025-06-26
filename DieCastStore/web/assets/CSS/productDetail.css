@@ -1,6 +1,6 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f1f8e9;
+    background-color: #f8fbff;
     margin: 0;
     padding: 0;
 }
@@ -104,7 +104,7 @@ input[type=number] {
     padding: 5px;
     border: 1px solid #a5d6a7;
     border-radius: 5px;
-    background-color: #f1f8e9;
+    background-color: #f8fbff;
     color: #2e7d32;
 }
 
@@ -215,7 +215,7 @@ button[type="button"]:hover {
     padding: 30px;
     background-color: #f9f9f9;
     text-align: center;
-    background: #f1f8e9;
+    background: #f8fbff;
 }
 
 .news-title {

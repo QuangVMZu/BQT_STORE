@@ -14,14 +14,14 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Kết quả tìm kiếm</title>
+        <title>Result search</title>
         <link rel="stylesheet" href="assets/CSS/productSearch.css">
     </head>
     <body>
         <jsp:include page="header.jsp" />
-        <div style="width: 100%; margin: 0; padding: 0; text-align: center; background-color: #f1f8e9;">
+        <div style="width: 100%; margin: 0; padding: 0; text-align: center; background-color: #f8fbff;">
             <img src="assets/image/BQT_STORE.png" alt="Promotional Banner"
-                 style="width: 1200px; height: 300px; display: inline-block;">
+                 style="width: 100%; height: 300px; display: inline-block;">
         </div>
         <main class="search-content"><br>
             <h2>Kết quả tìm kiếm cho: "<%= keyword %>"</h2>
@@ -70,9 +70,28 @@
             </div>
             <% } %>
         </main>
-        <!-- OUR PARTNERS SECTION -->
-        <div style="background-color: #f1f8e9; padding: 30px 0;">
-            <h2 style="text-align:center; margin-top: 0; margin-bottom: 20px; font-weight: bold; color: #333;">★  Our Partners  ★</h2>
+        <div style="background-color: #f8fbff; padding: 30px 0;">
+            <div style="background-color: #f8fbff; padding: 30px 0;">
+                <h2 style="text-align:center; margin-top: -15px; margin-bottom: 20px; font-weight: bold; color: #333;">★  Social Media  ★</h2>
+                <div class="social-media-wrapper" style="display: flex; justify-content: center; gap: 20px;">
+                    <a title="Facebook">
+                        <img src="assets/image/fb.png" alt="Facebook" style="width: 50px; height: 50px; transition: transform 0.3s;">
+                    </a>
+                    <a title="Instagram">
+                        <img src="assets/image/ig.png" alt="Instagram" style="width: 50px; height: 50px; transition: transform 0.3s;">
+                    </a>
+                    <a title="TikTok">
+                        <img src="assets/image/tik.png" alt="TikTok" style="width: 50px; height: 50px; transition: transform 0.3s;">
+                    </a>
+                    <a title="YouTube">
+                        <img src="assets/image/ytb.png" alt="YouTube" style="width: 50px; height: 50px; transition: transform 0.3s;">
+                    </a>
+                </div>
+            </div>
+
+            <hr style="border: none; height: 1.5px; background-color: #90caf9; margin: 0 auto; width: 50%;">
+
+            <h2 style="text-align:center; margin-top: 50px; margin-bottom: 20px; font-weight: bold; color: #333;">★  Our Partners  ★</h2>
             <div class="brand-slider-wrapper" id="brandSlider" style="display: flex; justify-content: center; flex-wrap: wrap; gap: 20px; padding: 10px 0;">
                 <a title="AutoArt">
                     <img src="assets/image/logoAA.jpg" alt="AutoArt" style="width: 120px; height: auto; cursor: pointer; transition: transform 0.3s;">
@@ -97,27 +116,6 @@
                 </a>
                 <a title="Welly">
                     <img src="assets/image/logoW.png" alt="Welly" style="width: 120px; height: auto; cursor: pointer; transition: transform 0.3s;">
-                </a>
-            </div>
-        </div>
-
-        <hr style="border: none; height: 2px; background-color: #c5e1a5; margin: 0 auto; width: 80%;">
-
-        <!-- SOCIAL MEDIA SECTION -->
-        <div style="background-color: #f1f8e9; padding: 30px 0;">
-            <h2 style="text-align:center; margin-top: 0; margin-bottom: 20px; font-weight: bold; color: #333;">★  Social Media  ★</h2>
-            <div class="social-media-wrapper" style="display: flex; justify-content: center; gap: 20px;">
-                <a title="Facebook">
-                    <img src="assets/image/fb.png" alt="Facebook" style="width: 50px; height: 50px; transition: transform 0.3s;">
-                </a>
-                <a title="Instagram">
-                    <img src="assets/image/ig.png" alt="Instagram" style="width: 50px; height: 50px; transition: transform 0.3s;">
-                </a>
-                <a title="TikTok">
-                    <img src="assets/image/tik.png" alt="TikTok" style="width: 50px; height: 50px; transition: transform 0.3s;">
-                </a>
-                <a title="YouTube">
-                    <img src="assets/image/ytb.png" alt="YouTube" style="width: 50px; height: 50px; transition: transform 0.3s;">
                 </a>
             </div>
         </div>

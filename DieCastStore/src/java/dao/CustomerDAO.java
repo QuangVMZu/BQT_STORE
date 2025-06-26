@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package dao;
 
 import java.sql.Connection;
@@ -88,26 +84,6 @@ public class CustomerDAO implements IDAO<Customer, String> {
     }
 
     @Override
-    public List<Customer> getAll() {
-        List<Customer> customer = new ArrayList<>();
-        Connection c = null;
-        PreparedStatement st = null;
-        ResultSet rs = null;
-        try {
-            c = DBUtils.getConnection();
-            st = c.prepareStatement(GET_ALL);
-            rs = st.executeQuery();
-            while (rs.next()) {
-                customer.add(mapResultSet(rs));
-            }
-        } catch (ClassNotFoundException | SQLException e) {
-        } finally {
-            closeResources(c, st, rs);
-        }
-        return customer;
-    }
-
-    @Override
     public Customer getById(String id) {
         Connection c = null;
         PreparedStatement st = null;
@@ -125,6 +101,27 @@ public class CustomerDAO implements IDAO<Customer, String> {
             closeResources(c, st, rs);
         }
         return null;
+    }
+
+    @Override
+    public List<Customer> getAll() {
+        List<Customer> customer = new ArrayList<>();
+        Connection c = null;
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+            c = DBUtils.getConnection();
+            st = c.prepareStatement(GET_ALL);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                customer.add(mapResultSet(rs));
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeResources(c, st, rs);
+        }
+        return customer;
     }
 
     private Customer mapResultSet(ResultSet rs) throws SQLException {
@@ -167,7 +164,7 @@ public class CustomerDAO implements IDAO<Customer, String> {
                 maxId = rs.getString(1);
             }
             int nextNum = 1;
-            if(maxId != null && !maxId.isEmpty()) {
+            if (maxId != null && !maxId.isEmpty()) {
                 int currentNum = Integer.parseInt(maxId.substring(1));
                 nextNum = currentNum + 1;
             }
@@ -198,4 +195,25 @@ public class CustomerDAO implements IDAO<Customer, String> {
         }
         return false;
     }
+
+    public boolean isPhoneExists(String phone) {
+        Connection c = null;
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+            c = DBUtils.getConnection();
+            st = c.prepareStatement(COUNT + " WHERE phone = ?");
+            st.setString(1, phone);
+            rs = st.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+        } finally {
+            closeResources(c, st, rs);
+        }
+        return false;
+    }
+
 }

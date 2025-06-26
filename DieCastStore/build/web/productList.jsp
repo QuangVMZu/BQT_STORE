@@ -80,7 +80,7 @@
             </a>
         </div>
 
-        <hr style="border: none; height: 2px; background-color: #c5e1a5; margin: 0 auto; width: 80%;">
+        <hr style="border: none; height: 1.5px; background-color: #90caf9; margin: 0 auto; width: 50%;">
 
         <h2 style="text-align:center; margin-top: 50px; margin-bottom: 20px; font-weight: bold; color: #333;">★  Our Partners  ★</h2>
         <div class="brand-slider-wrapper" id="brandSlider" style="display: flex; justify-content: center; gap: 20px; padding: 10px 0;">

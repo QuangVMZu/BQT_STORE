@@ -37,7 +37,7 @@
         <!-- Auth Buttons -->
         <div class="auth-buttons">
             <%
-                CustomerAccount user = (CustomerAccount) session.getAttribute("user");
+                CustomerAccount user = (CustomerAccount) session.getAttribute("account");
                 if (user != null) {
                     String userName = user.getUserName();
                     String avatarChar = userName != null && !userName.isEmpty() ? userName.substring(0, 1).toUpperCase() : "?";
@@ -48,7 +48,7 @@
                     <div class="avatar-circle"><%= avatarChar %></div>
                 </div>
                 <div class="dropdown-menu" id="dropdownMenu">
-                    <a href="editProfile.jsp" class="edit">Edit Profile</a>
+                    <a href="profileForm.jsp" class="edit">My Profile</a>
                     <% if (AuthUtils.isAdmin(request)) { %>
                     <a href="ProductController?action=listEdit" class="edit">Edit Product</a>
                     <% } %>
@@ -62,11 +62,10 @@
             %>
             <a href="login.jsp">Login</a>
             <a href="register.jsp">Register</a>
-            <%
+            <%  
                 }
             %>
-        </div>
+        </div>  
     </div>
 </header>
 <script src="assets/JS/header.js"></script>
-

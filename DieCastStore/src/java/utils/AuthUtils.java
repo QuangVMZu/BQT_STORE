@@ -24,12 +24,12 @@ public class AuthUtils {
     public static CustomerAccount getCurrentUser(HttpServletRequest request) {
         HttpSession session = request.getSession();
         if (session != null) {
-            return (CustomerAccount) session.getAttribute("user");
+            return (CustomerAccount) session.getAttribute("account");
         }
         return null;
     }
 
-    public static boolean isLoggedin(HttpServletRequest request) {
+    public static boolean isLoggedIn(HttpServletRequest request) {
         return getCurrentUser(request) != null;
     }
 

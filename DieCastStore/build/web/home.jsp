@@ -1,11 +1,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.*" %>
-
+<%@page import="model.CustomerAccount"%>
+<%@page import="utils.AuthUtils"%>
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>Diecast Model Car Slider</title>
+        <title>Diecast Model_BQT Store</title>
         <link rel="stylesheet" href="assets/CSS/home.css">
     </head>
     <body>
@@ -22,6 +23,11 @@
 
         <h2 style="text-align:center; margin-top: 50px; margin-bottom: -30px; font-weight: bold; color: #333;">★  New product  ★</h2><br/>
 
+        <% if (AuthUtils.isAdmin(request)) { %>
+        <div style="text-align:center; margin-bottom: 10px;">
+            <a href="EditNewProducts.jsp" class="edit-btn" style="padding: 6px 12px; background-color: #ffc107; color: #000; border-radius: 5px; text-decoration: none;">Edit New Products</a>
+        </div>
+        <% } %>
         <section class="news-section">
             <div class="news-carousel">
                 <div class="news-items">
@@ -143,24 +149,22 @@
                 </div>
             </div>
 
-            <div style="width: 80%; margin: 20px auto; text-align: center;">
-                <h3 style="font-size: 24px; color: #2e7d32; margin-bottom: 15px;">Giới thiệu về mô hình xe</h3>
-                <p style="font-size: 16px; color: #444; line-height: 1.6;">
-                    Mô hình xe là bản sao thu nhỏ tinh xảo của các dòng xe nổi tiếng trên thế giới. 
-                    Với tỉ lệ phổ biến như 1:18, 1:24, 1:64,... các mô hình được sản xuất bởi những thương hiệu uy tín như AutoArt, Bburago, Kyosho, Welly,...
-                    Chúng không chỉ mang tính thẩm mỹ mà còn thể hiện niềm đam mê của người chơi xe mô hình.
+            <div class="model-intro">
+                <h3>About the Car Model</h3>
+                <p>
+                    Car models are exquisite miniature copies of famous car lines in the world.
+                    With popular scales such as 1:18, 1:24, 1:64,... the models are produced by prestigious brands such as AutoArt, Bburago, Kyosho, Welly,...
+                    They are not only aesthetic but also show the passion of model car players.
+                    Collecting model cars is more than just a hobby — it is a way to preserve automotive history and craftsmanship in a compact, tangible form.
+                    Each piece is meticulously crafted with attention to detail, from engine components to interior design, allowing collectors to experience the elegance and engineering of real vehicles.
+                    Whether you are a seasoned enthusiast or just starting out, model cars offer a unique blend of art, nostalgia, and technical fascination.
                 </p>
 
-                <!-- 2x2 grid ảnh -->
-                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; justify-items: center; margin-top: 30px;">
-                    <img src="assets/img/KYO001/1.jpg" alt="Mazda RX-7"
-                         style="width: 80%; max-width: 450px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.2);">
-                    <img src="assets/img/MTB002/1.jpg" alt="Land Rover Defender"
-                         style="width: 80%; max-width: 450px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.2);">
-                    <img src="assets/img/AAT001/1.jpg" alt="Porsche 911 GT3 RS"
-                         style="width: 80%; max-width: 450px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.2);">
-                    <img src="assets/img/WLY002/1.jpg" alt="Audi R8 V10"
-                         style="width: 80%; max-width: 450px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.2);">
+                <div class="model-gallery">
+                    <img src="assets/img/KYO001/1.jpg" alt="Mazda RX-7">
+                    <img src="assets/img/MTB002/1.jpg" alt="Land Rover Defender">
+                    <img src="assets/img/AAT001/1.jpg" alt="Porsche 911 GT3 RS">
+                    <img src="assets/img/WLY002/1.jpg" alt="Audi R8 V10">
                 </div>
             </div>
 
@@ -181,7 +185,7 @@
             </a>
         </div>
 
-        <hr style="border: none; height: 2px; background-color: #c5e1a5; margin: 0 auto; width: 80%;">
+        <hr style="border: none; height: 1.5px; background-color: #90caf9; margin: 0 auto; width: 50%;">
 
         <h2 style="text-align:center; margin-top: 50px; margin-bottom: 20px; font-weight: bold; color: #333;">★  Our Partners  ★</h2>
         <div class="brand-slider-wrapper" id="brandSlider" style="display: flex; justify-content: center; gap: 20px; padding: 10px 0;">
@@ -209,7 +213,7 @@
             <a title="Welly">
                 <img src="assets/image/logoW.png" alt="Welly" style="width: 120px; height: auto; cursor: pointer; transition: transform 0.3s;">
             </a>
-        </div>
+        </div><br>
         <jsp:include page="footer.jsp" />
     </body>
     <script src="assets/JS/home.js"></script>

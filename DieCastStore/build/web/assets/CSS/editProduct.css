@@ -2,47 +2,58 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f1f8e9;
+    background-color: #B1D4D6; /* nền sáng xanh lá rất nhạt */
 }
+
 .container {
     padding: 30px 20px;
     max-width: 1200px;
     margin: auto;
-    background-color: #ffffff;
-    box-shadow: 0 0 15px rgba(0, 128, 0, 0.1);
+    background-color: #f1f8f5;
+    box-shadow: 0 0 15px rgba(34, 139, 34, 0.1);
     border-radius: 10px;
 }
+
 h2 {
-    color: #2e7d32;
+    color: #2e7d32; /* xanh lá đậm */
     text-align: center;
 }
+
 .add-product-btn {
     display: inline-block;
     padding: 10px 20px;
-    background-color: #a5d6a7;
-    color: #1b5e20;
+    background-color: #66bb6a; /* xanh lá dịu */
+    color: #ffffff;
     text-decoration: none;
     border-radius: 5px;
     transition: 0.3s;
+    font-weight: bold;
 }
+
 .add-product-btn:hover {
-    background-color: #81c784;
+    background-color: #388e3c; /* xanh đậm hơn */
 }
+
 .products-table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
 }
-.products-table th, .products-table td {
+
+.products-table th,
+.products-table td {
     border: 1px solid #c8e6c9;
     padding: 12px;
     text-align: center;
 }
+
 .products-table th {
-    background-color: #e8f5e9;
-    color: #2e7d32;
+    background-color: #e0f2f1;
+    color: #1b5e20;
 }
-.edit-btn, .delete-btn {
+
+.edit-btn,
+.delete-btn {
     padding: 6px 12px;
     border: none;
     border-radius: 4px;
@@ -50,43 +61,55 @@ h2 {
     font-weight: bold;
     transition: 0.3s;
 }
+
 .edit-btn {
-    background-color: #aed581;
-    color: #1b5e20;
+    background-color: #81c784;
+    color: #ffffff;
 }
+
 .edit-btn:hover {
-    background-color: #9ccc65;
+    background-color: #66bb6a;
 }
+
 .delete-btn {
-    background-color: #ef9a9a;
-    color: #b71c1c;
+    background-color: #ef5350;
+    color: #ffffff;
 }
+
 .delete-btn:hover {
-    background-color: #e57373;
+    background-color: #c62828;
 }
-.no-results, .access-denied {
+
+.no-results,
+.access-denied {
     text-align: center;
     margin-top: 40px;
-    color: #d32f2f;
+    color: #c62828;
     font-size: 1.2em;
 }
+
 .pagination {
     text-align: center;
     margin-top: 25px;
 }
+
 .pagination a {
     display: inline-block;
     margin: 0 4px;
     padding: 6px 12px;
-    background-color: #c8e6c9;
-    color: #2e7d32;
+    background-color: #a5d6a7;
+    color: #1b5e20;
     text-decoration: none;
     border-radius: 4px;
-}
-.pagination a.active {
-    background-color: #81c784;
     font-weight: bold;
 }
-.pagination a:hover {
+
+.pagination a.active {
     background-color: #66bb6a;
+    color: white;
+}
+
+.pagination a:hover {
+    background-color: #388e3c;
+    color: white;
 }

@@ -42,9 +42,9 @@
     <link rel="stylesheet" href="assets/CSS/editProduct.css">
 </head>
 <body>
-    <jsp:include page="header.jsp"/>
+    <jsp:include page="header.jsp"/><br>
     <%
-        if (AuthUtils.isLoggedin(request)) {
+        if (AuthUtils.isLoggedIn(request)) {
             CustomerAccount user = AuthUtils.getCurrentUser(request);
     %>
     <div class="container">
@@ -124,6 +124,6 @@
         </div>
     </div>
     <% } %>
-
+    <br>
     <jsp:include page="footer.jsp"/>
 </body>

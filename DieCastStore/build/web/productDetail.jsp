@@ -57,7 +57,7 @@
 
                     <div class="stock-wrapper">
                         <span class="stock-badge <%= quantity > 0 ? "" : "out" %>">
-                            <%= quantity > 0 ? "In stock" : "Out of stock" %>
+                            <%= quantity > 0 ? "In stock" : (quantity == 0 ? "Out of stock" : (quantity == -1 ? "Sales suspension" : "Unknown")) %>
                         </span>
                     </div>
 

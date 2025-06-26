@@ -26,11 +26,22 @@ public class MainController extends HttpServlet {
                 || "register".equals(action)
                 || "updateProfile".equals(action)
                 || "viewProfile".equals(action)
+                || "editProfile".equals(action)
                 || "changePassword".equals(action)
                 || "showLogin".equals(action)
                 || "showRegister".equals(action);
     }
 
+//    private boolean isUserAction(String action) {
+//        return "login".equals(action)
+//                || "logout".equals(action)
+//                || "register".equals(action)
+//                || "updateProfile".equals(action)
+//                || "viewProfile".equals(action)
+//                || "changePassword".equals(action)
+//                || "showLogin".equals(action)
+//                || "showRegister".equals(action);
+//    }
     private boolean isProductAction(String action) {
         return "list".equals(action)
                 || "detail".equals(action)

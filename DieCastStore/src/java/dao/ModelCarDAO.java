@@ -14,7 +14,7 @@ public class ModelCarDAO implements IDAO<ModelCar, String> {
 
     private static final String GET_ALL = "SELECT * FROM modelCar";
     private static final String GET_BY_ID = "SELECT * FROM modelCar WHERE modelId like ?";
-    private static final String GET_IMAGES_BY_MODEL_ID = "SELECT imageUrl FROM imageModel WHERE modelId like ?";
+    private static final String GET_IMAGES_BY_MODEL_ID = "SELECT imageId, imageUrl, caption FROM imageModel WHERE modelId like ?";
     private static final String SEARCH_BY_NAME = "SELECT * FROM modelCar WHERE modelName LIKE ?";
 
     @Override
@@ -43,7 +43,9 @@ public class ModelCarDAO implements IDAO<ModelCar, String> {
                     ResultSet imgRs = imgStmt.executeQuery();
                     while (imgRs.next()) {
                         ImageModel img = new ImageModel();
+                        img.setImageId(imgRs.getString("imageId"));
                         img.setImageUrl(imgRs.getString("imageUrl"));
+                        img.setCaption(imgRs.getString("caption"));
                         images.add(img);
                     }
                 }
@@ -79,7 +81,9 @@ public class ModelCarDAO implements IDAO<ModelCar, String> {
                     ResultSet rsImg = psImg.executeQuery();
                     while (rsImg.next()) {
                         ImageModel img = new ImageModel();
+                        img.setImageId(rsImg.getString("imageId"));
                         img.setImageUrl(rsImg.getString("imageUrl"));
+                        img.setCaption(rsImg.getString("caption"));
                         images.add(img);
                     }
                 }
@@ -190,7 +194,9 @@ public class ModelCarDAO implements IDAO<ModelCar, String> {
                     ResultSet rsImg = psImg.executeQuery();
                     while (rsImg.next()) {
                         ImageModel img = new ImageModel();
+                        img.setImageId(rsImg.getString("imageId"));
                         img.setImageUrl(rsImg.getString("imageUrl"));
+                        img.setCaption(rsImg.getString("caption"));
                         images.add(img);
                     }
                 }
@@ -229,7 +235,9 @@ public class ModelCarDAO implements IDAO<ModelCar, String> {
                     ResultSet rsImg = psImg.executeQuery();
                     while (rsImg.next()) {
                         ImageModel img = new ImageModel();
+                        img.setImageId(rsImg.getString("imageId"));
                         img.setImageUrl(rsImg.getString("imageUrl"));
+                        img.setCaption(rsImg.getString("caption"));
                         images.add(img);
                     }
                 }
@@ -267,7 +275,7 @@ public class ModelCarDAO implements IDAO<ModelCar, String> {
     }
 
     public boolean updateQuantity(String modelId) {
-        String sql = "UPDATE modelCar SET quantity = 0 WHERE modelId = ?";
+        String sql = "UPDATE modelCar SET quantity = -1 WHERE modelId = ?";
         try ( Connection conn = DBUtils.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, modelId);
