@@ -9,15 +9,12 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.List;
 import model.Customer;
 import model.CustomerAccount;
 import utils.AuthUtils;
 import utils.PasswordUtils;
 
-/**
- *
- * @author hqthi
- */
 @WebServlet(name = "UserController", urlPatterns = {"/UserController"})
 public class UserController extends HttpServlet {
 
@@ -65,6 +62,12 @@ public class UserController extends HttpServlet {
                         break;
                     case "changePassword":
                         url = handlePasswordChanging(request, response);
+                        break;
+                    case "viewAllAccount":
+                        url = handleViewAllAccount(request, response);
+                        break;
+                    case "updateRole":
+                        url = handleUpdateRole(request, response);
                         break;
                     default:
                         request.setAttribute("message", "Invalid action: " + action);
@@ -473,5 +476,48 @@ public class UserController extends HttpServlet {
             request.setAttribute("changeError", "System error occurred. Please try again later.");
             return EDIT_PAGE;
         }
+    }
+
+    private String handleViewAllAccount(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            CustomerAccountDAO dao = new CustomerAccountDAO();
+            List<CustomerAccount> accounts = dao.getAll();
+
+            request.setAttribute("accounts", accounts);
+            return "manageAccounts.jsp";
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("message", "❌ Error while getting account list: " + e.getMessage());
+            return "manageAccounts.jsp";
+        }
+    }
+
+    private String handleUpdateRole(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            String customerId = request.getParameter("customerId");
+            int role = Integer.parseInt(request.getParameter("role"));
+
+            CustomerAccountDAO dao = new CustomerAccountDAO();
+            boolean updated = dao.setUserRole(customerId, role);
+
+            List<CustomerAccount> accounts = dao.getAll();
+            request.setAttribute("accounts", accounts);
+
+            // Chỉ báo cho đúng user vừa cập nhật
+            if (updated) {
+                request.setAttribute("updatedUserId", customerId);
+                request.setAttribute("message", "✅ Permissions updated successfully.");
+            } else {
+                request.setAttribute("updatedUserId", customerId);
+                request.setAttribute("checkError", "❌ Unable to update permissions.");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("checkError", "❌ Error updating permissions: " + e.getMessage());
+        }
+
+        return "manageAccounts.jsp";
     }
 }

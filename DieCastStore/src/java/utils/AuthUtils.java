@@ -58,6 +58,6 @@ public class AuthUtils {
     }
 
     public static String getLoginURL() {
-        return "MainController";
+        return "login.jsp";
     }
 }

@@ -1,5 +1,9 @@
 function togglePassword() {
-    const passwordInput = document.getElementById("strPassword");
-    const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
-    passwordInput.setAttribute("type", type);
+    const passwordInput = document.getElementById("password");
+    const icon = document.getElementById("toggleIcon");
+    const isPassword = passwordInput.type === "password";
+
+    passwordInput.type = isPassword ? "text" : "password";
+    icon.classList.toggle("bi-eye");
+    icon.classList.toggle("bi-eye-slash");
 }

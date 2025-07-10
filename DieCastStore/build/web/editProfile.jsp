@@ -1,10 +1,3 @@
-
-<%-- 
-    Document   : editProfile
-    Created on : Jun 18, 2025, 9:00:40 PM
-    Author     : hqthi
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>

@@ -3,18 +3,36 @@
 <html lang="vi">
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>404 - Không tìm thấy trang</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- Bootstrap 5 -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+        <!-- Bootstrap Icons -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
         <link rel="stylesheet" href="assets/CSS/error.css">
-        <title>404 - Not found page</title>
-        
     </head>
     <body>
-        <h1>404</h1>
-        <%
-            String message = (String) request.getAttribute("message");
-            if (message != null) { %>
-        <p style="color: black; text-align: center;"><%= message %></p>
-        <% } %>
-        <a href="home.jsp">Quay lại trang chủ</a>
+        <div class="error-container">
+            <div class="error-code">
+                <i class="bi bi-exclamation-triangle-fill"></i> 404
+            </div>
+            <div class="error-message">
+                <%
+                    String message = (String) request.getAttribute("message");
+                    if (message != null) {
+                %>
+                <p><%= message %></p>
+                <% } else { %>
+                <p>Trang bạn đang tìm kiếm không tồn tại hoặc đã bị di chuyển.</p>
+                <% } %>
+            </div>
+            <a href="home.jsp" class="btn btn-primary back-btn">
+                <i class="bi bi-house-door-fill"></i> Back to home page
+            </a>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     </body>
 </html>

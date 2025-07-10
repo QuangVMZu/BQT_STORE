@@ -7,10 +7,19 @@ function adjustQuantity(change) {
     let current = parseInt(input.value);
     let max = parseInt(input.max);
     current += change;
-    if (current < 1)
+
+    if (current == 0) {
+        alert("⚠️ The quantity not equal zero!");
         current = 1;
-    if (current > max)
-        current = max;
+    } else {
+        if (current < 1) {
+            current = 1;
+        } else if (current > max) {
+            current = max;
+            // Hiển thị cảnh báo
+            alert("⚠️ The quantity exceeds the current stock!");
+        }
+    }
     input.value = current;
 }
 

@@ -17,7 +17,7 @@
                 <li>
                     <form action="MainController" method="get" style="display:inline;">
                         <input type="hidden" name="action" value="list">
-                        <button type="submit" class="link-button">Products</button>
+                        <button type="submit" class="link-button" style="font-size: 1.5rem">Products</button>
                     </form>
                 </li>
                 <li><a href="about.jsp">About Us</a></li>
@@ -50,7 +50,10 @@
                 <div class="dropdown-menu" id="dropdownMenu">
                     <a href="profileForm.jsp" class="edit">My Profile</a>
                     <% if (AuthUtils.isAdmin(request)) { %>
+                    <a href="MainController?action=viewAllAccount" class="edit"> Manage Accounts</a>
                     <a href="ProductController?action=listEdit" class="edit">Edit Product</a>
+                    <%-- Nút "Edit" cho admin --%>
+                    <a href="editHome.jsp" class="edit"> Edit Home Gallery</a>
                     <% } %>
                     <a href="cart.jsp" class="cart">Cart</a>
                     <a href="paymentMethods.jsp" class="payment">Payment Methods</a>

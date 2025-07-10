@@ -8,8 +8,11 @@
     <head>
         <title>All Products</title>
         <link rel="stylesheet" href="assets/CSS/productList.css">
+        <!-- Bootstrap 5 -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     </head>
-    <body>
+    
+    <body style="background: #e3f2fd;">
         <jsp:include page="header.jsp" />
         <div class="banner-slider" style="margin-top: 30px">
             <div class="banner-track">  
@@ -21,9 +24,9 @@
             <button class="banner-btn next-btn">&#10095;</button>
         </div>
 
-        <div class="product-page">
+        <div class="product-page container" style="max-width: 1400px">
             </br>
-            <h1 class="title">All Products</h1>
+            <h1 class="title">★ All Products ★</h1>
 
             <%
                 List<ModelCar> products = (List<ModelCar>) request.getAttribute("productList");
@@ -35,13 +38,14 @@
 
                 <div class="product-container" id="carousel">
                     <% for (ModelCar product : products) {
+                    if (product.getQuantity() <= -1) continue;
                         String imageUrl = null;
                         List<ImageModel> images = product.getImages();
                         if (images != null && !images.isEmpty()) {
                             imageUrl = images.get(0).getImageUrl();
                         }
                     %>
-                    <div class="product-card">
+                    <div class="product-card" >
                         <a class="product-link" href="ProductController?action=detail&modelId=<%= product.getModelId() %>" style="text-decoration: none; color: inherit;">
                             <div class="card-inner">
                                 <img class="product-image" src="<%= imageUrl %>" alt="<%= product.getModelName() %>">
@@ -85,31 +89,33 @@
         <h2 style="text-align:center; margin-top: 50px; margin-bottom: 20px; font-weight: bold; color: #333;">★  Our Partners  ★</h2>
         <div class="brand-slider-wrapper" id="brandSlider" style="display: flex; justify-content: center; gap: 20px; padding: 10px 0;">
             <a title="AutoArt">
-                <img src="assets/image/logoAA.jpg" alt="AutoArt" style="width: 120px; height: auto; cursor: pointer; transition: transform 0.3s;">
+                <img src="assets/image/logoAA.png" alt="AutoArt" style="background-color: transparent;width: 120px; height: auto; cursor: pointer; transition: transform 0.3s;">
             </a>
             <a title="Bburago">
-                <img src="assets/image/logoB.png" alt="Bburago" style="width: 120px; height: auto; cursor: pointer; transition: transform 0.3s;">
+                <img src="assets/image/logoB.png" alt="Bburago" style="background-color: transparent; width: 120px; height: auto; cursor: pointer; transition: transform 0.3s;">
             </a>
             <a title="GreenLight">
-                <img src="assets/image/logoGL.png" alt="GreenLight" style="width: 120px; height: auto; cursor: pointer; transition: transform 0.3s;">
+                <img src="assets/image/logoGL.png" alt="GreenLight" style="background-color: transparent; width: 120px; height: auto; cursor: pointer; transition: transform 0.3s;">
             </a>
             <a title="Hot Wheels">
-                <img src="assets/image/logoHW.png" alt="Hot Wheels" style="width: 120px; height: auto; cursor: pointer; transition: transform 0.3s;">
+                <img src="assets/image/logoHW.png" alt="Hot Wheels" style="background-color: transparent; width: 120px; height: auto; cursor: pointer; transition: transform 0.3s;">
             </a>
             <a title="Kyosho">
-                <img src="assets/image/logoKS.png" alt="Kyosho" style="width: 120px; height: auto; cursor: pointer; transition: transform 0.3s;">
+                <img src="assets/image/logoKS.png" alt="Kyosho" style="background-color: transparent; width: 120px; height: auto; cursor: pointer; transition: transform 0.3s;">
             </a>
             <a title="Maisto">
-                <img src="assets/image/logoMS.png" alt="Maisto" style="width: 120px; height: auto; cursor: pointer; transition: transform 0.3s;">
+                <img src="assets/image/logoMS.png" alt="Maisto" style="background-color: transparent; width: 120px; height: auto; cursor: pointer; transition: transform 0.3s;">
             </a>
             <a title="Minichamps">
-                <img src="assets/image/logoMini.png" alt="Minichamps" style="width: 120px; margin-top: 35px; height: auto; cursor: pointer; transition: transform 0.3s;">
+                <img src="assets/image/logoMini.png" alt="Minichamps" style="background-color: transparent; width: 120px; margin-top: 35px; height: auto; cursor: pointer; transition: transform 0.3s;">
             </a>
             <a title="Welly">
-                <img src="assets/image/logoW.png" alt="Welly" style="width: 120px; height: auto; cursor: pointer; transition: transform 0.3s;">
+                <img src="assets/image/logoW.png" alt="Welly" style="background-color: transparent; width: 120px; height: auto; cursor: pointer; transition: transform 0.3s;">
             </a>
         </div>
         <jsp:include page="footer.jsp" />
         <script src="assets/JS/productList.js"></script>
     </body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
 </html>

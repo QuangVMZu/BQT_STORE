@@ -44,3 +44,4 @@ track.addEventListener('touchend', (e) => {
 });
 
 window.addEventListener('resize', updateSlide); // Responsive
+

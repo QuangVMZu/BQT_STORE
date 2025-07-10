@@ -1,20 +1,29 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="model.ModelCar" %>
+<%@ page import="dao.ModelCarDAO" %>
 <%@ page import="model.ImageModel" %>
 <%@ page import="model.BrandModel" %>
 <%@ page import="java.util.List" %>
 
+<%
+    String checkError = (String) request.getAttribute("checkError");
+    String message = (String) request.getAttribute("message");
+    ModelCar product = (ModelCar) request.getAttribute("productDetail");
+%>
+
+
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Product Detail</title>
+        <title><%= (product != null) ? product.getModelName() + " | Product Detail" : "Product Detail" %></title>
         <link rel="stylesheet" href="assets/CSS/productDetail.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
         <script src="assets/JS/productDetail.js"></script>
     </head>
-    <body>
+    <body style="background: #e3f2fd;">
         <jsp:include page="header.jsp" />
         <%
-            ModelCar product = (ModelCar) request.getAttribute("productDetail");
             if (product != null) {
                 List<ImageModel> images = product.getImages();
                 String imageUrl = null;
@@ -23,6 +32,12 @@
                 }
         %>
         <div class="detail-container">
+            <!-- Message -->
+            <% if (checkError != null && !checkError.isEmpty()) { %>
+            <div class="alert alert-danger mt-3"><%= checkError %></div>
+            <% } else if (message != null && !message.isEmpty()) { %>
+            <div class="alert alert-success mt-3"><%= message %></div>
+            <% } %>
             <div class="product-top">
                 <div>
                     <img class="detail-image" id="mainImage" src="<%= imageUrl %>" alt="<%= product.getModelName() %>">
@@ -39,9 +54,9 @@
                     </div>
                 </div>
                 <div class="detail-info">
-                    <h2 style="font-size: 28px"><%= product.getModelName() %></h2>
+                    <h2 style="font-size: 28px; font-weight: bold"><%= product.getModelName() %></h2>
                     <% if (product != null) { %>
-                    <p class="info-muted"><strong>Model ID:</strong> <%= product.getModelId() %></p>
+                    <p class="info-muted" style="margin-bottom: -1px;"><strong>Model ID:</strong> <%= product.getModelId() %></p>
 
                     <%
                         BrandModel brand = (BrandModel) request.getAttribute("productBrand");
@@ -120,55 +135,37 @@
         <p style="color: red; text-align: center;">Product information not found.</p>
         <% } %>
 
-        <h2 style="text-align:center; margin-top: 50px; margin-bottom: -30px; font-weight: bold; color: #333;">★  New product  ★</h2><br/>
+        <h2 style="text-align:center; margin-top: 50px; margin-bottom: -30px; font-weight: bold; color: #333;">★  Recommended for you  ★</h2><br/>
 
         <section class="news-section">
             <div class="news-carousel">
                 <div class="news-items">
-                    <a href="ProductController?action=detail&modelId=KYO001" class="news-card">
-                        <img src="assets/img/KYO001/1.jpg" alt="KYO001">
-                        <h3>Mazda RX-7 FD3S</h3>
-                        <p>Kyosho presents the highly detailed 1/24 scale RX-7 FD3S.</p>
+                    <% 
+                        List<ModelCar> productsByScale = (List<ModelCar>) request.getAttribute("productsByScale");
+                        if (productsByScale != null) {
+                            for (ModelCar productCar : productsByScale) { 
+                                List<ImageModel> images = productCar.getImages();
+                    %>
+                    <a href="ProductController?action=detail&modelId=<%= productCar.getModelId() %>" class="news-card">
+                        <% if (images != null && !images.isEmpty()) { %>
+                        <img src="<%= images.get(0).getImageUrl() %>" alt="<%= images.get(0).getCaption() %>">
+                        <% } else { %>
+                        <img src="assets/img/default.jpg" alt="No image">
+                        <% } %>
+                        <h3><%= productCar.getModelName() %></h3>
+                        <p>Price: $<%= String.format("%,.2f", productCar.getPrice()) %></p>
                     </a>
-                    <a href="ProductController?action=detail&modelId=MTB002" class="news-card">
-                        <img src="assets/img/MTB002/1.jpg" alt="MTB002">
-                        <h3>Land Rover Defender 90</h3>
-                        <p>Matchbox presents the Defender 90 1/64 scale.</p>
-                    </a>
-                    <a href="ProductController?action=detail&modelId=AAT001" class="news-card">
-                        <img src="assets/img/AAT001/1.jpg" alt="AAT001">
-                        <h3>Porsche 911 GT3 RS</h3>
-                        <p>AutoArt is famous for its detailed 1/64 scale models. </p>
-                    </a>
-                    <a href="ProductController?action=detail&modelId=AAT002" class="news-card">
-                        <img src="assets/img/AAT002/1.jpg" alt="Off-AAT002">
-                        <h3>McLaren P1</h3>
-                        <p>AutoArt presents the ultimate 1/18 scale McLaren P1 model.</p>
-                    </a>
-                    <a href="ProductController?action=detail&modelId=WLY002" class="news-card">
-                        <img src="assets/img/WLY002/1.jpg" alt="WLY002">
-                        <h3>Audi R8 V10 Plus</h3>
-                        <p>Audi R8 V10 model is 1/24 of Welly with exquisite details.</p>
-                    </a>
-                    <a href="ProductController?action=detail&modelId=GL001" class="news-card">
-                        <img src="assets/img/GL001/1.jpg" alt="GL001">
-                        <h3>Dodge Charger R/T</h3>
-                        <p>GreenLight is classic muscle car Dodge Charger R/T in 1/64 scale.</p>
-                    </a>
-                    <a href="ProductController?action=detail&modelId=BBR003" class="news-card">
-                        <img src="assets/img/BBR003/1.jpg" alt="BBR003">
-                        <h3>Ferrari 488 GTB</h3>
-                        <p>Bburago's 1/24 model the Ferrari 488 GTB supercar with sporty.</p>
-                    </a>
-                    <a href="ProductController?action=detail&modelId=MGT003" class="news-card">
-                        <img src="assets/img/MGT003/1.jpg" alt="MGT003">
-                        <h3>Honda Civic Type R FK8</h3>
-                        <p>MiniGT presents the 1/64 scale Civic Type R FK8 with a sporty.</p>
-                    </a>
+                    <% 
+                            } // end for
+                        } else {
+                    %>
+                    <p>No products found for this brand.</p>
+                    <% } %>
                 </div>
                 <div class="news-pagination">
                     <button class="news-page-btn" data-page="1">1</button>
                     <button class="news-page-btn" data-page="2">2</button>
+                    <button class="news-page-btn" data-page="3">3</button>
                 </div>
             </div>
         </section>

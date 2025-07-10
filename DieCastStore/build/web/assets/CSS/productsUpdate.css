@@ -1,5 +1,5 @@
 body {
-    background-color: #B1D4D6;
+    background-color: #e3f2fd;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
@@ -31,7 +31,7 @@ body {
 .product-form-box {
     flex: 1;
     min-width: 320px;
-    background-color: #f1f8f5;
+    background-color: #f8fbff;
     padding: 25px;
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 128, 0, 0.08);
@@ -90,8 +90,8 @@ body {
 
 .back-link {
     text-decoration: none;
-    color: #2e7d32;
-    background-color: #c8e6c9;
+    color: #ffffff;
+    background-color: gray;
     padding: 8px 16px;
     border-radius: 8px;
     font-weight: bold;
@@ -107,7 +107,7 @@ body {
 .product-images-box {
     flex: 1;
     min-width: 320px;
-    background-color: #f1f8f5;
+    background-color: #f8fbff;
     padding: 25px;
     border-radius: 12px;
     border: 1px solid #aed581;
@@ -141,7 +141,20 @@ body {
     font-size: 15px;
 }
 
+.access-denied {
+    color: #c62828;
+    text-align: center;
+    margin-top: 40px;
+    font-size: 1.15rem;
+}
 
+.container {
+    margin-top: 50px;
+    background: #f8fbff;
+    border-radius: 15px;
+    padding: 40px 30px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.07);
+}
 
 /* Responsive */
 @media (max-width: 768px) {

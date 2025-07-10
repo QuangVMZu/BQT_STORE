@@ -1,53 +1,57 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f8fbff;
-    margin: 0;
-    padding: 0;
+    background-color: #e3f2fd;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+
 .about-container {
-    max-width: 900px;
-    margin: 50px auto;
+    max-width: 1000px;
     background-color: #ffffff;
+    margin: 60px auto;
     padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.2);
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
 }
+
 .about-container h1 {
     text-align: center;
     color: #2e7d32;
     margin-bottom: 30px;
 }
+
 .about-container p {
-    font-size: 16px;
-    color: #555;
+    font-size: 1rem;
     line-height: 1.7;
-    margin-bottom: 20px;
+    color: #444;
 }
+
 .highlight {
-    color: #388e3c;
-    font-weight: bold;
+    color: #2e7d32;
+    font-weight: 600;
 }
+
 .customer-experience {
     margin-top: 50px;
 }
+
 .customer-experience h2 {
     color: #2e7d32;
+    font-size: 1.5rem;
     margin-bottom: 25px;
-    border-bottom: 2px solid #388e3c;
-    padding-bottom: 8px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #81c784;
 }
+
 .benefit {
     background-color: #e8f5e9;
-    border-left: 5px solid #388e3c;
-    padding: 20px 25px;
+    border-left: 5px solid #4caf50;
+    padding: 20px;
     margin-bottom: 20px;
-    color: #33691e;
-    border-radius: 5px;
-    font-size: 16px;
+    border-radius: 6px;
 }
+
 .benefit strong {
+    font-size: 1.05rem;
     display: block;
-    margin-bottom: 8px;
-    font-weight: bold;
-    font-size: 17px;
+    margin-bottom: 6px;
+    color: #2e7d32;
 }

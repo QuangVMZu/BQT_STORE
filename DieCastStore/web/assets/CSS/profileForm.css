@@ -6,7 +6,7 @@
 }
 
 body {
-    background: linear-gradient(135deg, var(--light-pastel-blue) 0%, #e8f4f8 100%);
+    background: linear-gradient(135deg, var(--light-pastel-blue) 0%, #e3f2fd 100%);
     min-height: 100vh;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }

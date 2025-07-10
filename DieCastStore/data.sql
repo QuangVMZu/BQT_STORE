@@ -336,3 +336,21 @@ INSERT INTO imageModel (imageId, modelId, imageUrl, caption) VALUES
 ('TMC004_02', 'TMC004', 'assets/img/TMC004/2.jpg', 'Subaru Outback'),
 ('TMC004_03', 'TMC004', 'assets/img/TMC004/3.jpg', 'Subaru Outback'),
 ('TMC004_04', 'TMC004', 'assets/img/TMC004/4.jpg', 'Subaru Outback');
+
+
+CREATE TABLE home_gallery (
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    image_url NVARCHAR(255),
+    caption NVARCHAR(255),
+    display_order INT NOT NULL DEFAULT 0,
+    description NVARCHAR(MAX), -- 👉 thêm phần mô tả chung ở đây
+    created_at DATETIME DEFAULT GETDATE()
+);
+
+CREATE TABLE ContactMessages (
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    name NVARCHAR(100),
+    email NVARCHAR(100),
+    message NVARCHAR(MAX),
+    created_at DATETIME DEFAULT GETDATE()
+);

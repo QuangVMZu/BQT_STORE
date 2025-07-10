@@ -5,8 +5,8 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f8fbff; /* nền rất nhẹ */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #e3f2fd; /* Đổi từ #f8fbff sang xanh nhẹ hơn */
 }
 
 /* ========== BRAND SLIDER ========== */
@@ -39,7 +39,7 @@ body {
 
 .news-section {
     padding: 30px;
-    background-color: #f8fbff;
+    background-color: #e3f2fd;
     text-align: center
 }
 
@@ -67,7 +67,7 @@ body {
 
 .news-card {
     width: 100%;
-    aspect-ratio: 4 / 4;
+    height: 320px;
     background: #ffffff;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -86,22 +86,43 @@ body {
 
 .news-card img {
     width: 100%;
-    height: 100%;
+    height: 180px;
     object-fit: contain;
     mix-blend-mode: multiply;
     padding: 10px;
 }
 
 .news-card h3 {
-    margin: 10px;
     font-size: 18px;
     color: #1c3d5a;
+    margin: 10px;
+    text-align: center;
+    min-height: 80px;
+    /*line-height: 1.3;*/
+    /*display: flex;*/
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 50px; /* hoặc 2 * line-height */
 }
 
-.news-card p {
+/*.news-card p {
     margin: 0 10px 10px;
     font-size: 14px;
     color: #3d5a80;
+}*/
+
+.news-card p {
+    margin-bottom: 25px; /* ĐẨY phần tử xuống cuối */
+    font-size: 14px;
+    color: #ef5350;
+    font-weight: bold; /* Thêm in đậm */
 }
 
 /* ========== PAGINATION ========== */
@@ -181,11 +202,12 @@ body {
 }
 
 .banner-btn {
+    display: none;
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background-color: rgba(0, 0, 0, 0.3); /* nhạt vừa phải */
-    color: #ffffff;
+    background-color: transparent; /* nhạt vừa phải */
+    color: transparent;
     border: none;
     font-size: 28px;
     padding: 10px;
@@ -195,9 +217,9 @@ body {
     transition: background 0.3s;
 }
 
-.banner-btn:hover {
+/*.banner-btn:hover {
     background-color: rgba(28, 61, 90, 0.9);
-}
+}*/
 
 .prev-btn {
     left: 10px;

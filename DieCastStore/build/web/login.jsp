@@ -6,6 +6,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Login Page</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
         <!-- Bootstrap CSS -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
         <!-- Custom CSS -->
@@ -15,13 +16,13 @@
         <c:if test="${not empty sessionScope.account}">
             <c:redirect url="home.jsp"/>
         </c:if>
-        
+
         <div class="login-container">
             <div class="login-card">
                 <div class="login-header">
                     <h1 class="login-title">Sign in</h1>
                 </div>
-                
+
                 <div class="login-body">
                     <!-- Error Messages -->
                     <c:if test="${not empty ban}">
@@ -34,7 +35,7 @@
                             <strong>${message}</strong>
                         </div>
                     </c:if>
-                    
+
                     <!-- Login Form -->
                     <form action="UserController" method="post">
                         <div class="form-group">
@@ -47,24 +48,29 @@
                                    required
                                    value="${param.userName}"/>
                         </div>
-                        
+
                         <div class="form-group">
                             <label for="password" class="form-label">Password</label>
-                            <input type="password" 
-                                   class="form-control" 
-                                   id="password" 
-                                   name="password" 
-                                   placeholder="Enter Password" 
-                                   required/>
+                            <div class="input-group">
+                                <input type="password" 
+                                       class="form-control" 
+                                       id="password" 
+                                       name="password" 
+                                       placeholder="Enter Password" 
+                                       required/>
+                                <span class="input-group-text" onclick="togglePassword()" style="cursor: pointer; background: #b1d4d6;">
+                                    <i class="bi bi-eye" id="toggleIcon"></i>
+                                </span>
+                            </div>
                         </div>
-                        
+
                         <div class="btn-login">
                             <button type="submit" name="action" value="login" class="btn-signin">
                                 Sign In
                             </button>
                         </div>
                     </form>
-                    
+
                     <!-- Register Section -->
                     <div class="register-section">
                         <p class="register-text">Don't have an account?</p>
@@ -80,4 +86,5 @@
         <!-- Bootstrap JS -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     </body>
+    <script src="assets/JS/login.js"></script>
 </html>

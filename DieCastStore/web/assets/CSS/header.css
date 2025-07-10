@@ -26,7 +26,7 @@ header {
 }
 
 .logo h1 {
-    font-size: 2rem;
+    font-size: 2.2rem;
     font-weight: bold;
 }
 
@@ -37,10 +37,11 @@ header {
 
 /* === NAVIGATION === */
 .main-nav ul {
+    margin-top: 20px;
     list-style: none;
     display: flex;
     gap: 30px;
-    font-size: 1.3rem;
+    font-size: 1.5rem;
 }
 
 .main-nav a {
@@ -132,6 +133,7 @@ header {
 }
 
 .user-info {
+    margin-right: -20px;
     display: flex;
     align-items: center;
     cursor: pointer;

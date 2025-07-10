@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package controller;
 
 import java.io.IOException;
@@ -11,10 +7,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-/**
- *
- * @author hqthi
- */
 @WebServlet(name = "MainController", urlPatterns = {"", "/MainController"})
 public class MainController extends HttpServlet {
 
@@ -29,19 +21,11 @@ public class MainController extends HttpServlet {
                 || "editProfile".equals(action)
                 || "changePassword".equals(action)
                 || "showLogin".equals(action)
-                || "showRegister".equals(action);
+                || "showRegister".equals(action)
+                || "viewAllAccount".equals(action)
+                || "updateRole".equals(action);
     }
 
-//    private boolean isUserAction(String action) {
-//        return "login".equals(action)
-//                || "logout".equals(action)
-//                || "register".equals(action)
-//                || "updateProfile".equals(action)
-//                || "viewProfile".equals(action)
-//                || "changePassword".equals(action)
-//                || "showLogin".equals(action)
-//                || "showRegister".equals(action);
-//    }
     private boolean isProductAction(String action) {
         return "list".equals(action)
                 || "detail".equals(action)
@@ -50,7 +34,14 @@ public class MainController extends HttpServlet {
                 || "listEdit".equals(action)
                 || "editProduct".equals(action)
                 || "changeQuantity".equals(action)
-                || "productUpdating".equals(action);
+                || "productUpdateImages".equals(action)
+                || "productUpdateMain".equals(action)
+                || "sentContact".equals(action);
+    }
+
+    private boolean isUploadAction(String action) {
+        return "upload".equals(action)
+                || "banner".equals(action);
     }
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -64,6 +55,8 @@ public class MainController extends HttpServlet {
                     url = "/UserController";
                 } else if (isProductAction(action)) {
                     url = "/ProductController";
+                } else if (isUploadAction(action)) {
+                    url = "/UploadHomeImgController";
                 } else {
                     request.setAttribute("message", "Invalid action: " + action);
                 }

@@ -1,3 +1,4 @@
+// ===== Pagination for News Cards =====
 const itemsPerPage = 8;
 const newsCards = document.querySelectorAll('.news-card');
 const pageButtons = document.querySelectorAll('.news-page-btn');
@@ -7,7 +8,6 @@ function showPage(page) {
         card.style.display = (index >= (page - 1) * itemsPerPage && index < page * itemsPerPage)
                 ? 'block' : 'none';
     });
-
     pageButtons.forEach(btn => btn.classList.remove('active'));
     document.querySelector(`.news-page-btn[data-page="${page}"]`).classList.add('active');
 }
@@ -18,47 +18,35 @@ pageButtons.forEach(btn => {
         showPage(page);
     });
 });
-
-// Show first page on load
 showPage(1);
 
-const track = document.querySelector('.banner-track');
-const slides = document.querySelectorAll('.banner-slide');
+// ===== Banner Auto Slide =====
+const bannerTrack = document.querySelector('.banner-track');
+const bannerSlides = document.querySelectorAll('.banner-slide');
 const nextBtn = document.querySelector('.next-btn');
 const prevBtn = document.querySelector('.prev-btn');
 
-let currentIndex = 0;
+let bannerIndex = 0;
+const totalSlides = bannerSlides.length;
 
-function updateSlide() {
-    const slideWidth = slides[0].clientWidth;
-    track.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
+function updateBannerSlide() {
+    bannerTrack.style.transform = `translateX(-${bannerIndex * 100}%)`;
 }
 
 nextBtn.addEventListener('click', () => {
-    if (currentIndex < slides.length - 1) {
-        currentIndex++;
-        updateSlide();
-    }
+    bannerIndex = (bannerIndex + 1) % totalSlides;
+    updateBannerSlide();
 });
 
 prevBtn.addEventListener('click', () => {
-    if (currentIndex > 0) {
-        currentIndex--;
-        updateSlide();
-    }
+    bannerIndex = (bannerIndex - 1 + totalSlides) % totalSlides;
+    updateBannerSlide();
 });
 
-// Swipe support (optional)
-let startX = 0;
-track.addEventListener('touchstart', (e) => startX = e.touches[0].clientX);
-track.addEventListener('touchend', (e) => {
-    const endX = e.changedTouches[0].clientX;
-    if (startX - endX > 50 && currentIndex < slides.length - 1) {
-        currentIndex++;
-    } else if (endX - startX > 50 && currentIndex > 0) {
-        currentIndex--;
-    }
-    updateSlide();
-});
+setInterval(() => {
+    bannerIndex = (bannerIndex + 1) % totalSlides;
+    updateBannerSlide();
+}, 4000);
 
-window.addEventListener('resize', updateSlide); // Responsive
+// Responsive reset
+window.addEventListener('resize', updateBannerSlide);
