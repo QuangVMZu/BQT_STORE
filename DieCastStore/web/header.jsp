@@ -1,6 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="model.CustomerAccount"%>
-<%@page import="utils.AuthUtils"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <link rel="stylesheet" href="assets/CSS/header.css">
 
 <header>
@@ -29,47 +29,49 @@
         <div class="search-bar">
             <form action="MainController" method="get">
                 <input type="hidden" name="action" value="search">
-                <input type="text" name="keyword" placeholder="Search product..." required value="<%= request.getParameter("keyword") != null ? request.getParameter("keyword") : "" %>">
+                <input type="text" name="keyword" placeholder="Search product..." required 
+                       value="${not empty param.keyword ? param.keyword : ''}">
                 <button type="submit">Search</button>
             </form>
         </div>
 
         <!-- Auth Buttons -->
         <div class="auth-buttons">
-            <%
-                CustomerAccount user = (CustomerAccount) session.getAttribute("account");
-                if (user != null) {
-                    String userName = user.getUserName();
-                    String avatarChar = userName != null && !userName.isEmpty() ? userName.substring(0, 1).toUpperCase() : "?";
-            %>
-            <div class="user-dropdown">
-                <div class="user-info" onclick="toggleDropdown()">
-                    <span class="greeting">Hello, <strong><%= userName %></strong></span>
-                    <div class="avatar-circle"><%= avatarChar %></div>
-                </div>
-                <div class="dropdown-menu" id="dropdownMenu">
-                    <a href="profileForm.jsp" class="edit">My Profile</a>
-                    <% if (AuthUtils.isAdmin(request)) { %>
-                    <a href="MainController?action=viewAllAccount" class="edit"> Manage Accounts</a>
-                    <a href="MainController?action=viewAllOrders" class="cart">Manage Order</a>
-                    <a href="ProductController?action=listEdit" class="edit">Edit Product</a>
-                    <%-- Nút "Edit" cho admin --%>
-                    <a href="editHome.jsp" class="edit"> Edit Home Gallery</a>
-                    <% } %>
-                    <a href="cart" class="cart">Cart</a>
-                    <a href="order" class="payment">My Orders</a>
-                    <a href="UserController?action=logout" class="logout">Logout</a>
-                </div>
-            </div>
-            <%
-                } else {
-            %>
-            <a href="login.jsp">Login</a>
-            <a href="register.jsp">Register</a>
-            <%  
-                }
-            %>
-        </div>  
+            <c:choose>
+                <c:when test="${not empty sessionScope.account}">
+                    <c:set var="user" value="${sessionScope.account}" />
+                    <c:set var="userName" value="${user.userName}" />
+                    <c:set var="avatarChar" value="${not empty userName ? fn:toUpperCase(fn:substring(userName, 0, 1)) : '?'}" />
+
+                    <div class="user-dropdown">
+                        <div class="user-info" onclick="toggleDropdown()">
+                            <span class="greeting">Hello, <strong>${userName}</strong></span>
+                            <div class="avatar-circle">${avatarChar}</div>
+                        </div>
+                        <div class="dropdown-menu" id="dropdownMenu">
+                            <a href="profileForm.jsp" class="edit">My Profile</a>
+
+                            <c:if test="${sessionScope.account.role == 1}">
+                                <a href="MainController?action=viewAllAccount" class="edit">Manage Accounts</a>
+                                <a href="MainController?action=viewAllOrders" class="cart">Manage Order</a>
+                                <a href="ProductController?action=listEdit" class="edit">Edit Product</a>
+                                <a href="editHome.jsp" class="edit">Edit Home Gallery</a>
+                            </c:if>
+
+                            <a href="cart" class="cart">Cart</a>
+                            <a href="order" class="payment">My Orders</a>
+                            <a href="UserController?action=logout" class="logout">Logout</a>
+                        </div>
+                    </div>
+                </c:when>
+
+                <c:otherwise>
+                    <a href="login.jsp">Login</a>
+                    <a href="register.jsp">Register</a>
+                </c:otherwise>
+            </c:choose>
+        </div>
     </div>
 </header>
+
 <script src="assets/JS/header.js"></script>

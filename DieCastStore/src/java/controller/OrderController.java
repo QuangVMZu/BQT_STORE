@@ -16,6 +16,7 @@ import java.util.List;
 import model.CustomerAccount;
 import model.Order;
 import model.OrderDetail;
+import utils.AuthUtils;
 
 @WebServlet(name = "OrderController", urlPatterns = {"/order", "/OrderController"})
 public class OrderController extends HttpServlet {
@@ -105,23 +106,43 @@ public class OrderController extends HttpServlet {
     private void listOrders(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         CustomerAccount user = (CustomerAccount) session.getAttribute("user");
-        String customerId = null;
-        if (user != null) {
-            customerId = user.getCustomerId();
-        }
 
-        if (customerId == null) {
-            response.sendRedirect("login.jsp");
+        // Nếu chưa đăng nhập → redirect về login
+        if (user == null) {
+            // Gán thông báo lỗi (nếu cần) và redirect
+            request.setAttribute("accessDeniedMessage", "You must be logged in to view your orders.");
+            request.setAttribute("loginURL", "login.jsp");
+            request.getRequestDispatcher("orderlist.jsp").forward(request, response);
             return;
         }
 
-        List<Order> orders = orderDAO.getOrdersByCustomer(customerId);
-        request.setAttribute("orders", orders);
-        request.getRequestDispatcher("orderlist.jsp").forward(request, response);
+        try {
+            String customerId = user.getCustomerId();
+
+            // Lấy danh sách đơn hàng theo customerId
+            List<Order> orders = orderDAO.getOrdersByCustomer(customerId);
+
+            // Gửi danh sách đơn hàng và trạng thái đăng nhập cho JSP
+            request.setAttribute("orders", orders);
+            request.setAttribute("isLoggedIn", true);
+            request.setAttribute("accessDeniedMessage", "");
+            request.setAttribute("loginURL", "login.jsp");
+
+            request.getRequestDispatcher("orderlist.jsp").forward(request, response);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("message", "Unable to load orders at this time.");
+            request.setAttribute("isLoggedIn", true); // Vẫn đăng nhập
+            request.setAttribute("accessDeniedMessage", "");
+            request.setAttribute("loginURL", "login.jsp");
+            request.getRequestDispatcher("orderlist.jsp").forward(request, response);
+        }
     }
 
     private void viewOrders(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String orderId = request.getParameter("orderId");
+
         if (orderId == null || orderId.trim().isEmpty()) {
             response.sendRedirect("order?action=list");
             return;
@@ -134,38 +155,48 @@ public class OrderController extends HttpServlet {
         }
 
         List<OrderDetail> details = orderDAO.getOrderDetails(orderId);
-        
-        try {
-            String name = orderDAO.getCustomerNameByOrderId(orderId);
-            request.setAttribute("customerName", name);
-        } catch (Exception e) {
-            request.setAttribute("customerName", "Unknown");
-            e.printStackTrace(); // Ghi log lỗi (có thể thay bằng Logger)
-        }
-        
-        try {
-            String phone = orderDAO.getCustomerPhoneByOrderId(orderId);
-            request.setAttribute("phone", phone);
-        } catch (Exception e) {
-            request.setAttribute("phone", "Unknown");
-            e.printStackTrace(); // Ghi log lỗi (có thể thay bằng Logger)
-        }
 
-        // ✅ Lấy địa chỉ giao hàng từ bảng Customer (qua Order)
-        try {
-            String address = orderDAO.getCustomerAddressByOrderId(orderId);
-            request.setAttribute("address", address);
-        } catch (Exception e) {
-            request.setAttribute("address", "Unknown");
-            e.printStackTrace(); // Ghi log lỗi (có thể thay bằng Logger)
-        }
-
+        // Gán các thông tin cơ bản
         request.setAttribute("order", order);
         request.setAttribute("details", details);
+
+        // Lấy thông tin khách hàng (có thể null)
+        try {
+            String customerName = orderDAO.getCustomerNameByOrderId(orderId);
+            request.setAttribute("customerName", customerName != null ? customerName : "Unknown");
+        } catch (Exception e) {
+            request.setAttribute("customerName", "Unknown");
+            e.printStackTrace();
+        }
+
+        try {
+            String phone = orderDAO.getCustomerPhoneByOrderId(orderId);
+            request.setAttribute("phone", phone != null ? phone : "Unknown");
+        } catch (Exception e) {
+            request.setAttribute("phone", "Unknown");
+            e.printStackTrace();
+        }
+
+        try {
+            String address = orderDAO.getCustomerAddressByOrderId(orderId);
+            request.setAttribute("address", address != null ? address : "Unknown");
+        } catch (Exception e) {
+            request.setAttribute("address", "Unknown");
+            e.printStackTrace();
+        }
+
+        // Gán thêm các thuộc tính JSTL logic (bắt buộc dùng khi đã chuyển sang JSTL)
+        request.setAttribute("isAdmin", AuthUtils.isAdmin(request));
+        request.setAttribute("isLoggedIn", AuthUtils.isLoggedIn(request));
+        request.setAttribute("accessDeniedMessage", AuthUtils.getAccessDeniedMessage("login.jsp"));
+        request.setAttribute("loginURL", AuthUtils.getLoginURL());
+
         request.getRequestDispatcher("orderdetail.jsp").forward(request, response);
     }
 
-    private void handleCancelOrder(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, SQLException, ClassNotFoundException {
+    private void handleCancelOrder(HttpServletRequest request, HttpServletResponse response)
+            throws IOException, ServletException, SQLException, ClassNotFoundException {
+
         String orderId = request.getParameter("orderId");
         OrderDAO orderDAO = new OrderDAO();
         OrderDetailDAO orderDetailDAO = new OrderDetailDAO();
@@ -177,6 +208,8 @@ public class OrderController extends HttpServlet {
         if (result) {
             // Trả hàng vào kho
             List<OrderDetail> items = orderDetailDAO.getItemsByOrderId(orderId);
+            HttpSession session = request.getSession();
+            session.removeAttribute("cachedProductListEdit");
             for (OrderDetail item : items) {
                 if ("MODEL".equalsIgnoreCase(item.getItemType())) {
                     modelCarDAO.increaseQuantity(item.getItemId(), item.getUnitQuantity());
@@ -190,36 +223,67 @@ public class OrderController extends HttpServlet {
             request.setAttribute("message", "Failed to cancel order.");
         }
 
-        // Load lại danh sách đơn hàng của khách hàng
+        // ✅ Lấy tài khoản khách hàng từ session
         CustomerAccount user = (CustomerAccount) request.getSession().getAttribute("user");
         if (user != null) {
             List<Order> userOrders = orderDAO.getOrdersByCustomerId(user.getCustomerId());
             request.setAttribute("orders", userOrders);
+            request.setAttribute("isLoggedIn", true); // ✅ JSTL kiểm tra đăng nhập
+        } else {
+            request.setAttribute("orders", null);
+            request.setAttribute("isLoggedIn", false);
         }
+
+        // ✅ Cài thêm biến hỗ trợ JSTL trong orderlist.jsp
+        request.setAttribute("accessDeniedMessage", AuthUtils.getAccessDeniedMessage("login.jsp"));
+        request.setAttribute("loginURL", AuthUtils.getLoginURL());
 
         request.getRequestDispatcher("orderlist.jsp").forward(request, response);
     }
 
     private String handleUpdateOrderStatus(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        // ✅ Kiểm tra quyền đăng nhập
+        if (!AuthUtils.isLoggedIn(request)) {
+            request.setAttribute("accessDeniedMessage", AuthUtils.getAccessDeniedMessage("login.jsp"));
+            request.setAttribute("loginURL", AuthUtils.getLoginURL());
+            request.getRequestDispatcher("manageOrders.jsp").forward(request, response);
+            return null;
+        }
+
+        // ✅ Kiểm tra quyền admin
+        if (!AuthUtils.isAdmin(request)) {
+            request.setAttribute("isLoggedIn", true);
+            request.setAttribute("isAdmin", false);
+            request.setAttribute("accessDeniedMessage", AuthUtils.getAccessDeniedMessage("login.jsp"));
+            request.setAttribute("loginURL", AuthUtils.getLoginURL());
+            request.getRequestDispatcher("manageOrders.jsp").forward(request, response);
+            return null;
+        }
+
+        // ✅ Đã xác nhận là admin
+        request.setAttribute("isLoggedIn", true);
+        request.setAttribute("isAdmin", true);
+        request.setAttribute("accessDeniedMessage", AuthUtils.getAccessDeniedMessage("login.jsp"));
+        request.setAttribute("loginURL", AuthUtils.getLoginURL());
+
         String orderId = request.getParameter("orderId");
         String status = request.getParameter("status");
 
         OrderDAO orderDAO = new OrderDAO();
         OrderDetailDAO orderDetailDAO = new OrderDetailDAO();
-        ModelCarDAO modelCarDAO = new ModelCarDAO();  // để cộng lại quantity nếu cần
+        ModelCarDAO modelCarDAO = new ModelCarDAO();
         AccessoryDAO accessoryDAO = new AccessoryDAO();
 
-        boolean result = orderDAO.updateOrderStatus(orderId, status);
+        try {
+            boolean result = orderDAO.updateOrderStatus(orderId, status);
 
-        if (result) {
-            request.setAttribute("message", "Order status updated successfully.");
+            if (result) {
+                request.setAttribute("message", "✅ Order status updated successfully.");
 
-            // ✅ Nếu status là Cancelled thì hoàn lại hàng vào kho
-            if ("Cancelled".equalsIgnoreCase(status)) {
-                try {
+                if ("Cancelled".equalsIgnoreCase(status)) {
                     List<OrderDetail> items = orderDetailDAO.getItemsByOrderId(orderId);
-                    System.out.println("Order has " + items.size() + " items.");
                     for (OrderDetail item : items) {
                         if ("MODEL".equalsIgnoreCase(item.getItemType())) {
                             modelCarDAO.increaseQuantity(item.getItemId(), item.getUnitQuantity());
@@ -227,13 +291,15 @@ public class OrderController extends HttpServlet {
                             accessoryDAO.increaseQuantity(item.getItemId(), item.getUnitQuantity());
                         }
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    request.setAttribute("message", "Order cancelled but failed to restock items.");
                 }
+
+            } else {
+                request.setAttribute("message", "❌ Failed to update order status.");
             }
-        } else {
-            request.setAttribute("message", "Failed to update order status.");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("message", "❌ Error while updating order status: " + e.getMessage());
         }
 
         // Load lại danh sách đơn hàng
@@ -242,29 +308,32 @@ public class OrderController extends HttpServlet {
             request.setAttribute("orders", orders);
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("message", "Error loading order list.");
+            request.setAttribute("message", "❌ Error loading order list.");
         }
 
         request.getRequestDispatcher("manageOrders.jsp").forward(request, response);
         return null;
     }
 
-    private String handleViewAllOrders(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    private String handleViewAllOrders(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             OrderDAO orderDao = new OrderDAO();
             List<Order> orders = orderDao.getAll();
+
             request.setAttribute("orders", orders);
+            request.setAttribute("isLoggedIn", AuthUtils.isLoggedIn(request));
+            request.setAttribute("isAdmin", AuthUtils.isAdmin(request));
+            request.setAttribute("accessDeniedMessage", AuthUtils.getAccessDeniedMessage("login.jsp"));
+            request.setAttribute("loginURL", AuthUtils.getLoginURL());
+
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("message", "Error loading order list.");
+            request.setAttribute("message", "❌ Error loading order list: " + e.getMessage());
         }
 
-        // Forward trực tiếp tới trang JSP để hiển thị danh sách đơn hàng
+        // Forward đến JSP luôn ở cuối
         request.getRequestDispatcher("manageOrders.jsp").forward(request, response);
-
-        // ✅ Không cần return vì đã forward rồi
         return null;
     }
-
 
 }

@@ -28,7 +28,7 @@ public class AccessoryDAO implements IDAO<Accessory, String> {
     private static final String DELETE = "DELETE FROM accessory WHERE accessoryId = ?";
     private static final String MAX = "SELECT MAX(accessoryId) FROM accessory WHERE accessoryId LIKE 'ACS%'";
     private static final String COUNT = "SELECT COUNT(*) FROM accessory";
-    private static final String UPDATE_QUANTITY = "UPDATE accessory SET quantity = -1 WHERE accessoryId = ?";
+    private static final String UPDATE_QUANTITY = "UPDATE accessory SET quantity = - 1 WHERE accessoryId = ?";
 
     @Override
     public boolean create(Accessory entity) {

@@ -1,8 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ page import="java.util.List" %>
-<%@ page import="model.Order" %>
-<%@ page import="model.OrderDetail" %>
-<%@ page import="utils.AuthUtils" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -13,112 +11,107 @@
     </head>
     <body>
         <jsp:include page="header.jsp" />
-        <% 
-            if (AuthUtils.isLoggedIn(request)) {
-        %>
-        <div class="container">
-            <%
-                Order order = (Order) request.getAttribute("order");
-                List<OrderDetail> details = (List<OrderDetail>) request.getAttribute("details");
-                String customerName = (String) request.getAttribute("customerName");
-                String phone = (String) request.getAttribute("phone");
-                String address = (String) request.getAttribute("address");
-                boolean isAdmin = AuthUtils.isAdmin(request);
-                boolean isCancelable = !"CANCELLED".equalsIgnoreCase(order.getStatus()) &&
-                                       !"SHIPPED".equalsIgnoreCase(order.getStatus()) &&
-                                       !"DELIVERED".equalsIgnoreCase(order.getStatus());
-            %>
 
-            <h2 class="mb-4 text-primary">Order Details - <%= order.getOrderId() %></h2>
+        <c:choose>
+            <c:when test="${isLoggedIn}">
+                <div class="container">
+                    <c:set var="isCancelable" value="${order.status ne 'CANCELLED' and order.status ne 'SHIPPED' and order.status ne 'DELIVERED'}" />
 
-            <!-- Order Information -->
-            <div class="card mb-4 shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title mb-3">Order Information</h5>
-                    <p><strong>Status:</strong> <%= order.getStatus() %></p>
-                    <p><strong>Date:</strong> <%= order.getOrderDate() %></p>
+                    <h2 class="mb-4 text-primary">Order Details - ${order.orderId}</h2>
 
-                    <!-- Customer Info Card Inside -->
-                    <div class="card border border-primary-subtle bg-light p-3 mb-3">
-                        <h6 class="fw-bold text-primary mb-2">Customer Info</h6>
-                        <p class="mb-1"><strong>Customer Name:</strong> <%= customerName != null ? customerName : "Unknown" %></p>
-                        <p class="mb-1"><strong>Phone Number:</strong> <%= phone != null ? phone : "Unknown" %></p>
-                        <p class="mb-2"><strong>Shipping Address:</strong> <%= address != null ? address : "Unknown" %></p>
+                    <!-- Order Information -->
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title mb-3">Order Information</h5>
+                            <p><strong>Status:</strong> ${order.status}</p>
+                            <p><strong>Date:</strong> ${order.orderDate}</p>
 
-                        <% if (!isAdmin && isCancelable) { %>
-                        <a href="MainController?action=editProfile" class="btn btn-sm btn-outline-primary">
-                            ✏️ Update Information
-                        </a>
-                        <% } %>
+                            <!-- Customer Info -->
+                            <div class="card border border-primary-subtle bg-light p-3 mb-3">
+                                <h6 class="fw-bold text-primary mb-2">Customer Info</h6>
+                                <p class="mb-1"><strong>Customer Name:</strong> <c:out value="${customerName}" default="Unknown"/></p>
+                                <p class="mb-1"><strong>Phone Number:</strong> <c:out value="${phone}" default="Unknown"/></p>
+                                <p class="mb-2"><strong>Shipping Address:</strong> <c:out value="${address}" default="Unknown"/></p>
+
+                                <c:if test="${not isAdmin and isCancelable}">
+                                    <a href="MainController?action=editProfile" class="btn btn-sm btn-outline-primary">
+                                        ✏️ Update Information
+                                    </a>
+                                </c:if>
+                            </div>
+
+                            <p class="mt-3">
+                                <strong>Total:</strong>
+                                <span class="text-success fw-bold">
+                                    $<fmt:formatNumber value="${order.totalAmount}" type="number" maxFractionDigits="2"/>
+                                </span>
+                            </p>
+                        </div>
                     </div>
 
-                    <p class="mt-3">
-                        <strong>Total:</strong>
-                        <span class="text-success fw-bold">$<%= String.format("%.2f", order.getTotalAmount()) %></span>
-                    </p>
-                </div>
-            </div>
+                    <!-- Order Details Table -->
+                    <table class="table table-bordered table-hover">
+                        <thead class="table-light text-center">
+                            <tr>
+                                <th>Item Type</th>
+                                <th>Model ID</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <c:choose>
+                                <c:when test="${not empty details}">
+                                    <c:forEach var="d" items="${details}">
+                                        <tr>
+                                            <td>${d.itemType}</td>
+                                            <td>${d.itemId}</td>
+                                            <td class="text-center">${d.unitQuantity}</td>
+                                            <td class="text-end">
+                                                $<fmt:formatNumber value="${d.unitPrice * d.unitQuantity}" type="number" maxFractionDigits="2"/>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+                                </c:when>
+                                <c:otherwise>
+                                    <tr>
+                                        <td colspan="4" class="text-center text-muted">No items found in this order.</td>
+                                    </tr>
+                                </c:otherwise>
+                            </c:choose>
+                        </tbody>
+                    </table>
 
-            <!-- Order Details Table -->
-            <table class="table table-bordered table-hover">
-                <thead class="table-light text-center">
-                    <tr>
-                        <th>Item Type</th>
-                        <th>Model ID</th>
-                        <th>Quantity</th>
-                        <th>Price</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <%
-                        if (details != null && !details.isEmpty()) {
-                            for (OrderDetail d : details) {
-                    %>
-                    <tr>
-                        <td><%= d.getItemType() %></td>
-                        <td><%= d.getItemId() %></td>
-                        <td class="text-center"><%= d.getUnitQuantity() %></td>
-                        <td class="text-end">$<%= String.format("%.2f", d.getUnitPrice() * d.getUnitQuantity()) %></td>
-                    </tr>
-                    <%
-                            }
-                        } else {
-                    %>
-                    <tr>
-                        <td colspan="4" class="text-center text-muted">No items found in this order.</td>
-                    </tr>
-                    <% } %>
-                </tbody>
-            </table>
-
-            <!-- Action Buttons -->
-            <div class="mt-4">
-                <% if (!isAdmin) { %>
-                <a href="order?action=list" class="btn btn-outline-secondary me-2">← Back to My Orders</a>
-                <% if (isCancelable) { %>
-                <a href="order?action=cancel&orderId=<%= order.getOrderId() %>" 
-                   class="btn btn-outline-danger"
-                   onclick="return confirm('Cancel this order?')">Cancel This Order</a>
-                <% } %>
-                <% } else { %>
-                <div class="d-flex justify-content-center mt-4">
-                    <a href="javascript:history.back()" class="btn btn-secondary">
-                        ← Back to Manage Orders
-                    </a>
+                    <!-- Action Buttons -->
+                    <div class="mt-4">
+                        <c:choose>
+                            <c:when test="${not isAdmin}">
+                                <a href="order?action=list" class="btn btn-outline-secondary me-2">← Back to My Orders</a>
+                                <c:if test="${isCancelable}">
+                                    <a href="order?action=cancel&amp;orderId=${order.orderId}" 
+                                       class="btn btn-outline-danger"
+                                       onclick="return confirm('Cancel this order?')">Cancel This Order</a>
+                                </c:if>
+                            </c:when>
+                            <c:otherwise>
+                                <div class="d-flex justify-content-center mt-4">
+                                    <a href="javascript:history.back()" class="btn btn-secondary">← Back to Manage Orders</a>
+                                </div>
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
                 </div>
-                <% } %>
-            </div>
-        </div>
-        <br>
-        <% 
-                } else { // not LogIned
-        %>
-        <div class="container access-denied text-center mt-5 shadow-sm p-4 bg-white rounded">
-            <h2 class="text-danger">Access Denied</h2>
-            <p class="text-danger"><%= AuthUtils.getAccessDeniedMessage("login.jsp") %></p>
-            <a href="<%= AuthUtils.getLoginURL() %>" class="btn btn-primary mt-2">Login Now</a>
-        </div><br>
-        <% } %>
+                <br>
+            </c:when>
+            <c:otherwise>
+                <div class="container access-denied text-center mt-5 shadow-sm p-4 bg-white rounded">
+                    <h2 class="text-danger">Access Denied</h2>
+                    <p class="text-danger">${accessDeniedMessage}</p>
+                    <a href="${loginURL}" class="btn btn-primary mt-2">Login Now</a>
+                </div><br>
+            </c:otherwise>
+        </c:choose>
+
         <jsp:include page="footer.jsp" />
     </body>
 </html>

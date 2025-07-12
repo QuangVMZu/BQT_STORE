@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import model.HomeGallery;
+import utils.AuthUtils;
 
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024,
@@ -110,6 +111,10 @@ public class UploadImgController extends HttpServlet {
                 dao.insert(img);
             }
 
+            request.setAttribute("isLoggedIn", AuthUtils.isLoggedIn(request));
+            request.setAttribute("isAdmin", AuthUtils.isAdmin(request));
+            request.setAttribute("accessDeniedMessage", AuthUtils.getAccessDeniedMessage("login.jsp"));
+            request.setAttribute("loginURL", AuthUtils.getLoginURL());
             request.setAttribute("selectedType", "gallery");
             request.setAttribute("message", "✅ Upload gallery Successfully.");
             return "editHome.jsp";
@@ -159,8 +164,12 @@ public class UploadImgController extends HttpServlet {
                 dao.insert(img);
             }
 
+            request.setAttribute("isLoggedIn", AuthUtils.isLoggedIn(request));
+            request.setAttribute("isAdmin", AuthUtils.isAdmin(request));
             request.setAttribute("selectedType", "banner");
             request.setAttribute("message", "✅ Upload banner Successfully.");
+            request.setAttribute("accessDeniedMessage", AuthUtils.getAccessDeniedMessage("login.jsp"));
+            request.setAttribute("loginURL", AuthUtils.getLoginURL());
             return "editHome.jsp";
         } catch (Exception e) {
             e.printStackTrace();

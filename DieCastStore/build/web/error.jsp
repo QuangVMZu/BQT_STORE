@@ -1,9 +1,10 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="vi">
     <head>
         <meta charset="UTF-8">
-        <title>404 - Không tìm thấy trang</title>
+        <title>404 - Not found page.</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <!-- Bootstrap 5 -->
@@ -19,14 +20,14 @@
                 <i class="bi bi-exclamation-triangle-fill"></i> 404
             </div>
             <div class="error-message">
-                <%
-                    String message = (String) request.getAttribute("message");
-                    if (message != null) {
-                %>
-                <p><%= message %></p>
-                <% } else { %>
-                <p>Trang bạn đang tìm kiếm không tồn tại hoặc đã bị di chuyển.</p>
-                <% } %>
+                <c:choose>
+                    <c:when test="${not empty message}">
+                        <p>${message}</p>
+                    </c:when>
+                    <c:otherwise>
+                        <p>The page you are looking for does not exist or has been moved.</p>
+                    </c:otherwise>
+                </c:choose>
             </div>
             <a href="home.jsp" class="btn btn-primary back-btn">
                 <i class="bi bi-house-door-fill"></i> Back to home page

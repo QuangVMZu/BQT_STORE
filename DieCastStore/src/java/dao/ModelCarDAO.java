@@ -19,7 +19,7 @@ public class ModelCarDAO implements IDAO<ModelCar, String> {
     private static final String SEARCH_BY_NAME = "SELECT * FROM modelCar WHERE modelName LIKE ?";
     private static final String CREATE = "INSERT INTO modelCar (modelId, modelName, scaleId, brandId, price, description, quantity) VALUES (?, ?, ?, ?, ?, ?, ?)";
     private static final String UPDATE = "UPDATE ModelCar SET modelName = ?, scaleId = ?, brandId = ?, price = ?, description = ?, quantity = ?  WHERE modelId LIKE ?";
-    private static final String UPDATE_QUANTITY = "UPDATE modelCar SET quantity = quantity - 1 WHERE modelId = ?";
+    private static final String UPDATE_QUANTITY = "UPDATE modelCar SET quantity = - 1 WHERE modelId = ?";
 
     @Override
     public ModelCar getById(String id) {

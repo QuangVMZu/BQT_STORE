@@ -528,16 +528,32 @@ public class UserController extends HttpServlet {
             CustomerDAO customerDAO = new CustomerDAO();
 
             List<CustomerAccount> accounts = accountDAO.getAll();
-            List<Customer> customers = customerDAO.getAll(); // ← sử dụng đúng hàm getAll()
+            List<Customer> customers = customerDAO.getAll();
 
+            // Gửi dữ liệu chính
             request.setAttribute("accounts", accounts);
             request.setAttribute("customers", customers);
+            request.setAttribute("isLoggedIn", AuthUtils.isLoggedIn(request));
+            request.setAttribute("isAdmin", AuthUtils.isAdmin(request));
+
+            // Gửi dữ liệu phụ cho hiển thị alert
+            String checkError = (String) request.getAttribute("checkError");
+            String message = (String) request.getAttribute("message");
+            String updatedUserId = (String) request.getAttribute("updatedUserId");
+
+            request.setAttribute("checkError", checkError);
+            request.setAttribute("message", message);
+            request.setAttribute("updatedUserId", updatedUserId);
+
+            // Gửi các thông điệp hỗ trợ khi bị chặn truy cập (dùng trong JSTL)
+            request.setAttribute("accessDeniedMessage", AuthUtils.getAccessDeniedMessage("login.jsp"));
+            request.setAttribute("loginURL", AuthUtils.getLoginURL());
 
             return "manageAccounts.jsp";
 
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("message", "❌ Error while getting account list: " + e.getMessage());
+            request.setAttribute("checkError", "❌ Error while getting account list: " + e.getMessage());
             return "manageAccounts.jsp";
         }
     }
@@ -545,7 +561,7 @@ public class UserController extends HttpServlet {
     private String handleUpdateRole(HttpServletRequest request, HttpServletResponse response) {
         CustomerDAO customerDAO = new CustomerDAO();
         List<Customer> customers = customerDAO.getAll();
-        
+
         try {
             String customerId = request.getParameter("customerId");
             int role = Integer.parseInt(request.getParameter("role"));
@@ -556,6 +572,10 @@ public class UserController extends HttpServlet {
             List<CustomerAccount> accounts = dao.getAll();
             request.setAttribute("accounts", accounts);
             request.setAttribute("customers", customers);
+            request.setAttribute("isLoggedIn", AuthUtils.isLoggedIn(request));
+            request.setAttribute("isAdmin", AuthUtils.isAdmin(request));
+            request.setAttribute("accessDeniedMessage", AuthUtils.getAccessDeniedMessage("login.jsp"));
+            request.setAttribute("loginURL", AuthUtils.getLoginURL());
 
             // Chỉ báo cho đúng user vừa cập nhật
             if (updated) {
