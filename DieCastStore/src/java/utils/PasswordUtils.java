@@ -58,7 +58,7 @@ public class PasswordUtils {
     }
 
     public static void main(String[] args) {
-        System.out.println(encryptSHA256("123456"));
+        System.out.println(encryptSHA256("Star1"));
 //        CustomerAccountDAO udao = new CustomerAccountDAO();
 //        List<CustomerAccount> list = udao.getAll();
 //        for (CustomerAccount u : list) {

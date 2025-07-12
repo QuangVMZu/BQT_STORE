@@ -15,16 +15,18 @@ public class Accessory {
     private String detail;
     private double price;
     private int quantity;
+    private String imageUrl;
 
     public Accessory() {
     }
 
-    public Accessory(String accessoryId, String accessoryName, String detail, double price, int quantity) {
+    public Accessory(String accessoryId, String accessoryName, String detail, double price, int quantity, String imageUrl) {
         this.accessoryId = accessoryId;
         this.accessoryName = accessoryName;
         this.detail = detail;
         this.price = price;
         this.quantity = quantity;
+        this.imageUrl = this.imageUrl;
     }
 
     public String getAccessoryId() {
@@ -65,6 +67,14 @@ public class Accessory {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
 }

@@ -1,0 +1,30 @@
+body {
+    background-color: #e3f2fd;
+}
+
+.success-container {
+    margin-top: 80px;
+    background-color: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+}
+
+.check-icon {
+    font-size: 64px;
+    color: #28a745;
+}
+
+.order-details p {
+    font-size: 18px;
+}
+
+.nav-links a {
+    margin: 0 10px;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.nav-links a:hover {
+    text-decoration: underline;
+}

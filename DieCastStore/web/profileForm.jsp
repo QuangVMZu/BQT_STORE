@@ -1,9 +1,3 @@
-
-<%-- 
-    Document   : profile
-    Created on : Jun 17, 2025
-    Author     : Student
---%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -91,7 +85,7 @@
                     <input type="submit" value="Edit Profile | Change Password" class="nav-btn">
                 </form>
                 <form action="MainController" method="get" style="display: inline-block;">
-                    <input type="submit" value="Return to Home" class="nav-btn btn-home">
+                    <input type="submit" value="← Back to Home" class="nav-btn btn-home">
                 </form>
             </div>
         </div>

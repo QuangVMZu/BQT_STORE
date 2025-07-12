@@ -26,7 +26,7 @@
                     <p>+84 123 456 789</p>
 
                     <h5>✉️ Email</h5>
-                    <p>support@vnauto.com</p>
+                    <p>support@bqtstore.com</p>
 
                     <div class="map">
                         <h5>📌 Store Location Map</h5>

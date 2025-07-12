@@ -13,20 +13,18 @@
     </head>
     <body style="background: #e3f2fd;">
         <jsp:include page="header.jsp" />
-        <%
-            if (AuthUtils.isLoggedIn(request)) {
-                if (AuthUtils.isAdmin(request)) {
-            ModelCar product = (ModelCar) request.getAttribute("product");
-            String keyword = (String) request.getAttribute("keyword");
-            String message = (String) request.getAttribute("message");
-            String checkError = (String) request.getAttribute("checkError");
-            boolean isEdit = (product != null);
-            List<ImageModel> images = isEdit && product.getImages() != null ? product.getImages() : null;
-            int numberOfImageInputs = 4;
+        <% if (AuthUtils.isLoggedIn(request)) {
+            if (AuthUtils.isAdmin(request)) {
+                ModelCar product = (ModelCar) request.getAttribute("product");
+                String keyword = (String) request.getAttribute("keyword");
+                String message = (String) request.getAttribute("message");
+                String checkError = (String) request.getAttribute("checkError");
+                boolean isEdit = (product != null);
+                List<ImageModel> images = isEdit && product.getImages() != null ? product.getImages() : null;
+                int numberOfImageInputs = 4;
         %>
 
-        <!-- ✅ Message Display -->
-        <div class=" mt-3">
+        <div class="container mt-3">
             <% if (checkError != null && !checkError.isEmpty()) { %>
             <div class="alert alert-danger"><%= checkError %></div>
             <% } else if (message != null && !message.isEmpty()) { %>
@@ -34,7 +32,7 @@
             <% } %>
         </div>
 
-        <div class="form-image-container">
+        <div class="form-image-container container">
             <div class="product-form-box">
                 <div class="header mb-3">
                     <a href="ProductController?action=listEdit" class="back-link">&larr; Back to Products</a>
@@ -42,12 +40,10 @@
 
                 <h2><%= isEdit ? "Update Product" : "Add New Product" %></h2>
 
-                <!-- ✅ ADD FORM -->
                 <% if (!isEdit) { %>
                 <form action="ProductController?action=productAdding" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="keyword" value="<%= keyword != null ? keyword : "" %>">
                     <div class="row g-4">
-                        <!-- Product Info -->
                         <div class="col-md-6">
                             <div class="card shadow-sm">
                                 <div class="card-header bg-success text-white"><h5 class="mb-0">Add Product</h5></div>
@@ -61,7 +57,6 @@
                                     <label>Scale ID *</label>
                                     <input type="number" name="scale" class="form-control mb-3" required min="1" max="2" step="1">
 
-
                                     <label>Brand ID *</label>
                                     <input type="number" name="brandId" class="form-control mb-3" required min="1" max="10" step="1">
 
@@ -69,7 +64,7 @@
                                     <input type="number" step="0.01" name="price" class="form-control mb-3" required min="0">
 
                                     <label>Quantity *</label>
-                                    <input type="number" name="quantity" min="-1" class="form-control mb-3" required min="0">
+                                    <input type="number" name="quantity" class="form-control mb-3" required min="-1">
 
                                     <label>Description</label>
                                     <textarea name="description" rows="4" class="form-control"></textarea>
@@ -77,12 +72,11 @@
                             </div>
                         </div>
 
-                        <!-- Image Upload -->
                         <div class="col-md-6">
                             <div class="card shadow-sm">
                                 <div class="card-header bg-primary text-white"><h5 class="mb-0">Upload Product Images</h5></div>
                                 <div class="card-body">
-                                    <% for (int i = 0; i < 4; i++) { %>
+                                    <% for (int i = 0; i < numberOfImageInputs; i++) { %>
                                     <div class="mb-4 border rounded p-3 bg-light">
                                         <label>Image File <%= (i + 1) %> *</label>
                                         <input type="file" name="imageFiles" class="form-control mb-2" accept="image/*" required>
@@ -101,10 +95,8 @@
                 </form>
                 <% } %>
 
-                <!-- ✅ EDIT FORM -->
                 <% if (isEdit) { %>
                 <div class="row g-4 mt-5">
-                    <!-- Product Info Update -->
                     <div class="col-md-6">
                         <form action="ProductController?action=productUpdateMain" method="post">
                             <div class="card shadow-sm">
@@ -126,7 +118,7 @@
                                     <input type="number" step="0.01" name="price" class="form-control mb-3" value="<%= product.getPrice() %>" required min="0">
 
                                     <label>Quantity *</label>
-                                    <input type="number" name="quantity" min="-1" class="form-control mb-3" value="<%= product.getQuantity() %>" required min="-1">
+                                    <input type="number" name="quantity" class="form-control mb-3" value="<%= product.getQuantity() %>" required min="-1">
 
                                     <label>Description</label>
                                     <textarea name="description" rows="4" class="form-control"><%= product.getDescription() %></textarea>
@@ -137,7 +129,6 @@
                         </form>
                     </div>
 
-                    <!-- Image Upload Update -->
                     <div class="col-md-6">
                         <form action="ProductController?action=productUpdateImages" method="post" enctype="multipart/form-data">
                             <div class="card shadow-sm">
@@ -187,20 +178,16 @@
                 <% } %>
             </div>
         </div>
-        <% 
-        } else { // not admin 
-        %>
+
+        <% } else { %>
         <div class="container access-denied">
             <h2 style="color: #00695c">Access Denied</h2>
             <p><%= AuthUtils.getAccessDeniedMessage("login.jsp") %></p>
             <a href="<%= AuthUtils.getLoginURL() %>" class="btn btn-primary mt-2">Login Now</a>
         </div><br>
-        <% 
-            } // end if admin
-        } else { // not logged in
-        %>
+        <% } } else { %>
         <div class="container access-denied">
-            <h2 style="color: #00695c">Access Denied</h2>
+            <h2 class="text-danger">Access Denied</h2>
             <p><%= AuthUtils.getAccessDeniedMessage("login.jsp") %></p>
             <a href="<%= AuthUtils.getLoginURL() %>" class="btn btn-primary mt-2">Login Now</a>
         </div><br>

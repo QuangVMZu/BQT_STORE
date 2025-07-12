@@ -19,6 +19,7 @@ public class Order {
     private String status;
     private double totalAmount;
     private List<OrderDetail> orderDetails;
+    private String shippingAddress;
 
     public Order() {
     }
@@ -80,6 +81,12 @@ public class Order {
         this.orderDetails = orderDetails;
     }
 
-    
+    public String getShippingAddress() {
+        return shippingAddress;
+    }
+
+    public void setShippingAddress(String shippingAddress) {
+        this.shippingAddress = shippingAddress;
+    }
 
 }

@@ -1,10 +1,3 @@
-
-<%-- 
-    Document   : register
-    Created on : Jun 14, 2025, 2:51:31 PM
-    Author     : hqthi
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>

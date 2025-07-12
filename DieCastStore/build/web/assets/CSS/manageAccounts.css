@@ -1,31 +1,80 @@
+/* ======================
+   Layout & Background
+====================== */
 body {
     background-color: #e3f2fd;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+
+/* ======================
+   Table Container
+====================== */
 .table-container {
-    margin: 40px auto;
     max-width: 1200px;
-    background-color: #f8fbff;
+    margin: 40px auto;
     padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
+
+/* ======================
+   Table Styling
+====================== */
+.table th, .table td {
+    vertical-align: middle !important;
+}
+
+.table thead th {
+    background-color: #2196f3;
+    color: white;
+}
+
+/* ======================
+   Alert Styling
+====================== */
+.alert {
+    font-size: 16px;
+}
+
+/* ======================
+   Return Button
+====================== */
 .return-section {
     margin-top: 20px;
 }
+
+.return-section a {
+    font-size: 16px;
+    padding: 8px 20px;
+    border-radius: 8px;
+}
+
+/* ======================
+   Access Denied Block
+====================== */
+.access-denied {
+    text-align: center;
+    margin-top: 50px;
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 40px 30px;
+    font-size: 1.15rem;
+    color: #c62828;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.07);
+}
+
+/* ======================
+   Success & Error Messages
+====================== */
 .message-success {
     color: green;
     font-weight: bold;
 }
+
 .message-error {
     color: red;
     font-weight: bold;
-}
-
-.access-denied {
-    color: #c62828;
-    text-align: center;
-    margin-top: 40px;
-    font-size: 1.15rem;
 }
 
 .container {

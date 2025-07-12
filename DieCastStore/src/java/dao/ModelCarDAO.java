@@ -14,11 +14,12 @@ public class ModelCarDAO implements IDAO<ModelCar, String> {
 
     private static final String GET_ALL = "SELECT * FROM modelCar";
     private static final String GET_BY_ID = "SELECT * FROM modelCar WHERE modelId LIKE ?";
+    private static final String GET_BY_NAME = "SELECT * FROM modelCar WHERE modelName LIKE ?";
     private static final String GET_IMAGES_BY_MODEL_ID = "SELECT imageId, imageUrl, caption FROM imageModel WHERE modelId like ?";
     private static final String SEARCH_BY_NAME = "SELECT * FROM modelCar WHERE modelName LIKE ?";
     private static final String CREATE = "INSERT INTO modelCar (modelId, modelName, scaleId, brandId, price, description, quantity) VALUES (?, ?, ?, ?, ?, ?, ?)";
     private static final String UPDATE = "UPDATE ModelCar SET modelName = ?, scaleId = ?, brandId = ?, price = ?, description = ?, quantity = ?  WHERE modelId LIKE ?";
-    private static final String UPDATE_QUANTITY = "UPDATE modelCar SET quantity = -1 WHERE modelId = ?";
+    private static final String UPDATE_QUANTITY = "UPDATE modelCar SET quantity = quantity - 1 WHERE modelId = ?";
 
     @Override
     public ModelCar getById(String id) {
@@ -48,6 +49,53 @@ public class ModelCarDAO implements IDAO<ModelCar, String> {
                 List<ImageModel> images = new ArrayList<>();
                 try ( PreparedStatement imgStmt = c.prepareStatement(GET_IMAGES_BY_MODEL_ID)) {
                     imgStmt.setString(1, id);
+                    ResultSet imgRs = imgStmt.executeQuery();
+                    while (imgRs.next()) {
+                        ImageModel img = new ImageModel();
+                        img.setImageId(imgRs.getString("imageId"));
+                        img.setImageUrl(imgRs.getString("imageUrl"));
+                        img.setCaption(imgRs.getString("caption"));
+                        images.add(img);
+                    }
+                }
+
+                car.setImages(images);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            closeResources(c, st, rs);
+        }
+
+        return car;
+    }
+
+    public ModelCar getByName(String name) {
+        ModelCar car = null;
+        Connection c = null;
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        try {
+            c = DBUtils.getConnection();
+            st = c.prepareStatement(GET_BY_NAME);
+            st.setString(1, name);
+            rs = st.executeQuery();
+
+            if (rs.next()) {
+                car = new ModelCar();
+                car.setModelId(rs.getString("modelId"));
+                car.setModelName(rs.getString("modelName"));
+                car.setScaleId(rs.getInt("scaleId"));
+                car.setBrandId(rs.getInt("brandId"));
+                car.setPrice(rs.getDouble("price"));
+                car.setDescription(rs.getString("description"));
+                car.setQuantity(rs.getInt("quantity"));
+
+                // Load images
+                List<ImageModel> images = new ArrayList<>();
+                try ( PreparedStatement imgStmt = c.prepareStatement(GET_IMAGES_BY_MODEL_ID)) {
+                    imgStmt.setString(1, car.getModelId());
                     ResultSet imgRs = imgStmt.executeQuery();
                     while (imgRs.next()) {
                         ImageModel img = new ImageModel();
@@ -385,6 +433,27 @@ public class ModelCarDAO implements IDAO<ModelCar, String> {
         return false;
     }
 
+    public boolean updateQuantityForCart(String modelId, int newQuantity) {
+        
+        Connection c = null;
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        
+        String sql = "UPDATE modelCar SET quantity = ? WHERE modelId = ?";
+        try ( Connection conn = DBUtils.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, newQuantity);
+            ps.setString(2, modelId);
+
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            closeResources(c, st, rs);
+        }
+    }
+
     public List<ModelCar> getNewest16Products() {
         List<ModelCar> list = new ArrayList<>();
         String sql = "SELECT TOP 20 * FROM modelCar ORDER BY modelId DESC";
@@ -551,4 +620,24 @@ public class ModelCarDAO implements IDAO<ModelCar, String> {
         return list;
     }
 
+    public void increaseQuantity(String modelId, int quantity) throws SQLException, ClassNotFoundException {
+        String sql = "UPDATE modelCar SET quantity = quantity + ? WHERE modelId = ?";
+        try ( Connection conn = DBUtils.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, quantity);
+            ps.setString(2, modelId);
+            ps.executeUpdate();
+        }
+    }
+
+    public int countByKeyword(String keyword) throws SQLException, ClassNotFoundException {
+        String sql = "SELECT COUNT(*) FROM modelCar WHERE modelName LIKE ?";
+        try ( Connection conn = DBUtils.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, "%" + keyword + "%");
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        }
+        return 0;
+    }
 }

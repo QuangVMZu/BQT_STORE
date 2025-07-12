@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import model.Accessory;
+import model.ModelCar;
 import utils.DBUtils;
 
 /**
@@ -22,11 +23,12 @@ public class AccessoryDAO implements IDAO<Accessory, String> {
     private static final String GET_ALL = "SELECT * FROM accessory";
     private static final String GET_BY_ID = "SELECT * FROM accessory WHERE accessoryId = ?";
     private static final String GET_BY_NAME = "SELECT * FROM accessory WHERE accessoryName = ?";
-    private static final String CREATE = "INSERT INTO accessory(accessoryId, accessoryName, detail, price, quantity) VALUES (?, ?, ?, ?, ?)";
-    private static final String UPDATE = "UPDATE accessory SET accessoryName = ?, detail = ?, price = ?, quantity = ? WHERE accessoryId = ?";
+    private static final String CREATE = "INSERT INTO accessory(accessoryId, accessoryName, detail, price, quantity, imageUrl) VALUES (?, ?, ?, ?, ?, ?)";
+    private static final String UPDATE = "UPDATE accessory SET accessoryName = ?, detail = ?, price = ?, quantity = ?, imageUrl = ? WHERE accessoryId = ?";
     private static final String DELETE = "DELETE FROM accessory WHERE accessoryId = ?";
     private static final String MAX = "SELECT MAX(accessoryId) FROM accessory WHERE accessoryId LIKE 'ACS%'";
     private static final String COUNT = "SELECT COUNT(*) FROM accessory";
+    private static final String UPDATE_QUANTITY = "UPDATE accessory SET quantity = -1 WHERE accessoryId = ?";
 
     @Override
     public boolean create(Accessory entity) {
@@ -42,6 +44,7 @@ public class AccessoryDAO implements IDAO<Accessory, String> {
             st.setString(3, entity.getDetail());
             st.setDouble(4, entity.getPrice());
             st.setInt(5, entity.getQuantity());
+            st.setString(6, entity.getImageUrl());
 
             return st.executeUpdate() > 0;
         } catch (ClassNotFoundException | SQLException e) {
@@ -63,7 +66,8 @@ public class AccessoryDAO implements IDAO<Accessory, String> {
             st.setString(2, entity.getDetail());
             st.setDouble(3, entity.getPrice());
             st.setInt(4, entity.getQuantity());
-            st.setString(5, entity.getAccessoryId());
+            st.setString(5, entity.getImageUrl());
+            st.setString(6, entity.getAccessoryId());
 
             return st.executeUpdate() > 0;
         } catch (ClassNotFoundException | SQLException e) {
@@ -114,7 +118,7 @@ public class AccessoryDAO implements IDAO<Accessory, String> {
         return null;
     }
 
-    public Accessory getByName(String name) {
+    public List<Accessory> getByName(String name) {
         Connection c = null;
         PreparedStatement st = null;
         ResultSet rs = null;
@@ -123,16 +127,15 @@ public class AccessoryDAO implements IDAO<Accessory, String> {
             st = c.prepareStatement(GET_BY_NAME);
             st.setString(1, name);
             rs = st.executeQuery();
-            if (rs.next()) {
-                return mapResultSet(rs);
-            }
+
+            return (List<Accessory>) mapResultSet(rs); // Để mapResultSet xử lý toàn bộ ResultSet
 
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         } finally {
             closeResources(c, st, rs);
         }
-        return null;
+        return new ArrayList<>(); // Tránh trả về null
     }
 
     @Override
@@ -165,6 +168,7 @@ public class AccessoryDAO implements IDAO<Accessory, String> {
         acs.setDetail(rs.getString("detail"));
         acs.setPrice(rs.getDouble("price"));
         acs.setQuantity(rs.getInt("quantity"));
+        acs.setImageUrl(rs.getString("imageUrl"));
         return acs;
     }
 
@@ -209,6 +213,46 @@ public class AccessoryDAO implements IDAO<Accessory, String> {
             System.err.println("Error closing resources: " + e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    public void increaseQuantity(String accessoryId, int quantity) throws SQLException, ClassNotFoundException {
+        String sql = "UPDATE accessory SET quantity = quantity + ? WHERE accessoryId = ?";
+        try ( Connection conn = DBUtils.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, quantity);
+            ps.setString(2, accessoryId);
+            ps.executeUpdate();
+        }
+    }
+
+    public int countAccessories() throws SQLException, ClassNotFoundException {
+        String sql = "SELECT COUNT(*) FROM accessory";
+        try ( Connection conn = DBUtils.getConnection();  PreparedStatement ps = conn.prepareStatement(sql);  ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        }
+        return 0;
+    }
+
+    public boolean updateQuantity(String accessoryId) {
+        Connection c = null;
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        try {
+            c = DBUtils.getConnection();
+            st = c.prepareStatement(UPDATE_QUANTITY);
+            st.setString(1, accessoryId);
+
+            return st.executeUpdate() > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            closeResources(c, st, rs);
+        }
+
+        return false;
     }
 
 }

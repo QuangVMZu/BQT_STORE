@@ -216,4 +216,22 @@ public class CustomerDAO implements IDAO<Customer, String> {
         return false;
     }
 
+    public String getAddressByCustomerId(String customerId) {
+        String address = null;
+        String sql = "SELECT address FROM customer WHERE customerId = ?";
+
+        try (Connection conn = DBUtils.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, customerId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    address = rs.getString("address");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // hoặc log ra
+        }
+
+        return address;
+    }
 }

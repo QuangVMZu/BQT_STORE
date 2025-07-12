@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="model.ModelCar" %>
+<%@ page import="model.Accessory" %>
 <%@ page import="model.ImageModel" %>
 <%@ page import="java.util.List" %>
 
@@ -11,7 +12,7 @@
         <!-- Bootstrap 5 -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     </head>
-    
+
     <body style="background: #e3f2fd;">
         <jsp:include page="header.jsp" />
         <div class="banner-slider" style="margin-top: 30px">
@@ -58,6 +59,48 @@
                     </div>
                     <% } %>
                 </div>
+            </div>
+            <%
+                } else {
+            %>
+            <p class="no-products">No products found.</p>
+            <%
+                }
+            %>
+        </div>
+
+
+        <div class="product-page container" style="max-width: 1400px">
+            </br>
+            <h1 class="title">★ All Accessory ★</h1>
+
+            <%
+                List<Accessory> accessory = (List<Accessory>) request.getAttribute("accessoryList");
+                if (accessory != null && !accessory.isEmpty()) {
+            %>
+
+            <div class="carousel-wrapper">
+                <div class="arrow left" onclick="scrollAccessoryCarousel(-1)">&#10094;</div>
+
+                <div class="product-container" id="accessory-carousel">
+                    <% for (Accessory accessorys : accessory) {
+                        if (accessorys.getQuantity() <= -1) continue;
+                    %>
+                    <div class="product-card">
+                        <a class="product-link" href="ProductController?action=detail&accessoryId=<%= accessorys.getAccessoryId() %>" style="text-decoration: none; color: inherit;">
+                            <div class="card-inner">
+                                <img class="product-image" src="<%= accessorys.getImageUrl() %>" alt="<%= accessorys.getAccessoryName() %>">
+                                <div class="product-info">
+                                    <div class="product-name"><%= accessorys.getAccessoryName() %></div>
+                                    <div class="product-price">$<%= String.format("%,.2f", accessorys.getPrice()) %></div>
+                                </div>
+                            </div>
+                        </a>            
+                    </div>
+                    <% } %>
+                </div>
+
+                <div class="arrow right" onclick="scrollAccessoryCarousel(1)">&#10095;</div>
             </div>
             <%
                 } else {

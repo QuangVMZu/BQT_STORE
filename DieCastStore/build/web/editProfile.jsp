@@ -196,7 +196,7 @@
 
             <!-- Return Button -->
             <div class="return-section">
-                <a href="MainController?action=viewProfile" class="btn-return">Return to Profile</a>
+                <a href="MainController?action=viewProfile" class="btn-return"> ← Back to Profile</a>
             </div>
         </div>
         

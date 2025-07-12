@@ -1,5 +1,6 @@
 package controller;
 
+import dao.CartDAO;
 import dao.CustomerAccountDAO;
 import dao.CustomerDAO;
 import java.io.IOException;
@@ -10,6 +11,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
+import model.Cart;
+import model.CartItem;
 import model.Customer;
 import model.CustomerAccount;
 import utils.AuthUtils;
@@ -24,6 +27,8 @@ public class UserController extends HttpServlet {
     private static final String PROFILE_PAGE = "profileForm.jsp";
     private static final String EDIT_PAGE = "editProfile.jsp";
 
+    private CartDAO cartDAO = new CartDAO();
+
     public static boolean isNullOrEmpty(String str) {
         return str == null || str.trim().isEmpty();
     }
@@ -32,6 +37,9 @@ public class UserController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = LOGIN_PAGE;
+        if (url == null) {
+            url = "login.jsp";
+        }
         try {
             String action = request.getParameter("action");
             if (action != null) {
@@ -77,8 +85,18 @@ public class UserController extends HttpServlet {
             }
         } catch (Exception e) {
         } finally {
-            request.getRequestDispatcher(url).forward(request, response);
-
+            if (url != null) {
+                try {
+                    request.getRequestDispatcher(url).forward(request, response);
+                } catch (Exception ex) {
+                    ex.printStackTrace(); // log lỗi
+                    // KHÔNG gọi sendError ở đây nữa vì response có thể đã bị gửi
+                }
+            } else {
+                // fallback an toàn nếu url null trước khi forward
+                response.setContentType("text/html;charset=UTF-8");
+                response.getWriter().println("<h3>Unexpected error: No URL to forward.</h3>");
+            }
         }
     }
 
@@ -122,55 +140,81 @@ public class UserController extends HttpServlet {
     }// </editor-fold>
 
     private String handleLogin(HttpServletRequest request, HttpServletResponse response) {
+        String url = LOGIN_PAGE;
         HttpSession session = request.getSession();
+
         String userName = request.getParameter("userName");
         String password = request.getParameter("password");
-        CustomerAccountDAO accountDAO = new CustomerAccountDAO();
-        CustomerDAO customerDAO = new CustomerDAO();
 
-        if (isNullOrEmpty(userName)
-                || isNullOrEmpty(password)) {
+        if (isNullOrEmpty(userName) || isNullOrEmpty(password)) {
             request.setAttribute("message", "Please enter your User Name and Password!");
-            return LOGIN_PAGE;
+            return url;
         }
 
         try {
-            if (!accountDAO.isActiveUserByUserName(userName)) {
-                CustomerAccount temp = accountDAO.getByUserName(userName);
-                if (temp != null && temp.getRole() == 0) {
-                    request.setAttribute("ban", "Your account has been banned. Please contact administrator!");
-                    return LOGIN_PAGE;
-                }
+            CustomerAccountDAO accountDAO = new CustomerAccountDAO();
+            CustomerDAO customerDAO = new CustomerDAO();
+
+            CustomerAccount account = accountDAO.getByUserName(userName);
+            if (account == null) {
+                session.setAttribute("message", "Username or password is incorrect!");
+                return url;
             }
 
-            if (accountDAO.login(userName, password)) {
-                CustomerAccount account = accountDAO.getByUserName(userName);
-
-                if (account != null) {
-                    Customer customer = customerDAO.getById(account.getCustomerId());
-
-                    if (customer != null) {
-                        session.setAttribute("account", account);
-                        session.setAttribute("customer", customer);
-                        session.setAttribute("userName", account.getUserName());
-                        session.setAttribute("customerId", account.getCustomerId());
-                        session.setAttribute("role", account.getRole());
-
-                        return WELCOME_PAGE;
-                    } else {
-                        request.setAttribute("message", "Customer information not found!");
-                        return LOGIN_PAGE;
-                    }
-                } else {
-                    request.setAttribute("message", "Can not load account information!");
-                    return LOGIN_PAGE;
-                }
-            } else {
-                request.setAttribute("message", "Username or password is incorrect!");
-                return LOGIN_PAGE;
+            // Kiểm tra tài khoản bị ban
+            if (account.getRole() == 0 || !accountDAO.isActiveUserByUserName(userName)) {
+                session.setAttribute("message", "Your account has been banned.");
+                return url;
             }
+
+            // Xác thực đăng nhập (trả về boolean)
+            boolean loginSuccess = accountDAO.login(userName, password);
+            if (!loginSuccess) {
+                session.setAttribute("message", "Username or password is incorrect!");
+                return url;
+            }
+
+            // Đăng nhập thành công
+            Customer customer = customerDAO.getById(account.getCustomerId());
+            if (customer == null) {
+                session.setAttribute("message", "Customer information not found!");
+                return url;
+            }
+
+            session.setAttribute("user", account);
+            session.setAttribute("account", account);
+            session.setAttribute("customer", customer);
+            session.setAttribute("userName", account.getUserName());
+            session.setAttribute("customerId", account.getCustomerId());
+            session.setAttribute("role", account.getRole());
+
+            // Gộp giỏ hàng
+            Cart savedCart = cartDAO.getCartByCustomerId(account.getCustomerId());
+            Cart sessionCart = (Cart) session.getAttribute("cart");
+
+            if (sessionCart != null && !sessionCart.getItems().isEmpty()) {
+                for (CartItem item : sessionCart.getItems()) {
+                    savedCart.addItem(item.getItemType(), item.getItemId(),
+                            item.getItemName(), item.getUnitPrice(), item.getQuantity());
+                }
+                cartDAO.saveCart(account.getCustomerId(), savedCart);
+            }
+
+            session.setAttribute("cart", savedCart);
+
+            // Redirect nếu có
+            String redirectAfterLogin = (String) session.getAttribute("redirectAfterLogin");
+            if (redirectAfterLogin != null) {
+                session.removeAttribute("redirectAfterLogin");
+                response.sendRedirect(redirectAfterLogin);
+                return null; // đã redirect
+            }
+
+            return WELCOME_PAGE;
+
         } catch (Exception e) {
             e.printStackTrace();
+            session.setAttribute("message", "An error occurred during login.");
             return LOGIN_PAGE;
         }
     }
@@ -480,10 +524,15 @@ public class UserController extends HttpServlet {
 
     private String handleViewAllAccount(HttpServletRequest request, HttpServletResponse response) {
         try {
-            CustomerAccountDAO dao = new CustomerAccountDAO();
-            List<CustomerAccount> accounts = dao.getAll();
+            CustomerAccountDAO accountDAO = new CustomerAccountDAO();
+            CustomerDAO customerDAO = new CustomerDAO();
+
+            List<CustomerAccount> accounts = accountDAO.getAll();
+            List<Customer> customers = customerDAO.getAll(); // ← sử dụng đúng hàm getAll()
 
             request.setAttribute("accounts", accounts);
+            request.setAttribute("customers", customers);
+
             return "manageAccounts.jsp";
 
         } catch (Exception e) {
@@ -494,6 +543,9 @@ public class UserController extends HttpServlet {
     }
 
     private String handleUpdateRole(HttpServletRequest request, HttpServletResponse response) {
+        CustomerDAO customerDAO = new CustomerDAO();
+        List<Customer> customers = customerDAO.getAll();
+        
         try {
             String customerId = request.getParameter("customerId");
             int role = Integer.parseInt(request.getParameter("role"));
@@ -503,6 +555,7 @@ public class UserController extends HttpServlet {
 
             List<CustomerAccount> accounts = dao.getAll();
             request.setAttribute("accounts", accounts);
+            request.setAttribute("customers", customers);
 
             // Chỉ báo cho đúng user vừa cập nhật
             if (updated) {

@@ -1,5 +1,6 @@
 package controller;
 
+import dao.AccessoryDAO;
 import dao.BrandDAO;
 import dao.ImageModelDAO;
 import dao.ModelCarDAO;
@@ -23,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
+import model.Accessory;
 import model.BrandModel;
 import model.ImageModel;
 import model.ModelCar;
@@ -85,6 +87,18 @@ public class ProductController extends HttpServlet {
                     case "editProductPage":
                         url = handleEditProductPage(request, response);
                         break;
+                    case "editAccessory":
+                        url = handleEditAccessory(request, response);
+                        break;
+                    case "accessoryAdding":
+                        url = handleAccessoryAdding(request, response);
+                        break;
+                    case "accessoryUpdate":
+                        url = handleAccessoryUpdate(request, response);
+                        break;
+                    case "changeAccessoryQuantity":
+                        url = handleChangeAccessoryQuantity(request, response);
+                        break;
                     default:
                         request.setAttribute("message", "Invalid product action: " + action);
                         url = "MainController?action=list";
@@ -144,12 +158,20 @@ public class ProductController extends HttpServlet {
 
     private String handleList(HttpServletRequest request, HttpServletResponse response) {
         ModelCarDAO dao = new ModelCarDAO();
+        AccessoryDAO adao = new AccessoryDAO();
         List<ModelCar> list = dao.getAll();
+        List<Accessory> accessoryList = adao.getAll();
+
+        if (accessoryList.isEmpty() || accessoryList == null) {
+            request.setAttribute("checkErorr", "No have list accessory");
+            return "productList.jsp";
+        }
         if (list.isEmpty() || list == null) {
             request.setAttribute("checkErorr", "No have list products");
             return "productList.jsp";
         }
         request.setAttribute("productList", list);
+        request.setAttribute("accessoryList", accessoryList);
         return "productList.jsp";
 
     }
@@ -198,51 +220,89 @@ public class ProductController extends HttpServlet {
 
     private String handleDetails(HttpServletRequest request, HttpServletResponse response) {
         String url = "productDetail.jsp";
+        AccessoryDAO adao = new AccessoryDAO();
 
         try {
             String modelId = request.getParameter("modelId");
+            String modelName = request.getParameter("modelName");
+            String accessoryId = request.getParameter("accessoryId");
+            String accessoryName = request.getParameter("accessoryName");
 
-            if (modelId == null || modelId.trim().isEmpty()) {
-                request.setAttribute("checkError", "Missing product ModelID information.");
+            List<Accessory> accessoryList = adao.getAll();
+
+            if (accessoryList.isEmpty() || accessoryList == null) {
+                request.setAttribute("checkErorr", "No have list accessory");
                 return "productList.jsp";
             }
+            request.setAttribute("accessoryList", accessoryList);
 
             ModelCarDAO modelCarDAO = new ModelCarDAO();
+            AccessoryDAO accessoryDAO = new AccessoryDAO();
             BrandDAO brandDAO = new BrandDAO();
             ScaleDAO scaleDAO = new ScaleDAO();
 
-            // Lấy thông tin chi tiết sản phẩm
-            ModelCar car = modelCarDAO.getById(modelId);
+            // Ưu tiên hiển thị ModelCar nếu có thông tin
+            if ((modelId != null && !modelId.trim().isEmpty()) || (modelName != null && !modelName.trim().isEmpty())) {
+                ModelCar car = null;
 
-            if (car == null) {
-                request.setAttribute("checkError", "No product found with ModelID: " + modelId);
-                return "productList.jsp";
+                if (modelId != null && !modelId.trim().isEmpty()) {
+                    car = modelCarDAO.getById(modelId);
+                } else if (modelName != null && !modelName.trim().isEmpty()) {
+                    car = modelCarDAO.getByName(modelName); // cần có getByName() trong DAO
+                }
+
+                if (car == null) {
+                    request.setAttribute("checkError", "No ModelCar found with the given information.");
+                    return "ProductController?action=list";
+                }
+
+                // Lưu model vào request
+                request.setAttribute("productDetail", car);
+
+                // Brand
+                BrandModel brand = brandDAO.getById(car.getBrandId());
+                if (brand != null) {
+                    request.setAttribute("productBrand", brand);
+                }
+
+                // Scale
+                ScaleModel scale = scaleDAO.getById(car.getScaleId());
+                if (scale != null) {
+                    request.setAttribute("productScale", scale);
+                }
+
+                // Gợi ý sản phẩm theo cùng scale
+                List<ModelCar> productsByScale = modelCarDAO.getProductsByScaleId(car.getScaleId());
+                if (productsByScale != null) {
+                    productsByScale.removeIf(p -> p.getModelId().equals(modelId)); // loại bỏ chính nó
+                }
+                request.setAttribute("productsByScale", productsByScale);
+
+                // 8 sản phẩm mới nhất
+                List<ModelCar> newestProducts = modelCarDAO.getNewest8Products();
+                request.setAttribute("newestProducts", newestProducts);
+
+            } else if ((accessoryId != null && !accessoryId.trim().isEmpty()) || (accessoryName != null && !accessoryName.trim().isEmpty())) {
+                Accessory accessory = null;
+
+                if (accessoryId != null && !accessoryId.trim().isEmpty()) {
+                    accessory = accessoryDAO.getById(accessoryId);
+                } else if (accessoryName != null && !accessoryName.trim().isEmpty()) {
+                    accessory = (Accessory) accessoryDAO.getByName(accessoryName); // cần có getByName() trong DAO
+                }
+
+                if (accessory == null) {
+                    request.setAttribute("checkError", "No Accessory found with the given information.");
+                    return "ProductController?action=list";
+                }
+
+                // Lưu accessory vào request
+                request.setAttribute("accessoryDetail", accessory);
+
+            } else {
+                request.setAttribute("checkError", "Missing product information.");
+                return "ProductController?action=list";
             }
-
-            request.setAttribute("productDetail", car);
-
-            // Brand
-            BrandModel brand = brandDAO.getById(car.getBrandId());
-            if (brand != null) {
-                request.setAttribute("productBrand", brand);
-            }
-
-            // Scale
-            ScaleModel scale = scaleDAO.getById(car.getScaleId());
-            if (scale != null) {
-                request.setAttribute("productScale", scale);
-            }
-
-            // Gợi ý sản phẩm theo cùng scale
-            List<ModelCar> productsByScale = modelCarDAO.getProductsByScaleId(car.getScaleId());
-            if (productsByScale != null) {
-                productsByScale.removeIf(p -> p.getModelId().equals(modelId)); // loại bỏ chính nó
-            }
-            request.setAttribute("productsByScale", productsByScale);
-
-            // Lấy danh sách 8 sản phẩm mới nhất cho phần “Recommended”
-            List<ModelCar> newestProducts = modelCarDAO.getNewest8Products();
-            request.setAttribute("newestProducts", newestProducts);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -272,11 +332,11 @@ public class ProductController extends HttpServlet {
 
         HttpSession session = request.getSession();
 
-        // Luôn lấy danh sách đầy đủ từ DAO khi là admin vào trang (có thể thay đổi tùy yêu cầu)
-        ModelCarDAO dao = new ModelCarDAO();
+        // Lấy danh sách sản phẩm từ cache (nếu có)
+        ModelCarDAO carDao = new ModelCarDAO();
         List<ModelCar> fullList = (List<ModelCar>) session.getAttribute("cachedProductListEdit");
         if (fullList == null) {
-            fullList = dao.getAll();
+            fullList = carDao.getAll();
             session.setAttribute("cachedProductListEdit", fullList);
         }
 
@@ -290,10 +350,15 @@ public class ProductController extends HttpServlet {
             pageList = fullList.subList(start, end);
         }
 
-        // Truyền danh sách phân trang và thông tin phân trang ra view
+        // ✅ Thêm: Lấy danh sách phụ kiện
+        AccessoryDAO accDao = new AccessoryDAO();
+        List<Accessory> accessoryList = accDao.getAll(); // hoặc accDao.getAll()
+
+        // Truyền dữ liệu ra view
         request.setAttribute("pageList", pageList);
         request.setAttribute("currentPage", currentPage);
         request.setAttribute("totalPages", totalPages);
+        request.setAttribute("accessoryList", accessoryList); // ✅ thêm dòng này
 
         return "editProduct.jsp";
     }
@@ -325,23 +390,57 @@ public class ProductController extends HttpServlet {
 
         String modelId = request.getParameter("modelId");
         String keyword = request.getParameter("keyword");
+        String pageParam = request.getParameter("page");
+
+        int currentPage = 1;
+        try {
+            currentPage = (pageParam != null) ? Integer.parseInt(pageParam) : 1;
+        } catch (NumberFormatException e) {
+            currentPage = 1;
+        }
 
         ModelCarDAO dao = new ModelCarDAO();
         boolean success = dao.updateQuantity(modelId);
 
-        List<ModelCar> updatedList = dao.searchByName(keyword != null ? keyword : "");
-
-        if (updatedList.isEmpty()) {
-            request.setAttribute("checkError", "No have product.");
+        // ✅ Lấy lại danh sách modelCar theo từ khóa tìm kiếm (có thể là rỗng)
+        List<ModelCar> fullList = dao.searchByName(keyword != null ? keyword : "");
+        if (fullList == null) {
+            fullList = new ArrayList<>();
         }
 
+        final int ITEMS_PER_PAGE = 10;
+        int totalItems = fullList.size();
+        int totalPages = (int) Math.ceil((double) totalItems / ITEMS_PER_PAGE);
+
+        if (currentPage > totalPages) {
+            currentPage = totalPages;
+        }
+        if (currentPage < 1) {
+            currentPage = 1;
+        }
+
+        int start = (currentPage - 1) * ITEMS_PER_PAGE;
+        int end = Math.min(start + ITEMS_PER_PAGE, totalItems);
+        List<ModelCar> pageList = fullList.subList(start, end);
+
+        // ✅ Lấy lại danh sách Accessory
+        AccessoryDAO accessoryDAO = new AccessoryDAO();
+        List<Accessory> accessoryList = accessoryDAO.getAll();
+        if (accessoryList == null) {
+            accessoryList = new ArrayList<>();
+        }
+
+        // ✅ Gửi dữ liệu ra view
+        request.setAttribute("accessoryList", accessoryList);
+        request.setAttribute("pageList", pageList);
+        request.setAttribute("totalPages", totalPages);
+        request.setAttribute("currentPage", currentPage);
         request.setAttribute("keyword", keyword);
-        request.setAttribute("pageList", updatedList);
-        request.setAttribute("totalPages", 1);
-        request.setAttribute("currentPage", 1);
 
         if (success) {
-            request.setAttribute("message", "Quantity for product [" + modelId + "] has been updated to -1.");
+            HttpSession session = request.getSession();
+            session.removeAttribute("cachedProductListEdit");
+            request.setAttribute("message", "✅ Quantity for product [" + modelId + "] has been updated to -1.");
         } else {
             request.setAttribute("checkError", "❌ Failed to update quantity. Check if productId exists.");
         }
@@ -570,6 +669,8 @@ public class ProductController extends HttpServlet {
             boolean success = dao.update(tempProduct);
 
             if (success) {
+                HttpSession session = request.getSession();
+                session.removeAttribute("cachedProductListEdit");
                 request.setAttribute("message", "Product information updated successfully.");
             } else {
                 request.setAttribute("checkError", "Failed to update product information.");
@@ -681,6 +782,250 @@ public class ProductController extends HttpServlet {
             request.setAttribute("checkError", "Unexpected error occurred: " + e.getMessage());
             return "error.jsp";
         }
+    }
+
+    private String handleAccessoryAdding(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        if (!AuthUtils.isAdmin(request)) {
+            request.setAttribute("checkError", "You do not have permission to add accessories.");
+            return "error.jsp";
+        }
+
+        try {
+            // Lấy dữ liệu từ form
+            String name = request.getParameter("name");
+            String detail = request.getParameter("detail");
+            double price = Double.parseDouble(request.getParameter("price"));
+            int quantity = Integer.parseInt(request.getParameter("quantity"));
+
+            if (quantity < -1) {
+                request.setAttribute("checkError", "Quantity cannot be less than -1.");
+                return "accessoryUpdate.jsp";
+            }
+
+            // Tạo Accessory ID đơn giản (tùy bạn có thể tạo theo format khác)
+            AccessoryDAO dao = new AccessoryDAO();
+            int count = dao.countAccessories();
+            String accessoryId = String.format("ACS%03d", count + 1);
+
+            // Xử lý ảnh (chỉ 1 ảnh)
+            Part imagePart = request.getPart("imageFile");
+            String imageUrl = null;
+
+            if (imagePart != null && imagePart.getSize() > 0) {
+                String uploadDir = getServletContext().getRealPath("/assets/img/ACS/");
+                new File(uploadDir).mkdirs();
+
+                String originalFileName = Paths.get(imagePart.getSubmittedFileName()).getFileName().toString();
+                String fileExtension = originalFileName.substring(originalFileName.lastIndexOf('.'));
+                String storedFileName = accessoryId + fileExtension;
+
+                String imagePath = uploadDir + File.separator + storedFileName;
+                imagePart.write(imagePath);
+
+                imageUrl = "assets/img/ACS/" + storedFileName;
+            }
+
+            // Tạo accessory
+            Accessory accessory = new Accessory();
+            accessory.setAccessoryId(accessoryId);
+            accessory.setAccessoryName(name);
+            accessory.setDetail(detail);
+            accessory.setPrice(price);
+            accessory.setQuantity(quantity);
+            accessory.setImageUrl(imageUrl);
+
+            boolean success = dao.create(accessory);
+
+            if (success) {
+                request.setAttribute("message", "New accessory added successfully.");
+            } else {
+                request.setAttribute("checkError", "Failed to add accessory.");
+            }
+
+            request.setAttribute("accessory", accessory);
+            return "accessoryUpdate.jsp";
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("checkError", "Error while adding accessory: " + e.getMessage());
+            return "error.jsp";
+        }
+    }
+
+    private String handleAccessoryUpdate(HttpServletRequest request, HttpServletResponse response) {
+        if (!AuthUtils.isAdmin(request)) {
+            request.setAttribute("checkError", "You do not have permission to update the accessory.");
+            return "error.jsp";
+        }
+
+        try {
+            // Lấy dữ liệu từ form
+            String accessoryId = request.getParameter("accessoryId");
+            String name = request.getParameter("name");
+            String detail = request.getParameter("detail");
+            double price = Double.parseDouble(request.getParameter("price"));
+            int quantity = Integer.parseInt(request.getParameter("quantity"));
+
+            // Lưu lại form tạm thời nếu lỗi
+            Accessory tempAcc = new Accessory();
+            tempAcc.setAccessoryId(accessoryId);
+            tempAcc.setAccessoryName(name);
+            tempAcc.setPrice(price);
+            tempAcc.setQuantity(quantity);
+            tempAcc.setDetail(detail);
+            request.setAttribute("accessory", tempAcc);
+
+            // Kiểm tra logic
+            if (price < 0) {
+                request.setAttribute("checkError", "Price cannot be negative.");
+                return "accessoryUpdate.jsp";
+            }
+
+            if (quantity < -1) {
+                request.setAttribute("checkError", "Quantity cannot be less than -1.");
+                return "accessoryUpdate.jsp";
+            }
+
+            AccessoryDAO dao = new AccessoryDAO();
+            Accessory existingAcc = dao.getById(accessoryId);
+            if (existingAcc == null) {
+                request.setAttribute("checkError", "Accessory not found.");
+                return "accessoryUpdate.jsp";
+            }
+
+            // Cập nhật ảnh nếu có
+            Part imagePart = request.getPart("imageFile");
+            if (imagePart != null && imagePart.getSize() > 0) {
+                String uploadDir = getServletContext().getRealPath("/assets/img/ACS/");
+                new File(uploadDir).mkdirs();
+
+                String originalFileName = Paths.get(imagePart.getSubmittedFileName()).getFileName().toString();
+                String fileExtension = originalFileName.substring(originalFileName.lastIndexOf('.'));
+                String storedFileName = accessoryId + fileExtension;
+
+                String imagePath = uploadDir + File.separator + storedFileName;
+                imagePart.write(imagePath);
+
+                String imageUrl = "assets/img/ACS/" + storedFileName;
+                existingAcc.setImageUrl(imageUrl);
+            }
+
+            // Cập nhật các thông tin khác
+            existingAcc.setAccessoryName(name);
+            existingAcc.setPrice(price);
+            existingAcc.setQuantity(quantity);
+            existingAcc.setDetail(detail);
+
+            boolean success = dao.update(existingAcc);
+
+            if (success) {
+                request.setAttribute("message", "Accessory updated successfully.");
+            } else {
+                request.setAttribute("checkError", "Failed to update accessory.");
+            }
+
+            // Lấy lại bản cập nhật mới nhất để hiển thị
+            Accessory refreshedAcc = dao.getById(accessoryId);
+            request.setAttribute("accessory", refreshedAcc);
+
+        } catch (NumberFormatException e) {
+            request.setAttribute("checkError", "Invalid number format: " + e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("checkError", "Unexpected error: " + e.getMessage());
+            return "error.jsp";
+        }
+
+        return "accessoryUpdate.jsp";
+    }
+
+    private String handleEditAccessory(HttpServletRequest request, HttpServletResponse response) {
+        if (!AuthUtils.isAdmin(request)) {
+            request.setAttribute("checkError", "Sorry, you do not have permission to access this page.");
+            return "error.jsp";
+        }
+
+        String accessoryId = request.getParameter("accessoryId");
+        if (accessoryId == null || accessoryId.trim().isEmpty()) {
+            request.setAttribute("checkError", "Missing accessory AccessoryId.");
+            return "error.jsp";
+        }
+
+        AccessoryDAO adao = new AccessoryDAO();
+        Accessory acc = adao.getById(accessoryId);
+        if (acc == null) {
+            request.setAttribute("checkError", "No products found with ModelID: " + accessoryId);
+            return "error.jsp";
+        }
+
+        request.setAttribute("accessory", acc);
+        return "accessoryUpdate.jsp";
+    }
+
+    private String handleChangeAccessoryQuantity(HttpServletRequest request, HttpServletResponse response) {
+        if (!AuthUtils.isAdmin(request)) {
+            request.setAttribute("checkError", "❌ You do not have permission to access this page.");
+            return "error.jsp";
+        }
+
+        String accessoryId = request.getParameter("accessoryId");
+        String keyword = request.getParameter("keyword");
+        String pageParam = request.getParameter("page");
+        int currentPage = 1;
+
+        try {
+            currentPage = (pageParam != null) ? Integer.parseInt(pageParam) : 1;
+        } catch (NumberFormatException e) {
+            currentPage = 1;
+        }
+
+        if (accessoryId == null || accessoryId.trim().isEmpty()) {
+            request.setAttribute("checkError", "❌ Missing accessory ID.");
+            return "editProduct.jsp";
+        }
+
+        AccessoryDAO accessoryDAO = new AccessoryDAO();
+        boolean success = accessoryDAO.updateQuantity(accessoryId);
+        List<Accessory> accessoryList = accessoryDAO.getAll();
+        if (accessoryList == null) {
+            accessoryList = new ArrayList<>();
+        }
+
+        // ✅ ModelCar với keyword, phân trang
+        ModelCarDAO modelCarDAO = new ModelCarDAO();
+        List<ModelCar> fullList = modelCarDAO.searchByName(keyword != null ? keyword : "");
+        if (fullList == null) {
+            fullList = new ArrayList<>();
+        }
+
+        final int ITEMS_PER_PAGE = 10;
+        int totalItems = fullList.size();
+        int totalPages = (int) Math.ceil((double) totalItems / ITEMS_PER_PAGE);
+        if (currentPage > totalPages) {
+            currentPage = totalPages;
+        }
+        if (currentPage < 1) {
+            currentPage = 1;
+        }
+
+        int start = (currentPage - 1) * ITEMS_PER_PAGE;
+        int end = Math.min(start + ITEMS_PER_PAGE, totalItems);
+        List<ModelCar> pageList = fullList.subList(start, end);
+
+        // Set attributes
+        request.setAttribute("accessoryList", accessoryList);
+        request.setAttribute("pageList", pageList);
+        request.setAttribute("currentPage", currentPage);
+        request.setAttribute("totalPages", totalPages);
+        request.setAttribute("keyword", keyword);
+
+        if (success) {
+            request.setAttribute("message", "✅ Quantity for accessory [" + accessoryId + "] has been updated to -1.");
+        } else {
+            request.setAttribute("checkError", "❌ Failed to update quantity. Please check the ID.");
+        }
+
+        return "editProduct.jsp";
     }
 
 }

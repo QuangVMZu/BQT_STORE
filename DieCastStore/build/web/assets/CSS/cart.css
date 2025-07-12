@@ -1,0 +1,94 @@
+/* assets/CSS/cart.css */
+
+/* Container & Heading */
+.cart-container {
+    padding: 30px 15px;
+}
+.cart-container h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 20px 0;
+}
+
+/* Summary */
+.cart-summary {
+    font-size: 1.1rem;
+}
+.cart-summary p {
+    margin: 0.5rem 0;
+}
+
+/* Table styling */
+.cart-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.cart-table th,
+.cart-table td {
+    text-align: center;
+    vertical-align: middle !important;
+    padding: 12px;
+}
+.cart-table img {
+    width: 120px;
+    height: auto;
+    border-radius: 8px;
+}
+
+/* Out-of-stock highlighting */
+.out-of-stock {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+.cart-table td span[style*="color: red"] {
+    font-weight: bold;
+}
+
+/* Subtotal */
+.subtotal {
+    font-weight: bold;
+}
+
+/* Input number alignment */
+.cart-table input[type="number"] {
+    text-align: center;
+}
+
+/* Buttons */
+.btn-sm {
+    padding: 2px 5px;
+    font-size: 12px;
+    margin-top: 4px;
+}
+.cart-container .btn {
+    min-width: 60px;
+}
+.cart-container .btn-outline-secondary:hover {
+    background-color: #f0f0f0;
+}
+.cart-container .btn-link {
+    margin-top: 30px;
+    display: inline-block;
+}
+
+.btn-continue:hover {
+    color: #0d6efd !important; /* Bootstrap blue */
+    border-color: #0d6efd;
+    background-color: #f8f9fa; /* optional: light bg on hover */
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .cart-table {
+        font-size: 0.9rem;
+    }
+
+    .cart-table img {
+        width: 80px;
+    }
+
+    .cart-container .btn {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}

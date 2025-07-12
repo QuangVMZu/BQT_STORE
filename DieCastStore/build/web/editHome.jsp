@@ -7,15 +7,7 @@
         <!-- Bootstrap 5 -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="assets/CSS/editHome.css">
-        <script>
-            function toggleDescription() {
-                const type = document.getElementById("type").value;
-                const descSection = document.getElementById("descriptionSection");
-                descSection.style.display = (type === "gallery") ? "block" : "none";
-            }
-
-            window.onload = toggleDescription;
-        </script>
+        <script src="assets/JS/editHome.js"></script>
     </head>
     <body>
 
@@ -110,7 +102,7 @@
         } else { // not logged in
         %>
         <div class="container access-denied">
-            <h2 style="color: #00695c">Access Denied</h2>
+            <h2 class="text-danger">Access Denied</h2>
             <p><%= AuthUtils.getAccessDeniedMessage("login.jsp") %></p>
             <a href="<%= AuthUtils.getLoginURL() %>" class="btn btn-primary mt-2">Login Now</a>
         </div><br>

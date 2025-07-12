@@ -43,5 +43,14 @@ track.addEventListener('touchend', (e) => {
     updateSlide();
 });
 
+function scrollAccessoryCarousel(direction) {
+    const container = document.getElementById("accessory-carousel");
+    const scrollAmount = 300;
+    container.scrollBy({
+        left: direction * scrollAmount,
+        behavior: "smooth"
+    });
+}
+
 window.addEventListener('resize', updateSlide); // Responsive
 

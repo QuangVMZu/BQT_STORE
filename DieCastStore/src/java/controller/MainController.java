@@ -36,12 +36,39 @@ public class MainController extends HttpServlet {
                 || "changeQuantity".equals(action)
                 || "productUpdateImages".equals(action)
                 || "productUpdateMain".equals(action)
-                || "sentContact".equals(action);
+                || "sentContact".equals(action)
+                || "accessoryAdding".equals(action)
+                || "accessoryUpdate".equals(action)
+                || "editAccessory".equals(action)
+                || "changeAccessoryQuantity".equals(action);
     }
 
     private boolean isUploadAction(String action) {
         return "upload".equals(action)
                 || "banner".equals(action);
+    }
+
+    private boolean isCartAction(String action) {
+        return "view".equals(action)
+                || "add".equals(action)
+                || "update".equals(action)
+                || "remove".equals(action)
+                || "clear".equals(action)
+                || "buyNow".equals(action);
+    }
+
+    private boolean isCheckoutAction(String action) {
+        return "show".equals(action)
+                || "process".equals(action)
+                || "showSelected".equals(action);
+    }
+
+    private boolean isOrderAction(String action) {
+        return "list".equals(action)
+                || "vieworder".equals(action)
+                || "cancel".equals(action)
+                || "updateOrderStatus".equals(action)
+                || "viewAllOrders".equals(action);
     }
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -57,6 +84,12 @@ public class MainController extends HttpServlet {
                     url = "/ProductController";
                 } else if (isUploadAction(action)) {
                     url = "/UploadHomeImgController";
+                } else if (isCartAction(action)) {
+                    url = "/CartController";
+                } else if (isCheckoutAction(action)) {
+                    url = "/CheckoutController";
+                } else if (isOrderAction(action)) {
+                    url = "/OrderController";
                 } else {
                     request.setAttribute("message", "Invalid action: " + action);
                 }

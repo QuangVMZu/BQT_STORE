@@ -33,8 +33,8 @@ h1.title {
 .product-card {
     flex: 0 0 25%;
     padding: 10px;
-    max-width: 250px;
-    max-height: 300px;
+    max-width: 280px;
+    max-height: 350px;
 }
 
 .card-inner {

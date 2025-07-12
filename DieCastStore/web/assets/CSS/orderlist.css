@@ -1,0 +1,38 @@
+body {
+    background-color: #e3f2fd;
+}
+
+.container {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    margin-top: 50px;
+}
+
+h2 {
+    color: #343a40;
+}
+
+.table th, .table td {
+    vertical-align: middle;
+}
+
+.btn-info {
+    background-color: #17a2b8;
+    border: none;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    border: none;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    border: none;
+}
+
+.alert-info {
+    font-size: 16px;
+}

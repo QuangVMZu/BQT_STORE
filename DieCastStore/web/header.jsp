@@ -51,12 +51,13 @@
                     <a href="profileForm.jsp" class="edit">My Profile</a>
                     <% if (AuthUtils.isAdmin(request)) { %>
                     <a href="MainController?action=viewAllAccount" class="edit"> Manage Accounts</a>
+                    <a href="MainController?action=viewAllOrders" class="cart">Manage Order</a>
                     <a href="ProductController?action=listEdit" class="edit">Edit Product</a>
                     <%-- Nút "Edit" cho admin --%>
                     <a href="editHome.jsp" class="edit"> Edit Home Gallery</a>
                     <% } %>
-                    <a href="cart.jsp" class="cart">Cart</a>
-                    <a href="paymentMethods.jsp" class="payment">Payment Methods</a>
+                    <a href="cart" class="cart">Cart</a>
+                    <a href="order" class="payment">My Orders</a>
                     <a href="UserController?action=logout" class="logout">Logout</a>
                 </div>
             </div>

@@ -338,6 +338,7 @@ INSERT INTO imageModel (imageId, modelId, imageUrl, caption) VALUES
 ('TMC004_04', 'TMC004', 'assets/img/TMC004/4.jpg', 'Subaru Outback');
 
 
+// thêm 1 bảng để chứa ảnh cho trang home.jsp.
 CREATE TABLE home_gallery (
     id INT IDENTITY(1,1) PRIMARY KEY,
     image_url NVARCHAR(255),
@@ -347,6 +348,7 @@ CREATE TABLE home_gallery (
     created_at DATETIME DEFAULT GETDATE()
 );
 
+// thêm 1 bảng để nhận contactMess của customer.
 CREATE TABLE ContactMessages (
     id INT IDENTITY(1,1) PRIMARY KEY,
     name NVARCHAR(100),
@@ -354,3 +356,50 @@ CREATE TABLE ContactMessages (
     message NVARCHAR(MAX),
     created_at DATETIME DEFAULT GETDATE()
 );
+
+SET IDENTITY_INSERT brandModel ON;
+
+CREATE TABLE customer_cart (
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    customer_id VARCHAR(50) NOT NULL, 
+    item_type VARCHAR(20) NOT NULL, -- 'MODEL' hoặc 'ACCESSORY'  
+    item_id VARCHAR(50) NOT NULL,
+    item_name NVARCHAR(255) NOT NULL, 
+    unit_price DECIMAL(10,2) NOT NULL,
+    quantity INT NOT NULL,
+    created_at DATETIME2 DEFAULT GETDATE(),
+    updated_at DATETIME2 DEFAULT GETDATE(),
+    
+    -- Tránh trùng lặp sản phẩm cho cùng 1 khách hàng
+    CONSTRAINT unique_customer_item UNIQUE (customer_id, item_type, item_id),
+    
+    -- Foreign key với bảng customer 
+    CONSTRAINT FK_customer_cart_customer 
+        FOREIGN KEY (customer_id) REFERENCES customer(customerId) ON DELETE CASCADE
+);
+
+-- Trigger để tự động update updated_at
+CREATE TRIGGER TR_customer_cart_updated_at
+ON customer_cart
+AFTER UPDATE
+AS
+BEGIN
+    SET NOCOUNT ON;
+    UPDATE customer_cart 
+    SET updated_at = GETDATE()
+    FROM customer_cart cc
+    INNER JOIN inserted i ON cc.id = i.id;
+END;
+
+
+
+// thêm 1 cột imageUrl cho bảng accessory.
+ALTER TABLE accessory
+ADD imageUrl VARCHAR(255);
+
+INSERT INTO accessory (accessoryId, accessoryName, detail, price, quantity, imageUrl) VALUES
+('ACS001', 'Carbon Fiber Spoiler', 'This lightweight carbon fiber spoiler is designed to enhance both the aerodynamic performance and visual appeal of your model car. Crafted with precision from high-quality carbon fiber materials, it offers a realistic racing look while improving stability and downforce in scaled simulations. Ideal for collectors and enthusiasts aiming to customize their models with professional-grade accessories, the spoiler fits most 1:24 and 1:18 scale models and adds a sleek, sporty finish to any display.', 29.99, 15, 'assets/img/ACS/ACS001.jpg'),
+('ACS002', 'LED Headlights Kit', 'These bright white LED headlights are specially designed for 1:24 scale model cars, adding a realistic and dynamic lighting effect to your collection. Featuring energy-efficient micro-LED technology, they are easy to install and provide consistent illumination without overheating. Ideal for night-scene displays or enhancing model realism, these headlights bring your miniature vehicles to life, making them perfect for hobbyists seeking professional-grade upgrades.', 15.50, 30, 'assets\img\ACS\ACS002.jpg'),
+('ACS003', 'Racing Decal Pack', 'This premium-quality decal pack is perfect for customizing your model cars with a professional racing look. It includes a variety of vibrant racing stripes, sponsor logos, and numbered sets to match popular race styles. Made from durable, easy-to-apply adhesive material, these decals adhere smoothly to most plastic surfaces without bubbling or peeling. Whether you are restoring a classic or building a custom racer, this set adds personality and realism to every model.', 7.25, 50, 'assets\img\ACS\ACS003.jpg'),
+('ACS004', 'Miniature Tool Set', 'This precision-crafted miniature tool set is an ideal addition to any detailed model car display or diorama. The set includes a realistic jack, wrench, and tire iron—all designed to scale with fine metallic finishes. Perfect for enhancing garage scenes or pit stop displays, each tool adds authenticity and charm. Whether you are a collector or hobbyist, these accessories bring a touch of realism and storytelling to your model environment.', 12.00, 20, 'assets\img\ACS\ACS004.jpg'),
+('ACS005', 'Model Display Case', 'This clear acrylic display case is designed to elegantly showcase and protect your prized model cars from dust, fingerprints, and damage. Featuring a durable transparent enclosure and a sleek black base, it provides a professional presentation while maintaining visibility from all angles. Ideal for collectors who value preservation and aesthetics, the case fits most 1:24 or 1:18 scale models and is a perfect finishing touch for any display shelf or exhibition setup.', 18.75, 10, 'assets\img\ACS\ACS005.jpg');
