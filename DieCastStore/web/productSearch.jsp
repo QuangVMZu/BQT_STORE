@@ -8,7 +8,7 @@
     <head>
         <meta charset="UTF-8">
         <title>Result to search</title>
-        <link rel="stylesheet" href="assets/CSS/productSearch.css">
+        <link rel="stylesheet" href="assets/css/productSearch.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     </head>
     <body style="background: #e3f2fd;">

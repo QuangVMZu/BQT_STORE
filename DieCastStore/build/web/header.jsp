@@ -1,7 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<link rel="stylesheet" href="assets/CSS/header.css">
+<link rel="stylesheet" href="assets/css/header.css">
 
 <header>
     <div class="header-container">
@@ -74,4 +74,4 @@
     </div>
 </header>
 
-<script src="assets/JS/header.js"></script>
+<script src="assets/js/header.js"></script>

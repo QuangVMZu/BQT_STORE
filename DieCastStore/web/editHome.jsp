@@ -6,8 +6,8 @@
         <title>Edit Home Content</title>
         <!-- Bootstrap 5 -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="assets/CSS/editHome.css">
-        <script src="assets/JS/editHome.js"></script>
+        <link rel="stylesheet" href="assets/css/editHome.css">
+        <script src="assets/js/editHome.js"></script>
     </head>
     <body>
 

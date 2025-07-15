@@ -220,7 +220,7 @@ public class OrderController extends HttpServlet {
 
             request.setAttribute("message", "Order cancelled and stock restored.");
         } else {
-            request.setAttribute("message", "Failed to cancel order.");
+            request.setAttribute("checkError", "Failed to cancel order.");
         }
 
         // ✅ Lấy tài khoản khách hàng từ session
@@ -280,7 +280,7 @@ public class OrderController extends HttpServlet {
             boolean result = orderDAO.updateOrderStatus(orderId, status);
 
             if (result) {
-                request.setAttribute("message", "✅ Order status updated successfully.");
+                request.setAttribute("message", "Order status updated successfully.");
 
                 if ("Cancelled".equalsIgnoreCase(status)) {
                     List<OrderDetail> items = orderDetailDAO.getItemsByOrderId(orderId);
@@ -294,12 +294,12 @@ public class OrderController extends HttpServlet {
                 }
 
             } else {
-                request.setAttribute("message", "❌ Failed to update order status.");
+                request.setAttribute("message", "Failed to update order status.");
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("message", "❌ Error while updating order status: " + e.getMessage());
+            request.setAttribute("message", "Error while updating order status: " + e.getMessage());
         }
 
         // Load lại danh sách đơn hàng
@@ -308,7 +308,7 @@ public class OrderController extends HttpServlet {
             request.setAttribute("orders", orders);
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("message", "❌ Error loading order list.");
+            request.setAttribute("message", "Error loading order list.");
         }
 
         request.getRequestDispatcher("manageOrders.jsp").forward(request, response);
@@ -328,7 +328,7 @@ public class OrderController extends HttpServlet {
 
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("message", "❌ Error loading order list: " + e.getMessage());
+            request.setAttribute("message", "Error loading order list: " + e.getMessage());
         }
 
         // Forward đến JSP luôn ở cuối

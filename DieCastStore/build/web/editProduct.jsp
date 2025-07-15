@@ -8,7 +8,7 @@
         <title>Edit Product</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-        <link rel="stylesheet" href="assets/CSS/editProduct.css">
+        <link rel="stylesheet" href="assets/css/editProduct.css">
     </head>
     <body style="background-color: #f1f6fb;">
         <jsp:include page="header.jsp" />

@@ -1,5 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<link rel="stylesheet" href="assets/CSS/footer.css">
+<link rel="stylesheet" href="assets/css/footer.css">
 <footer>
     <div class="footer-container">
         <!-- Company description -->

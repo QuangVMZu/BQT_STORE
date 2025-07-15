@@ -22,8 +22,8 @@
         <meta charset="UTF-8">
         <title><c:choose><c:when test="${isEmpty}">Cart is empty</c:when><c:otherwise>Checkout</c:otherwise></c:choose> - BQT STORE</title>
                 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-                <link rel="stylesheet" href="assets/CSS/checkout.css">
-                <script src="assets/JS/checkout.js"></script>
+                <link rel="stylesheet" href="assets/css/checkout.css">
+                <script src="assets/js/checkout.js"></script>
             </head>
             <body>
         <jsp:include page="header.jsp" />

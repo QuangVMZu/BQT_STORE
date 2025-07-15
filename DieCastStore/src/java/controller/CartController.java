@@ -136,7 +136,7 @@ public class CartController extends HttpServlet {
             CustomerAccount user = (CustomerAccount) session.getAttribute("user");
 
             if (user == null) {
-                session.setAttribute("message", "Please login to add products to cart");
+                session.setAttribute("checkErrorAddToCart", "Please login to add products to cart");
 
                 String referer = request.getHeader("Referer");
                 if (referer != null) {
@@ -358,7 +358,7 @@ public class CartController extends HttpServlet {
             CustomerAccount user = (CustomerAccount) session.getAttribute("user");
 
             if (user == null) {
-                session.setAttribute("message", "Please login to purchase");
+                session.setAttribute("checkErrorPurchase", "Please login to purchase");
                 String referer = request.getHeader("Referer");
                 if (referer != null) {
                     session.setAttribute("redirectAfterLogin", referer);
@@ -481,7 +481,7 @@ public class CartController extends HttpServlet {
             item.setAvailableQuantity(availableQuantity);
             item.setItemExists(itemExists);
             item.setInStock(availableQuantity >= item.getQuantity());
-            item.setImageUrl(imageUrl); // ✅ Gán ảnh vào CartItem
+            item.setImageUrl(imageUrl);
         }
     }
 

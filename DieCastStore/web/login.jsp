@@ -10,7 +10,7 @@
         <!-- Bootstrap CSS -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
         <!-- Custom CSS -->
-        <link rel="stylesheet" href="assets/CSS/login.css">
+        <link rel="stylesheet" href="assets/css/login.css">
     </head>
     <body>
         <c:if test="${not empty sessionScope.account}">
@@ -33,6 +33,21 @@
                     <c:if test="${not empty message}">
                         <div class="error-alert">
                             <strong>${message}</strong>
+                        </div>
+                    </c:if>
+                    <c:if test="${not empty checkErrorAddToCart}">
+                        <div class="error-alert">
+                            <strong>${checkErrorAddToCart}</strong>
+                        </div>
+                    </c:if>
+                    <c:if test="${not empty checkErrorPurchase}">
+                        <div class="error-alert">
+                            <strong>${checkErrorPurchase}</strong>
+                        </div>
+                    </c:if>
+                    <c:if test="${not empty checkError}">
+                        <div class="error-alert">
+                            <strong>${checkError}</strong>
                         </div>
                     </c:if>
 
@@ -86,5 +101,5 @@
         <!-- Bootstrap JS -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     </body>
-    <script src="assets/JS/login.js"></script>
+    <script src="assets/js/login.js"></script>
 </html>

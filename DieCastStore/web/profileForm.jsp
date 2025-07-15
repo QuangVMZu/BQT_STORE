@@ -10,7 +10,7 @@
         <!-- Bootstrap CSS -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
         <!-- Custom CSS -->
-        <link rel="stylesheet" href="assets/CSS/profileForm.css">
+        <link rel="stylesheet" href="assets/css/profileForm.css">
     </head>
     <body style="background: #e3f2fd;">
         <jsp:include page="header.jsp" />

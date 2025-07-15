@@ -1,13 +1,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ page import="java.util.*" %>
 <!DOCTYPE html>
 <html>
     <head>
         <meta charset="UTF-8">
         <title><c:choose><c:when test="${not empty product}">Update Product</c:when><c:otherwise>Add New Product</c:otherwise></c:choose></title>
-                <link rel="stylesheet" href="assets/CSS/productsUpdate.css">
+                <link rel="stylesheet" href="assets/css/productsUpdate.css">
                 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
             </head>
             <body style="background: #e3f2fd;">

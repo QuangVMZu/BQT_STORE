@@ -12,8 +12,8 @@
         <meta charset="UTF-8">
         <title>My Cart</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="assets/CSS/cart.css">
-        <script src="assets/JS/cart.js"></script>
+        <link rel="stylesheet" href="assets/css/cart.css">
+        <script src="assets/js/cart.js"></script>
     </head>
     <body style="background: #e3f2fd;">
         <jsp:include page="header.jsp" />

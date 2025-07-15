@@ -7,7 +7,7 @@
         <meta charset="UTF-8">
         <title>Order Details - DieCastStore</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="assets/CSS/orderdetail.css">
+        <link rel="stylesheet" href="assets/css/orderdetail.css">
     </head>
     <body>
         <jsp:include page="header.jsp" />
