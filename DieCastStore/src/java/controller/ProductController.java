@@ -78,9 +78,6 @@ public class ProductController extends HttpServlet {
                     case "editProduct":
                         url = handleEditProduct(request, response);
                         break;
-                    case "addToCart":
-                        url = handleAddToCart(request, response);
-                        break;
                     case "sentContact":
                         url = handleSentContact(request, response);
                         break;
@@ -212,10 +209,6 @@ public class ProductController extends HttpServlet {
         request.setAttribute("totalPages", totalPages);
 
         return "productSearch.jsp";
-    }
-
-    private String handleAddToCart(HttpServletRequest request, HttpServletResponse response) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     private String handleDetails(HttpServletRequest request, HttpServletResponse response) {

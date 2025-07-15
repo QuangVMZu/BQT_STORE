@@ -24,12 +24,9 @@ public class HomeGallery {
         this.type = type;
         this.createdAt = createdAt;
     }
-    
-    public HomeGallery(String imageUrl, String caption, int displayOrder, String description) {
-        this.imageUrl = imageUrl;
-        this.caption = caption;
-        this.displayOrder = displayOrder;
-        this.description = description;
+
+    public HomeGallery(String assetshomedefault1jpg, String default_Caption_1, String default_Description, int i, String gallery) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     public int getId() {

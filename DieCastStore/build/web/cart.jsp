@@ -22,7 +22,7 @@
                 <div class="container cart-container">
                     <div class="card shadow-sm">
                         <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                            <h4 class="mb-0">🛒 My Cart</h4>
+                            <h4 class="mb-0">My Cart</h4>
                         </div>
                         <div class="card-body">
                             <c:if test="${not empty error}">

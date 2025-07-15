@@ -20,7 +20,7 @@
                 <c:choose>
                     <c:when test="${isAdmin}">
                         <div class="table-container">
-                            <h2>📎 Manage All Orders</h2>
+                            <h2>Manage All Orders</h2>
 
                             <c:if test="${not empty message}">
                                 <div class="alert alert-info text-center">${message}</div>

@@ -26,14 +26,14 @@
             <div class="row justify-content-center">
                 <div class="col-lg-8 col-md-10">
                     <div class="form-section">
-                        <h2 class="section-title">📸 Edit Home Banner / Gallery</h2>
+                        <h2 class="section-title">Edit Home Banner / Gallery</h2>
 
                         <form action="UploadHomeImgController" method="post" enctype="multipart/form-data">
                             <input type="hidden" name="action" value="upload" />
 
                             <!-- Upload Type -->
                             <div class="mb-4">
-                                <label for="type" class="form-label fw-semibold">🗂️ Select upload type</label>
+                                <label for="type" class="form-label fw-semibold">Select upload type</label>
                                 <select name="type" id="type" class="form-select" onchange="toggleDescription()">
                                     <option value="gallery" <%= "gallery".equals(selectedType) ? "selected" : "" %>>Gallery</option>
                                     <option value="banner" <%= "banner".equals(selectedType) ? "selected" : "" %>>Banner</option>

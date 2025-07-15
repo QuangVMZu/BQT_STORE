@@ -17,7 +17,7 @@
         <c:choose>
             <c:when test="${isLoggedIn}">
                 <div class="container">
-                    <h2 class="mb-4">🛒 My Orders</h2>
+                    <h2 class="mb-4">My Orders</h2>
 
                     <c:if test="${not empty message}">
                         <div class="alert alert-info">${message}</div>

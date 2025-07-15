@@ -22,7 +22,7 @@
                 <c:choose>
                     <c:when test="${isAdmin}">
                         <div class="table-container">
-                            <h2 class="mb-4 text-center text-primary fw-bold">🧑‍💻 Customer Account Management</h2>
+                            <h2 class="mb-4 text-center text-primary fw-bold">Customer Account Management</h2>
 
                             <!-- Alert Messages -->
                             <c:choose>

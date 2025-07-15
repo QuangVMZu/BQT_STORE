@@ -219,4 +219,91 @@ public class HomeGalleryDAO {
             ps.executeUpdate();
         }
     }
+
+    public List<HomeGallery> findByType(String type) {
+        List<HomeGallery> list = new ArrayList<>();
+        String sql = "SELECT * FROM home_gallery WHERE type = ? ORDER BY display_order ASC";
+
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            conn = DBUtils.getConnection();
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, type);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                HomeGallery item = new HomeGallery();
+                item.setId(rs.getInt("id"));
+                item.setImageUrl(rs.getString("image_url"));
+                item.setCaption(rs.getString("caption"));
+                item.setDisplayOrder(rs.getInt("display_order"));
+                item.setDescription(rs.getString("description"));
+                item.setType(rs.getString("type"));
+                item.setCreatedAt(rs.getTimestamp("created_at"));
+                list.add(item);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            closeResources(conn, ps, rs);
+        }
+
+        return list;
+    }
+
+    public void initDefaultDataIfEmpty() throws SQLException, ClassNotFoundException {
+        if (getGallery().isEmpty()) {
+            for (HomeGallery img : getDefaultGalleryItems()) {
+                insert(img);
+            }
+        }
+        if (getBanner().isEmpty()) {
+            for (HomeGallery img : getDefaultBannerItems()) {
+                insert(img);
+            }
+        }
+    }
+
+    private List<HomeGallery> getDefaultBannerItems() {
+        List<HomeGallery> defaults = new ArrayList<>();
+// banner
+        defaults.add(new HomeGallery("assets/image/BQT_STORE.png", "Default Banner 1", "Default Description", 1, "banner"));
+        defaults.add(new HomeGallery("assets/image/banner_2.png", "Default Banner 2", "Default Description", 2, "banner"));
+        defaults.add(new HomeGallery("assets/image/banner.png", "Default Banner 3", "Default Description", 3, "banner"));
+        defaults.add(new HomeGallery("assets/image/banner_3.png", "Default Banner 4", "Default Description", 4, "banner"));
+        return defaults;
+    }
+
+    private List<HomeGallery> getDefaultGalleryItems() {
+        List<HomeGallery> defaults = new ArrayList<>();
+// gallery
+        defaults.add(new HomeGallery("assets/img/AAT001/1.jpg", "Default Gallery 1", "Car models are exquisite miniature copies of famous car lines in the world.\n"
+                + "                    With popular scales such as 1:18, 1:24, 1:64,... the models are produced by prestigious brands such as AutoArt, Bburago, Kyosho, Welly,...\n"
+                + "                    They are not only aesthetic but also show the passion of model car players.\n"
+                + "                    Collecting model cars is more than just a hobby — it is a way to preserve automotive history and craftsmanship in a compact, tangible form.\n"
+                + "                    Each piece is meticulously crafted with attention to detail, from engine components to interior design, allowing collectors to experience the elegance and engineering of real vehicles.\n"
+                + "                    Whether you are a seasoned enthusiast or just starting out, model cars offer a unique blend of art, nostalgia, and technical fascination.", 1, "gallery"));
+        defaults.add(new HomeGallery("assets/img/AAT001/2.jpg", "Default Gallery 2", "Car models are exquisite miniature copies of famous car lines in the world.\n"
+                + "                    With popular scales such as 1:18, 1:24, 1:64,... the models are produced by prestigious brands such as AutoArt, Bburago, Kyosho, Welly,...\n"
+                + "                    They are not only aesthetic but also show the passion of model car players.\n"
+                + "                    Collecting model cars is more than just a hobby — it is a way to preserve automotive history and craftsmanship in a compact, tangible form.\n"
+                + "                    Each piece is meticulously crafted with attention to detail, from engine components to interior design, allowing collectors to experience the elegance and engineering of real vehicles.\n"
+                + "                    Whether you are a seasoned enthusiast or just starting out, model cars offer a unique blend of art, nostalgia, and technical fascination.", 2, "gallery"));
+        defaults.add(new HomeGallery("assets/img/AAT001/3.jpg", "Default Gallery 3", "Car models are exquisite miniature copies of famous car lines in the world.\n"
+                + "                    With popular scales such as 1:18, 1:24, 1:64,... the models are produced by prestigious brands such as AutoArt, Bburago, Kyosho, Welly,...\n"
+                + "                    They are not only aesthetic but also show the passion of model car players.\n"
+                + "                    Collecting model cars is more than just a hobby — it is a way to preserve automotive history and craftsmanship in a compact, tangible form.\n"
+                + "                    Each piece is meticulously crafted with attention to detail, from engine components to interior design, allowing collectors to experience the elegance and engineering of real vehicles.\n"
+                + "                    Whether you are a seasoned enthusiast or just starting out, model cars offer a unique blend of art, nostalgia, and technical fascination.", 3, "gallery"));
+        defaults.add(new HomeGallery("assets/img/AAT001/4.jpg", "Default Gallery 4", "Car models are exquisite miniature copies of famous car lines in the world.\n"
+                + "                    With popular scales such as 1:18, 1:24, 1:64,... the models are produced by prestigious brands such as AutoArt, Bburago, Kyosho, Welly,...\n"
+                + "                    They are not only aesthetic but also show the passion of model car players.\n"
+                + "                    Collecting model cars is more than just a hobby — it is a way to preserve automotive history and craftsmanship in a compact, tangible form.\n"
+                + "                    Each piece is meticulously crafted with attention to detail, from engine components to interior design, allowing collectors to experience the elegance and engineering of real vehicles.\n"
+                + "                    Whether you are a seasoned enthusiast or just starting out, model cars offer a unique blend of art, nostalgia, and technical fascination.", 4, "gallery"));
+        return defaults;
+    }
 }

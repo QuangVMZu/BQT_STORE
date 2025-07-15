@@ -116,11 +116,11 @@ public class UploadImgController extends HttpServlet {
             request.setAttribute("accessDeniedMessage", AuthUtils.getAccessDeniedMessage("login.jsp"));
             request.setAttribute("loginURL", AuthUtils.getLoginURL());
             request.setAttribute("selectedType", "gallery");
-            request.setAttribute("message", "✅ Upload gallery Successfully.");
+            request.setAttribute("message", "Upload gallery Successfully.");
             return "editHome.jsp";
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("message", "❌ Upload gallery Unsuccessfully: " + e.getMessage());
+            request.setAttribute("message", "Upload gallery Unsuccessfully: " + e.getMessage());
             return "editHome.jsp";
         }
     }
@@ -167,13 +167,13 @@ public class UploadImgController extends HttpServlet {
             request.setAttribute("isLoggedIn", AuthUtils.isLoggedIn(request));
             request.setAttribute("isAdmin", AuthUtils.isAdmin(request));
             request.setAttribute("selectedType", "banner");
-            request.setAttribute("message", "✅ Upload banner Successfully.");
+            request.setAttribute("message", "Upload banner Successfully.");
             request.setAttribute("accessDeniedMessage", AuthUtils.getAccessDeniedMessage("login.jsp"));
             request.setAttribute("loginURL", AuthUtils.getLoginURL());
             return "editHome.jsp";
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("message", "❌ Upload banner Unsuccessfully: " + e.getMessage());
+            request.setAttribute("message", "Upload banner Unsuccessfully: " + e.getMessage());
             return "editHome.jsp";
         }
     }
