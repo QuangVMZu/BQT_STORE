@@ -1,13 +1,4 @@
-/* 
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Other/SQLTemplate.sql to edit this template
- */
-/**
- * Author:  ADMIN
- * Created: Jun 6, 2025
- */
-
-USE [master]
+﻿USE [master]
 GO
 DROP DATABASE DieCastStore
 GO
@@ -68,9 +59,9 @@ CREATE TABLE accessory (
     accessoryName VARCHAR(100) NOT NULL,
     detail TEXT,
     price FLOAT NOT NULL,
-    quantity INT
+    quantity INT,
+	imageUrl VARCHAR(500)
 )
-drop table [dbo].[orders];
 CREATE TABLE orders (
     orderId VARCHAR(50) PRIMARY KEY,
     customerId VARCHAR(50) NOT NULL,
@@ -89,21 +80,67 @@ CREATE TABLE orderDetail (
     FOREIGN KEY (orderId) REFERENCES orders(orderId) ON DELETE CASCADE
 )
 
-SET IDENTITY_INSERT brandModel ON;
+ --thêm 1 bảng để chứa ảnh cho trang home.jsp.
+CREATE TABLE home_gallery (
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    image_url VARCHAR(255),
+    caption VARCHAR(255),
+    display_order INT NOT NULL DEFAULT 0,
+    description VARCHAR(MAX), 
+	type varchar(50),
+    created_at DATETIME DEFAULT GETDATE()
+);
 
-INSERT INTO brandModel (brandId, brandName) VALUES 
-(1, 'MiniGT'),
-(2, 'Hot Wheels'),
-(3, 'Bburago'),
-(4, 'Maisto'),
-(5, 'Tomica'),
-(6, 'AutoArt'),
-(7, 'GreenLight'),
-(8, 'Kyosho'),
-(9, 'Matchbox'),
-(10, 'Welly');
+-- thêm 1 bảng để nhận contactMess của customer.
+CREATE TABLE ContactMessages (
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    name NVARCHAR(100),
+    email NVARCHAR(100),
+    message NVARCHAR(MAX),
+    created_at DATETIME DEFAULT GETDATE()
+);
 
-SET IDENTITY_INSERT brandModel OFF;
+
+CREATE TABLE customer_cart (
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    customer_id VARCHAR(50) NOT NULL, 
+    item_type VARCHAR(20) NOT NULL, -- 'MODEL' hoặc 'ACCESSORY'  
+    item_id VARCHAR(50) NOT NULL,
+    item_name NVARCHAR(255) NOT NULL, 
+    unit_price DECIMAL(10,2) NOT NULL,
+    quantity INT NOT NULL,
+    created_at DATETIME2 DEFAULT GETDATE(),
+    updated_at DATETIME2 DEFAULT GETDATE(),
+    
+    -- Tránh trùng lặp sản phẩm cho cùng 1 khách hàng
+    CONSTRAINT unique_customer_item UNIQUE (customer_id, item_type, item_id),
+    
+    -- Foreign key với bảng customer 
+    CONSTRAINT FK_customer_cart_customer 
+        FOREIGN KEY (customer_id) REFERENCES customer(customerId) ON DELETE CASCADE
+);
+
+INSERT INTO customer (customerId, customerName, email, phone, address) VALUES
+('C001', 'Admin User', 'admin@diecast.com', '0123456789', 'Admin Street, Admin City'),
+('C002', 'Normal User', 'user@diecast.com', '0987654321', 'User Avenue, User Town'),
+('C003', 'Banned User', 'banned@diecast.com', '0112233445', 'Banned Alley, No Access');
+
+INSERT INTO customerAccount (userName, customerId, password, role) VALUES
+('admin', 'C001', '6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b', 1),        -- admin account
+('user1', 'C002', '6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b', 2),         -- normal user
+('banned1', 'C003', '6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b', 0);
+
+INSERT INTO brandModel (brandName) VALUES 
+( 'MiniGT'),
+('Hot Wheels'),
+('Bburago'),
+('Maisto'),
+('Tomica'),
+('AutoArt'),
+('GreenLight'),
+('Kyosho'),
+('Matchbox'),
+('Welly')
 
 INSERT INTO scaleModel (scaleLabel) VALUES
 ('1/64'),
@@ -131,26 +168,6 @@ INSERT INTO modelCar (modelId, modelName, scaleId, brandId, price, description, 
 ('MTB002', 'Model car of Land Rover Defender 90 scale 1:64 Matchbox', 1, 9, 31.25, 'The Matchbox 1:64-scale Defender 90 is a compact yet rugged mini replica that perfectly embodies the classic British off‑roader. At about 3 inches long, it features a sturdy metal body and chassis with smooth-rolling wheels—ideal for both kids and collectors seeking durable playability. Its design captures key Defender traits: the squared-off boxy silhouette, seven-slot grille, exposed wheel arches, and a paint finish reminiscent of expedition-ready vehicles—typically in matte greens, stone beige, or utility grey. Though it lacks opening parts, the model faithfully represents the rugged styling and proportions—making it a beloved piece for shelf displays or off-road dioramas. Collectors often note Matchbox’s attention to sturdy build and aesthetic accuracy at this scale. As one Redditor mentioned, while the Hot Wheels Premium Defender impressed, the Matchbox version “has a nice Range Rover,” implying strong comparison. Another discussion highlighted that scale can vary slightly in 1:64 models, but overall feel and authenticity are what collectors appreciate.Perfect for fans of classic off-road vehicles, this Defender 90 pairs nostalgic charm, solid construction, and timeless style in a pocket-sized format—ideal for collectors who love rugged British classics.', 190),
 ('WLY002', 'Model car of Audi R8 V10 Plus scale 1:24 Welly', 2, 10, 31.25, 'This Welly 1:24-scale Audi R8 V10 replica delivers luxury supercar appeal with exquisite detail at an accessible price. Crafted from durable die-cast alloy, it measures roughly 18 cm long and features opening doors, an opening hood and trunk, allowing full exploration of the interior and engine bays. The model boasts a realistic cabin layout with sculpted seats, dash, steering wheel, and pedals. Its standout feature is the transparent rear cover showcasing a finely molded V10 engine—true to the real car is lineage. Exterior highlights include LED-style headlights, side-air intakes, signature Audi grille, and a sleek low-profile design, all enhanced by a smooth, high-gloss metallic finish available in white, black, red, yellow, blue, and matte black variants. Hot on Reddit, users praise Welly’s model quality for its price: “it probably the best 1:24 for the money”,  “A Welly Audi R8 V10 in white. One of my favorite cars”. With steerable front wheels and rubber-style tires, this R8 combines visual accuracy, interactive features, and robust build. It’s an ideal display piece or gift for fans of high-performance European supercars who appreciate craftsmanship and value.', 75);
 
-DELETE FROM modelCar;
-
-select *from scaleModel
-
-select *from brandModel
-
-select *from modelCar
-
-INSERT INTO customerAccount (userName, customerId, password, role) VALUES
-('admin', 'C001', 'admin123', 1),        -- admin account
-('user1', 'C002', 'user123', 2),         -- normal user
-('banned1', 'C003', 'banned123', 0);
-
-INSERT INTO customer (customerId, customerName, email, phone, address) VALUES
-('C001', 'Admin User', 'admin@diecast.com', '0123456789', 'Admin Street, Admin City'),
-('C002', 'Normal User', 'user@diecast.com', '0987654321', 'User Avenue, User Town'),
-('C003', 'Banned User', 'banned@diecast.com', '0112233445', 'Banned Alley, No Access');
-
-
-DELETE FROM imageModel;
 
 INSERT INTO modelCar (modelId, modelName, scaleId, brandId, price, description, quantity) VALUES
 ('BBR004', 'Model car of Alfa Romeo Giulia scale 1:24 Bburago', 2, 3, 24.00, 'The 1:24-scale Bburago Alfa Romeo Giulia is a beautifully crafted die‑cast replica that captures the sleek elegance of the real 2016–17 Giulia. Measuring about 7.5 inches long, 3 inches wide, and 2.5 inches tall, this model combines metal and plastic parts to faithfully recreate the iconic Italian sedan. Its deep paint finish—available in striking burgundy, classic red, or metallic blue—evokes the refined aesthetics of the full-size car . The model features real rubber tires on steerable front wheels and includes opening front doors and a functional bonnet that reveals a detailed engine bay underneath—perfect for display or hands‑on interaction.Inside, the cabin shows impressive attention to detail: visible dashboards, seats, pedals, and console rail true-to-life trim. The exterior detail is equally notable, showcasing precise front grilles, side mirrors, and Alfa Romeo badging—a testament to Bburago’s dedication to realism.As part of Bburago’s 1:24 series—Italian-designed and enthusiast-loved—this Giulia model blends craftsmanship with playability. Whether as a collector’s display piece or a gift for car lovers, it brings a slice of Italian automotive passion into any home or office.', 40),
@@ -173,7 +190,6 @@ INSERT INTO modelCar (modelId, modelName, scaleId, brandId, price, description, 
 ('HW006', 'Model car of Corvette Stingray scale 1:64 Hot Wheels', 1, 2, 11.25, 'The Hot Wheels 1:64-scale Corvette Stingray captures the iconic sports car in a compact, collectible package. Measuring roughly 3 inches long, it features a metal body and chassis, plastic accents, and smooth-rolling wheels—ideal for both display and play. Several generations of the Stingray have been released in Hot Wheels’ mainline and premium “Car Culture” or “HW Showroom” series. Standout versions include the "64 Corvette Sting Ray with period-correct body lines and rear-window styling, often adorned in metallic silver, deep green, classic white, fiery red, or light blue, many sporting racing stripes or roundel graphics. Higher-tier releases may include rubber tires and two-piece metal-metal chassis for improved realism and heft. Collectors praise the casting quality for its accurate sculpting: “detailed headlights, taillights, trim and badging” consistently match the full-size Corvette’s signature look. Even entry-level blister-card models offer striking paint—such as black stripe accents on silver bodies—delighting fans and fitting well within broader Hot Wheels collections. Overall, this 1:64 Stingray balances showworthy detail with affordability. Whether you are a Corvette enthusiast, Hot Wheels hobbyist, or nostalgic collector, it is a standout piece that brings the legend of the Stingray into a fun, pocket-sized form.', 170),
 ('AAT006', 'Model car of Rolls‑Royce Phantom scale 1:18 AutoArt', 1, 6, 125.00, 'The AUTOart 1:18‑scale Rolls‑Royce Phantom is a prestige-grade replica that impeccably captures the elegance of Britain’s flagship luxury sedan. Crafted using a composite of finely detailed ABS plastic and die-cast metal—based on official CAD data from Rolls‑Royce—the model showcases razor-sharp panel lines, a faithful rendition of the Spirit of Ecstasy emblem, and iconic Pantheon grille. Measuring roughly 11 inches in length, this collectible features fully functional front doors, hood, and trunk lid, each opening to reveal a beautifully appointed interior. Inside, you will find plush carpeted flooring, seat belts, intricate dashboard instrumentation, and luxurious seat textures—elevating it beyond a mere display piece . The engine compartment houses a convincingly detailed V12 block replica, visible when the hood is lifted. Externally, the model is finished in premium paints—glossy black with dual-tone roof options (silver/grey)—and authentic chrome trim around the grille, window surrounds, mirrors, and wheels. Steerable front wheels and soft rubber tires add realism to its presence. AUTOart, a Hong Kong-based manufacturer known for accuracy and craftsmanship, consistently delivers full-featured models—with carpet, seatbelts, opening parts, and detailed lighting—making it a top-tier brand for collectors seeking quality and elegance. In essence, this Phantom model exudes luxury in miniature form—an exquisite showpiece that reflects the grandeur of the full-scale Rolls‑Royce for display in any discerning collector’s cabinet.', 15),
 ('TMC004', 'Model car of Subaru Outback scale 1:64 Tomica', 1, 5, 14.58, 'The Tomica 1:64-scale Subaru Outback is a charming and well-detailed die-cast replica from Takara Tomy’s popular lineup. Measuring approximately 3 inches long, it features a solid metal body and chassis, crisp plastic trim, and smooth-rolling wheels—ideal for collectors who appreciate miniature realism without sacrificing play value. Though Outback castings are rare—especially compared to more common Foresters and Imprezas—the model was issued as a dealer-exclusive in several regions. As one Redditor shared: “The major brands do not make an Outback, but there IS a Subaru dealer‑exclusive line of 1:64 diecast, including an Outback.”. The miniature captures the Outback’s signature crossover silhouette, distinct roof rails, and rugged wagon stance. Paint finishes vary; popular dealer editions include deep green, white, and gray variants inspired by real-world trims like the Wilderness . While standard Tomica and Premium lines may not strictly adhere to 1:64 scale, this special model still offers excellent collector appeal. Though it lacks opening parts, this is compensated by its sturdy feel and accuracy in detailing—from the grille and headlight profile to the embossed side trims. Perfect for desk displays, dioramas, or adding a Subaru-themed piece to your collection, the Tomica Subaru Outback brings a touch of adventure and Japanese automotive charm in a compact, pocket-friendly form.', 130);
-
 
 INSERT INTO imageModel (imageId, modelId, imageUrl, caption) VALUES
 ('MGT002_01', 'MGT002', 'assets/img/MGT002/1.jpg', 'Toyota Supra A90'),
@@ -338,47 +354,14 @@ INSERT INTO imageModel (imageId, modelId, imageUrl, caption) VALUES
 ('TMC004_04', 'TMC004', 'assets/img/TMC004/4.jpg', 'Subaru Outback');
 
 
-// thêm 1 bảng để chứa ảnh cho trang home.jsp.
-CREATE TABLE home_gallery (
-    id INT IDENTITY(1,1) PRIMARY KEY,
-    image_url NVARCHAR(255),
-    caption NVARCHAR(255),
-    display_order INT NOT NULL DEFAULT 0,
-    description NVARCHAR(MAX), -- 👉 thêm phần mô tả chung ở đây
-    created_at DATETIME DEFAULT GETDATE()
-);
+INSERT INTO accessory (accessoryId, accessoryName, detail, price, quantity, imageUrl) VALUES
+('ACS001', 'Carbon Fiber Spoiler', 'This lightweight carbon fiber spoiler is designed to enhance both the aerodynamic performance and visual appeal of your model car. Crafted with precision from high-quality carbon fiber materials, it offers a realistic racing look while improving stability and downforce in scaled simulations. Ideal for collectors and enthusiasts aiming to customize their models with professional-grade accessories, the spoiler fits most 1:24 and 1:18 scale models and adds a sleek, sporty finish to any display.', 29.99, 15, 'assets/img/ACS/ACS001.jpg'),
+('ACS002', 'LED Headlights Kit', 'These bright white LED headlights are specially designed for 1:24 scale model cars, adding a realistic and dynamic lighting effect to your collection. Featuring energy-efficient micro-LED technology, they are easy to install and provide consistent illumination without overheating. Ideal for night-scene displays or enhancing model realism, these headlights bring your miniature vehicles to life, making them perfect for hobbyists seeking professional-grade upgrades.', 15.50, 30, 'assets/img/ACS/ACS002.jpg'),
+('ACS003', 'Racing Decal Pack', 'This premium-quality decal pack is perfect for customizing your model cars with a professional racing look. It includes a variety of vibrant racing stripes, sponsor logos, and numbered sets to match popular race styles. Made from durable, easy-to-apply adhesive material, these decals adhere smoothly to most plastic surfaces without bubbling or peeling. Whether you are restoring a classic or building a custom racer, this set adds personality and realism to every model.', 7.25, 50, 'assets/img/ACS/ACS003.jpg'),
+('ACS004', 'Miniature Tool Set', 'This precision-crafted miniature tool set is an ideal addition to any detailed model car display or diorama. The set includes a realistic jack, wrench, and tire iron—all designed to scale with fine metallic finishes. Perfect for enhancing garage scenes or pit stop displays, each tool adds authenticity and charm. Whether you are a collector or hobbyist, these accessories bring a touch of realism and storytelling to your model environment.', 12.00, 20, 'assets/img/ACS/ACS004.jpg'),
+('ACS005', 'Model Display Case', 'This clear acrylic display case is designed to elegantly showcase and protect your prized model cars from dust, fingerprints, and damage. Featuring a durable transparent enclosure and a sleek black base, it provides a professional presentation while maintaining visibility from all angles. Ideal for collectors who value preservation and aesthetics, the case fits most 1:24 or 1:18 scale models and is a perfect finishing touch for any display shelf or exhibition setup.', 18.75, 10, 'assets/img/ACS/ACS005.jpg');
 
-// thêm 1 bảng để nhận contactMess của customer.
-CREATE TABLE ContactMessages (
-    id INT IDENTITY(1,1) PRIMARY KEY,
-    name NVARCHAR(100),
-    email NVARCHAR(100),
-    message NVARCHAR(MAX),
-    created_at DATETIME DEFAULT GETDATE()
-);
 
-SET IDENTITY_INSERT brandModel ON;
-
-CREATE TABLE customer_cart (
-    id INT IDENTITY(1,1) PRIMARY KEY,
-    customer_id VARCHAR(50) NOT NULL, 
-    item_type VARCHAR(20) NOT NULL, -- 'MODEL' hoặc 'ACCESSORY'  
-    item_id VARCHAR(50) NOT NULL,
-    item_name NVARCHAR(255) NOT NULL, 
-    unit_price DECIMAL(10,2) NOT NULL,
-    quantity INT NOT NULL,
-    created_at DATETIME2 DEFAULT GETDATE(),
-    updated_at DATETIME2 DEFAULT GETDATE(),
-    
-    -- Tránh trùng lặp sản phẩm cho cùng 1 khách hàng
-    CONSTRAINT unique_customer_item UNIQUE (customer_id, item_type, item_id),
-    
-    -- Foreign key với bảng customer 
-    CONSTRAINT FK_customer_cart_customer 
-        FOREIGN KEY (customer_id) REFERENCES customer(customerId) ON DELETE CASCADE
-);
-
--- Trigger để tự động update updated_at
 CREATE TRIGGER TR_customer_cart_updated_at
 ON customer_cart
 AFTER UPDATE
@@ -391,15 +374,16 @@ BEGIN
     INNER JOIN inserted i ON cc.id = i.id;
 END;
 
+select *from modelCar
 
+select *from imageModel
 
-// thêm 1 cột imageUrl cho bảng accessory.
-ALTER TABLE accessory
-ADD imageUrl VARCHAR(255);
+select*from customer
 
-INSERT INTO accessory (accessoryId, accessoryName, detail, price, quantity, imageUrl) VALUES
-('ACS001', 'Carbon Fiber Spoiler', 'This lightweight carbon fiber spoiler is designed to enhance both the aerodynamic performance and visual appeal of your model car. Crafted with precision from high-quality carbon fiber materials, it offers a realistic racing look while improving stability and downforce in scaled simulations. Ideal for collectors and enthusiasts aiming to customize their models with professional-grade accessories, the spoiler fits most 1:24 and 1:18 scale models and adds a sleek, sporty finish to any display.', 29.99, 15, 'assets/img/ACS/ACS001.jpg'),
-('ACS002', 'LED Headlights Kit', 'These bright white LED headlights are specially designed for 1:24 scale model cars, adding a realistic and dynamic lighting effect to your collection. Featuring energy-efficient micro-LED technology, they are easy to install and provide consistent illumination without overheating. Ideal for night-scene displays or enhancing model realism, these headlights bring your miniature vehicles to life, making them perfect for hobbyists seeking professional-grade upgrades.', 15.50, 30, 'assets\img\ACS\ACS002.jpg'),
-('ACS003', 'Racing Decal Pack', 'This premium-quality decal pack is perfect for customizing your model cars with a professional racing look. It includes a variety of vibrant racing stripes, sponsor logos, and numbered sets to match popular race styles. Made from durable, easy-to-apply adhesive material, these decals adhere smoothly to most plastic surfaces without bubbling or peeling. Whether you are restoring a classic or building a custom racer, this set adds personality and realism to every model.', 7.25, 50, 'assets\img\ACS\ACS003.jpg'),
-('ACS004', 'Miniature Tool Set', 'This precision-crafted miniature tool set is an ideal addition to any detailed model car display or diorama. The set includes a realistic jack, wrench, and tire iron—all designed to scale with fine metallic finishes. Perfect for enhancing garage scenes or pit stop displays, each tool adds authenticity and charm. Whether you are a collector or hobbyist, these accessories bring a touch of realism and storytelling to your model environment.', 12.00, 20, 'assets\img\ACS\ACS004.jpg'),
-('ACS005', 'Model Display Case', 'This clear acrylic display case is designed to elegantly showcase and protect your prized model cars from dust, fingerprints, and damage. Featuring a durable transparent enclosure and a sleek black base, it provides a professional presentation while maintaining visibility from all angles. Ideal for collectors who value preservation and aesthetics, the case fits most 1:24 or 1:18 scale models and is a perfect finishing touch for any display shelf or exhibition setup.', 18.75, 10, 'assets\img\ACS\ACS005.jpg');
+select*from customerAccount
+
+select *from brandModel
+
+select *from home_gallery
+
+select *from accessory
