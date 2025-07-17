@@ -58,7 +58,6 @@
                                 <c:when test="${cart == null or empty cart.items}">
                                     <div class="alert alert-info text-center">
                                         <h4>Your cart is empty</h4>
-                                        <a href="ProductController?action=list" class="btn btn-primary mt-2">Continue Shopping</a>
                                     </div>
                                 </c:when>
                                 <c:otherwise>

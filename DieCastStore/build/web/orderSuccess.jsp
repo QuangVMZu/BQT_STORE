@@ -33,7 +33,7 @@
 
                         <div class="nav-links mt-4">
                             <a href="ProductController?action=list" class="btn btn-primary me-2">Continue Shopping</a>
-                            <a href="home.jsp" class="btn btn-outline-secondary">Back to Home Page</a>
+                            <a href="order" class="btn btn-outline-secondary">Back to My order</a>
                         </div>
                     </div>
                 </div><br>

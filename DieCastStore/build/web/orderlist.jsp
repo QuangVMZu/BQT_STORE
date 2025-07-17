@@ -40,7 +40,6 @@
                         <tbody>
                             <c:set var="index" value="0" />
                             <c:forEach var="o" items="${orders}">
-                                <c:if test="${o.status ne 'Cancelled'}">
                                     <c:set var="index" value="${index + 1}" />
                                     <tr class="text-center">
                                         <td>${index}</td>
@@ -68,7 +67,6 @@
                                                 </c:if>
                                             </td>
                                         </tr>
-                                    </c:if>
                                 </c:forEach>
 
                                 <c:if test="${empty orders}">

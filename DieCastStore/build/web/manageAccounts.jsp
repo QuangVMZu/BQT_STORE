@@ -21,36 +21,21 @@
                             <h2 class="mb-4 text-center text-primary fw-bold">Customer Account Management</h2>
 
                             <!-- Alert Messages -->
-                            <c:choose>
-                                <c:when test="${not empty updatedUserId}">
-                                    <c:choose>
-                                        <c:when test="${not empty checkError}">
-                                            <div class="alert alert-danger alert-dismissible fade show text-center shadow-sm rounded" role="alert">
-                                                ${checkError}
-                                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                                            </div>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <div class="alert alert-success alert-dismissible fade show text-center shadow-sm rounded" role="alert">
-                                                ${message}
-                                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                                            </div>
-                                        </c:otherwise>
-                                    </c:choose>
-                                </c:when>
-                                <c:when test="${not empty messageiewAccount}">
-                                    <div class="alert alert-success alert-dismissible fade show text-center shadow-sm rounded" role="alert">
-                                        ${messageiewAccount}
-                                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                                    </div>
-                                </c:when>
-                                <c:when test="${not empty checkErrorViewAccount}">
-                                    <div class="alert alert-danger alert-dismissible fade show text-center shadow-sm rounded" role="alert">
-                                        ${checkErrorViewAccount}
-                                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                                    </div>
-                                </c:when>
-                            </c:choose>
+                            <c:if test="${not empty checkErrorUpdateRole}">
+                                <div class="alert alert-danger">${checkErrorUpdateRole}</div>
+                            </c:if>
+
+                            <c:if test="${not empty messageUpdateRole}">
+                                <div class="alert alert-success">${messageUpdateRole}</div>
+                            </c:if>
+
+                            <c:if test="${not empty checkErrorViewAccount}">
+                                <div class="alert alert-danger">${checkErrorViewAccount}</div>
+                            </c:if>
+
+                            <c:if test="${not empty messageViewAccount}">
+                                <div class="alert alert-success">${messageViewAccount}</div>
+                            </c:if>
 
                             <!-- Table -->
                             <table class="table table-hover table-bordered bg-white align-middle">

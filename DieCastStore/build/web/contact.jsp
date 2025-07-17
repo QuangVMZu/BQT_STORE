@@ -26,7 +26,7 @@
                     <p>+84 123 456 789</p>
 
                     <h5>✉️ Email</h5>
-                    <p>support_bqtstore@gmail.com</p>
+                    <p>bqtstoresp@gmail.com</p>
 
                     <div class="map">
                         <h5>📌 Store Location Map</h5>

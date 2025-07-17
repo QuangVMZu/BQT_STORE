@@ -59,6 +59,7 @@
             <div class="news-carousel">
                 <div class="news-items">
                     <% for (ModelCar productCar : newestProducts) { 
+                            if(productCar.getQuantity() == - 1) continue;
                         List<ImageModel> images = productCar.getImages();
                     %>
                     <a href="ProductController?action=detail&modelId=<%= productCar.getModelId() %>" class="news-card">
