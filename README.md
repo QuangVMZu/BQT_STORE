@@ -4,7 +4,7 @@
 
 ## 🔹 1. Giới thiệu tổng quan
 
-**BQT STORE** là một hệ thống thương mại điện tử (E-commerce Website) được phát triển với mục đích mô phỏng quy trình mua bán trực tuyến các sản phẩm mô hình ô tô và phụ kiện. Đây là sản phẩm của nhóm sinh viên nhằm vận dụng kiến thức về **lập trình Java Web (JSP/Servlet)**, thiết kế giao diện với **Bootstrap**, và quản lý cơ sở dữ liệu bằng **MySQL**.
+**BQT STORE** là một hệ thống thương mại điện tử (E-commerce Website) được phát triển với mục đích mô phỏng quy trình mua bán trực tuyến các sản phẩm mô hình ô tô và phụ kiện. Đây là sản phẩm của nhóm sinh viên nhằm vận dụng kiến thức về **lập trình Java Web (JSP/Servlet)**, thiết kế giao diện với **Bootstrap**, và quản lý cơ sở dữ liệu bằng **SQL Server**.
 
 Mục tiêu của dự án là tạo ra một website dễ sử dụng, có giao diện hiện đại, hỗ trợ đầy đủ các chức năng cơ bản của một hệ thống bán hàng online: quản lý sản phẩm, giỏ hàng, thanh toán đơn hàng, phân quyền người dùng, và quản trị nội dung.
 
