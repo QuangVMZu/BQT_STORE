@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@page import="utils.AuthUtils"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -34,11 +35,18 @@
                                         </c:choose>
                                     </h2>
 
-                                    <c:if test="${not empty checkError}">
-                                        <div class="alert alert-danger">${checkError}</div>
+                                    <c:if test="${not empty checkErrorAddAccessory}">
+                                        <div class="alert alert-danger">${checkErrorAddAccessory}</div>
                                     </c:if>
-                                    <c:if test="${not empty message}">
-                                        <div class="alert alert-success">${message}</div>
+                                    <c:if test="${not empty messageAddAccessory}">
+                                        <div class="alert alert-success">${messageAddAccessory}</div>
+                                    </c:if>
+
+                                    <c:if test="${not empty checkErrorUpdateAccessory}">
+                                        <div class="alert alert-danger">${checkErrorUpdateAccessory}</div>
+                                    </c:if>
+                                    <c:if test="${not empty messageUpdateAccessory}">
+                                        <div class="alert alert-success">${messageUpdateAccessory}</div>
                                     </c:if>
 
                                     <form action="ProductController" method="post" enctype="multipart/form-data">

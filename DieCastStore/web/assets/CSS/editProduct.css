@@ -112,3 +112,84 @@ table.table {
     margin-top: 40px;
     font-size: 1.15rem;
 }
+
+/* Responsive: Tablet (≤768px) */
+@media (max-width: 768px) {
+    .container {
+        padding: 30px 20px;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    .add-product-btn {
+        font-size: 0.95rem;
+        padding: 10px 20px;
+    }
+
+    .edit-btn,
+    .delete-btn {
+        padding: 6px 10px;
+        font-size: 0.8rem;
+    }
+
+    .table thead {
+        font-size: 0.95rem;
+    }
+
+    .table td {
+        font-size: 0.9rem;
+    }
+
+    .pagination .btn {
+        padding: 5px 10px;
+        font-size: 0.85rem;
+    }
+}
+
+/* Responsive: Mobile (≤480px) */
+@media (max-width: 480px) {
+    .container {
+        padding: 25px 15px;
+        margin: 20px 10px;
+    }
+
+    h2 {
+        font-size: 1.3rem;
+        text-align: center;
+    }
+
+    .add-product-btn {
+        width: 100%;
+        text-align: center;
+        display: block;
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+
+    .table {
+        font-size: 0.85rem;
+    }
+
+    .edit-btn,
+    .delete-btn {
+        padding: 5px 8px;
+        font-size: 0.75rem;
+        display: inline-block;
+    }
+
+    .pagination {
+        justify-content: center;
+    }
+
+    .no-results,
+    .access-denied {
+        font-size: 1rem;
+        margin-top: 30px;
+    }
+}

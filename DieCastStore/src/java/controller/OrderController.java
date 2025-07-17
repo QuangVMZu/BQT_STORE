@@ -218,9 +218,9 @@ public class OrderController extends HttpServlet {
                 }
             }
 
-            request.setAttribute("message", "Order cancelled and stock restored.");
+            request.setAttribute("messageCancelOrder", "Order cancelled and stock restored.");
         } else {
-            request.setAttribute("checkError", "Failed to cancel order.");
+            request.setAttribute("checkErrorCancelOrder", "Failed to cancel order.");
         }
 
         // ✅ Lấy tài khoản khách hàng từ session
@@ -280,7 +280,7 @@ public class OrderController extends HttpServlet {
             boolean result = orderDAO.updateOrderStatus(orderId, status);
 
             if (result) {
-                request.setAttribute("message", "Order status updated successfully.");
+                request.setAttribute("messageViewAllOrder", "Order status updated successfully.");
 
                 if ("Cancelled".equalsIgnoreCase(status)) {
                     List<OrderDetail> items = orderDetailDAO.getItemsByOrderId(orderId);
@@ -294,7 +294,7 @@ public class OrderController extends HttpServlet {
                 }
 
             } else {
-                request.setAttribute("message", "Failed to update order status.");
+                request.setAttribute("checkErrorViewAllOrder", "Failed to update order status.");
             }
 
         } catch (Exception e) {

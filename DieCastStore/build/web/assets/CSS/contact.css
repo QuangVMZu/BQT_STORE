@@ -55,3 +55,56 @@ body {
     border: 1px solid #ccc;
     margin-top: 10px;
 }
+
+/* Responsive: Tablet (≤768px) */
+@media (max-width: 768px) {
+    .contact-container {
+        padding: 30px 20px;
+        margin: 40px 20px;
+    }
+
+    .contact-title {
+        font-size: 1.7rem;
+    }
+
+    .btn-submit {
+        width: 100%;
+        font-size: 15px;
+        padding: 12px;
+    }
+
+    .map iframe {
+        height: 250px;
+    }
+}
+
+/* Responsive: Mobile (≤480px) */
+@media (max-width: 480px) {
+    .contact-container {
+        padding: 25px 15px;
+        margin: 30px 10px;
+    }
+
+    .contact-title {
+        font-size: 1.5rem;
+    }
+
+    .btn-submit {
+        width: 100%;
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    .form-label {
+        font-size: 0.95rem;
+    }
+
+    .contact-info h5 {
+        font-size: 1rem;
+        text-align: center;
+    }
+
+    .map iframe {
+        height: 200px;
+    }
+}

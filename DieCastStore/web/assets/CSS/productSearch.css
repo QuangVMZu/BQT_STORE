@@ -41,3 +41,45 @@ body {
     transform: scale(1.1);
     transition: transform 0.3s;
 }
+
+/* ========== Responsive: Tablet (≤768px) ========== */
+@media (max-width: 768px) {
+    .product-img {
+        height: 160px;
+    }
+
+    .product-name {
+        font-size: 0.95rem;
+        min-height: auto;
+        text-align: center;
+    }
+
+    .product-price {
+        font-size: 1rem;
+        text-align: center;
+    }
+
+    .product-card {
+        margin-bottom: 20px;
+    }
+}
+
+/* ========== Responsive: Mobile (≤480px) ========== */
+@media (max-width: 480px) {
+    .product-img {
+        height: 140px;
+    }
+
+    .product-name {
+        font-size: 0.9rem;
+    }
+
+    .product-price {
+        font-size: 0.95rem;
+    }
+
+    .product-card {
+        margin-bottom: 15px;
+        padding: 0 10px;
+    }
+}

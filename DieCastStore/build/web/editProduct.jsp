@@ -1,6 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@page import="utils.AuthUtils"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -17,22 +18,29 @@
         <c:choose>
             <c:when test="${isLoggedIn and isAdmin}">
                 <div class="container">
-                    <h2 class="text-center mb-4">🛠 Manage Products</h2>
+                    <h2 class="text-center mb-4">Manage Products</h2>
 
-                    <c:if test="${not empty checkError}">
-                        <div class="alert alert-danger">${checkError}</div>
+                    <c:if test="${not empty checkErrorChangeQuantity}">
+                        <div class="alert alert-danger">${checkErrorChangeQuantity}</div>
                     </c:if>
-                    <c:if test="${not empty message}">
-                        <div class="alert alert-success">${message}</div>
+                    <c:if test="${not empty messageChangeQuantity}">
+                        <div class="alert alert-success">${messageChangeQuantity}</div>
+                    </c:if>
+                    <c:if test="${not empty checkErrorChangeQuantityAccessory}">
+                        <div class="alert alert-danger">${checkErrorChangeQuantityAccessory}</div>
+                    </c:if>
+                    <c:if test="${not empty messageChangeQuantityAccessory}">
+                        <div class="alert alert-success">${messageChangeQuantityAccessory}</div>
                     </c:if>
 
                     <div class="d-flex justify-content-between mb-3">
                         <a href="home.jsp" class="btn btn-outline-secondary rounded-pill">
                             <i class="bi bi-house-door-fill"></i> Home
                         </a>
-                        <a href="productsUpdate.jsp" class="btn btn-success rounded-pill">
+                        <a href="ProductController?action=showAddFormProduct" class="btn btn-success rounded-pill">
                             <i class="bi bi-plus-circle"></i> Add New Product
                         </a>
+
                     </div>
 
                     <c:if test="${not empty pageList}">
@@ -96,10 +104,10 @@
                     </c:if>
 
                     <hr class="my-5">
-                    <h2 class="text-center mb-4">🔧 Manage Accessories</h2>
+                    <h2 class="text-center mb-4">Manage Accessories</h2>
                     <div class="d-flex justify-content-end mb-3">
-                        <a href="accessoryUpdate.jsp" class="btn btn-success rounded-pill">
-                            <i class="bi bi-plus-circle"></i> Add New Accessory
+                        <a href="ProductController?action=showAddFormAccessory" class="btn btn-success rounded-pill">
+                            <i class="bi bi-plus-circle"></i> Add New Product
                         </a>
                     </div>
 

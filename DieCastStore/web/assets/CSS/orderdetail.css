@@ -18,3 +18,40 @@ body {
 .btn-cancel:hover {
     text-decoration: underline;
 }
+
+/* ============ Responsive: Tablet (≤768px) ============ */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+    }
+
+    .table {
+        font-size: 0.9rem;
+    }
+
+    .btn-cancel {
+        font-size: 0.9rem;
+    }
+}
+
+/* ============ Responsive: Mobile (≤480px) ============ */
+@media (max-width: 480px) {
+    .container {
+        padding: 20px 15px;
+        margin-top: 30px;
+    }
+
+    .table {
+        font-size: 0.85rem;
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .btn-cancel {
+        display: inline-block;
+        font-size: 0.85rem;
+        margin-top: 8px;
+    }
+}

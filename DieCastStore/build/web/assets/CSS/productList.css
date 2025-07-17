@@ -156,3 +156,71 @@ h1.title {
     transform: scale(1.1);
     transition: transform 0.3s ease-in-out;
 }
+
+/* ========== Responsive: Tablet (≤768px) ========== */
+@media (max-width: 768px) {
+    .product-card {
+        flex: 0 0 50%;
+        max-width: 100%;
+    }
+
+    .product-name {
+        font-size: 15px;
+        height: auto;
+    }
+
+    .product-price {
+        font-size: 16px;
+    }
+
+    .arrow {
+        font-size: 20px;
+        padding: 6px 10px;
+    }
+
+    .banner-slider {
+        height: 220px;
+    }
+
+    .banner-slide {
+        height: 220px;
+    }
+
+    h1.title {
+        font-size: 1.6rem;
+    }
+}
+
+/* ========== Responsive: Mobile (≤480px) ========== */
+@media (max-width: 480px) {
+    .product-card {
+        flex: 0 0 80%;
+        max-width: 100%;
+    }
+
+    .product-name {
+        font-size: 14px;
+    }
+
+    .product-price {
+        font-size: 15px;
+    }
+
+    .arrow {
+        font-size: 18px;
+        padding: 5px 9px;
+    }
+
+    .banner-slider {
+        height: 160px;
+        border-radius: 6px;
+    }
+
+    .banner-slide {
+        height: 160px;
+    }
+
+    h1.title {
+        font-size: 1.4rem;
+    }
+}

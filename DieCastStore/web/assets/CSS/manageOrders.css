@@ -86,18 +86,72 @@ h2 {
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.07);
 }
 
-/* Responsive adjustments */
+/* ================================
+   Responsive: Tablet (≤768px)
+================================ */
 @media (max-width: 768px) {
     .table-container {
-        padding: 15px;
+        padding: 20px;
+        margin: 30px 15px;
     }
 
     .table {
         font-size: 0.85rem;
+        min-width: 600px;
     }
 
-    .btn {
+    .btn-primary,
+    .btn-info,
+    .btn-secondary {
         font-size: 0.8rem;
-        padding: 5px 10px;
+        padding: 6px 10px;
+    }
+
+    .access-denied {
+        padding: 25px 20px;
+        font-size: 1rem;
+    }
+
+    .container {
+        padding: 30px 20px;
     }
 }
+
+/* ================================
+   Responsive: Mobile (≤480px)
+================================ */
+@media (max-width: 480px) {
+    .table-container {
+        padding: 15px;
+        margin: 20px 10px;
+    }
+
+    .table {
+        font-size: 0.8rem;
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    h2 {
+        font-size: 1.3rem;
+    }
+
+    .btn-primary,
+    .btn-info,
+    .btn-secondary {
+        display: block;
+        width: 100%;
+        font-size: 0.85rem;
+        margin-bottom: 8px;
+    }
+
+    .access-denied {
+        padding: 20px 15px;
+        font-size: 0.95rem;
+    }
+
+    .container {
+        padding: 25px 15px;
+    }
+}   

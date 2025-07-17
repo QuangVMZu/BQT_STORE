@@ -320,3 +320,150 @@ button[type="button"]:hover {
     background-color: #333;
     color: white;
 }
+
+/* ========== Responsive: Tablet (≤768px) ========== */
+@media (max-width: 768px) {
+    .detail-container {
+        padding: 20px 15px;
+    }
+
+    .product-top {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .detail-image {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .detail-info h2 {
+        font-size: 22px;
+        text-align: center;
+    }
+
+    .detail-info p.price {
+        font-size: 22px;
+        text-align: center;
+    }
+
+    .offer-info,
+    .store-info {
+        max-width: 100%;
+        font-size: 16px;
+    }
+
+    .offer-info h4,
+    .store-info h4 {
+        font-size: 20px;
+    }
+
+    .purchase-buttons {
+        text-align: center;
+    }
+
+    .purchase-buttons form {
+        margin-bottom: 15px;
+    }
+
+    .news-items {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .news-card {
+        height: auto;
+    }
+
+    .news-card img {
+        height: 160px;
+    }
+
+    .news-card h3 {
+        font-size: 16px;
+    }
+
+    .news-card p {
+        font-size: 13px;
+    }
+}
+
+/* ========== Responsive: Mobile (≤480px) ========== */
+@media (max-width: 480px) {
+    .detail-container {
+        padding: 15px 10px;
+        margin: 20px auto;
+    }
+
+    .detail-info h2 {
+        font-size: 20px;
+    }
+
+    .detail-info p.price {
+        font-size: 20px;
+    }
+
+    .product-description h3 {
+        font-size: 20px;
+    }
+
+    .product-description {
+        font-size: 16px;
+    }
+
+    .thumbnail {
+        width: 90px;
+        height: 90px;
+    }
+
+    input[type=number] {
+        width: 100%;
+    }
+
+    .purchase-buttons form button {
+        width: 100%;
+    }
+
+    .offer-info,
+    .store-info {
+        padding: 12px;
+        font-size: 15px;
+    }
+
+    .offer-info h4,
+    .store-info h4 {
+        font-size: 18px;
+    }
+
+    .stock-wrapper {
+        justify-content: center;
+    }
+
+    .news-title {
+        font-size: 22px;
+    }
+
+    .news-items {
+        grid-template-columns: 1fr;
+    }
+
+    .news-card {
+        width: 100%;
+    }
+
+    .news-card img {
+        height: 140px;
+    }
+
+    .news-card h3 {
+        font-size: 15px;
+    }
+
+    .news-card p {
+        font-size: 13px;
+    }
+
+    .news-page-btn {
+        padding: 6px 12px;
+        font-size: 14px;
+    }
+}

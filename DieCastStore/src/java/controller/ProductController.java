@@ -63,6 +63,9 @@ public class ProductController extends HttpServlet {
                     case "searchID":
                         url = handleSearchID(request, response);
                         break;
+                    case "showAddFormProduct":
+                        url = handleShowAddFormProduct(request, response);
+                        break;
                     case "productAdding":
                         url = handleProductAdding(request, response);
                         break;
@@ -86,6 +89,9 @@ public class ProductController extends HttpServlet {
                         break;
                     case "editAccessory":
                         url = handleEditAccessory(request, response);
+                        break;
+                    case "showAddFormAccessory":
+                        url = handleShowAddFormAccessory(request, response);
                         break;
                     case "accessoryAdding":
                         url = handleAccessoryAdding(request, response);
@@ -169,6 +175,7 @@ public class ProductController extends HttpServlet {
         }
         request.setAttribute("productList", list);
         request.setAttribute("accessoryList", accessoryList);
+
         return "productList.jsp";
 
     }
@@ -349,7 +356,7 @@ public class ProductController extends HttpServlet {
             pageList = fullList.subList(start, end);
         }
 
-        // ✅ Lấy danh sách phụ kiện
+        // Lấy danh sách phụ kiện
         AccessoryDAO accDao = new AccessoryDAO();
         List<Accessory> accessoryList = accDao.getAll();
 
@@ -359,7 +366,7 @@ public class ProductController extends HttpServlet {
         request.setAttribute("totalPages", totalPages);
         request.setAttribute("accessoryList", accessoryList);
 
-        // ✅ Các biến hỗ trợ cho JSTL
+        // Các biến hỗ trợ cho JSTL
         request.setAttribute("isLoggedIn", AuthUtils.isLoggedIn(request));
         request.setAttribute("isAdmin", true);
         request.setAttribute("accessDeniedMessage", "");
@@ -407,7 +414,7 @@ public class ProductController extends HttpServlet {
         ModelCarDAO dao = new ModelCarDAO();
         boolean success = dao.updateQuantity(modelId);
 
-        // ✅ Lấy lại danh sách modelCar theo từ khóa tìm kiếm (có thể là rỗng)
+        // Lấy lại danh sách modelCar theo từ khóa tìm kiếm (có thể là rỗng)
         List<ModelCar> fullList = dao.searchByName(keyword != null ? keyword : "");
         if (fullList == null) {
             fullList = new ArrayList<>();
@@ -428,26 +435,30 @@ public class ProductController extends HttpServlet {
         int end = Math.min(start + ITEMS_PER_PAGE, totalItems);
         List<ModelCar> pageList = fullList.subList(start, end);
 
-        // ✅ Lấy lại danh sách Accessory
+        // Lấy lại danh sách Accessory
         AccessoryDAO accessoryDAO = new AccessoryDAO();
         List<Accessory> accessoryList = accessoryDAO.getAll();
         if (accessoryList == null) {
             accessoryList = new ArrayList<>();
         }
 
-        // ✅ Gửi dữ liệu ra view
+        // Gửi dữ liệu ra view
         request.setAttribute("accessoryList", accessoryList);
         request.setAttribute("pageList", pageList);
         request.setAttribute("totalPages", totalPages);
         request.setAttribute("currentPage", currentPage);
         request.setAttribute("keyword", keyword);
 
+        request.setAttribute("isLoggedIn", AuthUtils.isLoggedIn(request));
+        request.setAttribute("isAdmin", AuthUtils.isAdmin(request));
+        request.setAttribute("accessDeniedMessage", AuthUtils.getAccessDeniedMessage("login.jsp"));
+        request.setAttribute("loginURL", AuthUtils.getLoginURL());
         if (success) {
             HttpSession session = request.getSession();
             session.removeAttribute("cachedProductListEdit");
-            request.setAttribute("message", "✅ Quantity for product [" + modelId + "] has been updated to -1.");
+            request.setAttribute("messageChangeQuantity", "Quantity for product [" + modelId + "] has been updated to -1.");
         } else {
-            request.setAttribute("checkError", "❌ Failed to update quantity. Check if productId exists.");
+            request.setAttribute("checkErrorChangeQuantity", "Failed to update quantity. Check if productId exists.");
         }
 
         return "editProduct.jsp";
@@ -461,24 +472,41 @@ public class ProductController extends HttpServlet {
 
         String modelId = request.getParameter("modelId");
         if (modelId == null || modelId.trim().isEmpty()) {
-            request.setAttribute("checkError", "Missing product ModelID.");
+            request.setAttribute("checkErrorEditProduct", "Missing product ModelID.");
             return "error.jsp";
         }
 
         ModelCarDAO dao = new ModelCarDAO();
         ModelCar product = dao.getById(modelId);
         if (product == null) {
-            request.setAttribute("checkError", "No products found with ModelID: " + modelId);
+            request.setAttribute("checkErrorEditProduct", "No products found with ModelID: " + modelId);
             return "error.jsp";
         }
 
-        // ✅ Gán thuộc tính cho JSTL điều kiện hiển thị trong JSP
+        // Gán thuộc tính cho JSTL điều kiện hiển thị trong JSP
         request.setAttribute("isLoggedIn", AuthUtils.isLoggedIn(request));
         request.setAttribute("isAdmin", AuthUtils.isAdmin(request));
         request.setAttribute("accessDeniedMessage", AuthUtils.getAccessDeniedMessage("login.jsp"));
         request.setAttribute("loginURL", AuthUtils.getLoginURL());
 
         request.setAttribute("product", product);
+        return "productsUpdate.jsp";
+    }
+
+    private String handleShowAddFormProduct(HttpServletRequest request, HttpServletResponse response) {
+        if (!AuthUtils.isAdmin(request)) {
+            request.setAttribute("isLoggedIn", AuthUtils.isLoggedIn(request));
+            request.setAttribute("isAdmin", false);
+            request.setAttribute("accessDeniedMessage", AuthUtils.getAccessDeniedMessage("login.jsp"));
+            request.setAttribute("loginURL", AuthUtils.getLoginURL());
+            return "error.jsp";
+        }
+
+        request.setAttribute("isLoggedIn", true); // vì bạn đã là admin ở trên
+        request.setAttribute("isAdmin", true);
+        request.setAttribute("accessDeniedMessage", "");
+        request.setAttribute("loginURL", "login.jsp");
+
         return "productsUpdate.jsp";
     }
 
@@ -499,7 +527,7 @@ public class ProductController extends HttpServlet {
             int quantity = Integer.parseInt(request.getParameter("quantity"));
 
             if (quantity < -1) {
-                request.setAttribute("checkError", "Quantity cannot be less than -1.");
+                request.setAttribute("checkErrorAddProduct", "Quantity cannot be less than -1.");
                 return "productsUpdate.jsp";
             }
 
@@ -543,17 +571,23 @@ public class ProductController extends HttpServlet {
             }
 
             if (successProduct && successImages) {
-                request.setAttribute("message", "New product and images added successfully.");
+                HttpSession session = request.getSession();
+                session.removeAttribute("cachedProductListEdit");
+                request.setAttribute("messageAddProduct", "New product and images added successfully.");
             } else {
-                request.setAttribute("checkError", "Failed to add product or images.");
+                request.setAttribute("checkErrorAddProduct", "Failed to add product or images.");
             }
 
             request.setAttribute("product", newProduct); // Save form
+            request.setAttribute("isLoggedIn", AuthUtils.isLoggedIn(request));
+            request.setAttribute("isAdmin", true);
+            request.setAttribute("accessDeniedMessage", AuthUtils.getAccessDeniedMessage("login.jsp"));
+            request.setAttribute("loginURL", AuthUtils.getLoginURL());
             return "productsUpdate.jsp";
 
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("message", "Error while adding product: " + e.getMessage());
+            request.setAttribute("checkError", "Error while adding product: " + e.getMessage());
             return "error.jsp";
         }
     }
@@ -630,7 +664,7 @@ public class ProductController extends HttpServlet {
         request.setAttribute("currentPage", currentPage);
         request.setAttribute("totalPages", totalPages);
 
-        // ✅ Thêm 3 biến JSTL để kiểm tra trạng thái đăng nhập trong JSP
+        // Thêm 3 biến JSTL để kiểm tra trạng thái đăng nhập trong JSP
         request.setAttribute("isLoggedIn", AuthUtils.isLoggedIn(request));
         request.setAttribute("isAdmin", AuthUtils.isAdmin(request));
         request.setAttribute("accessDeniedMessage", AuthUtils.getAccessDeniedMessage("login.jsp"));
@@ -668,19 +702,19 @@ public class ProductController extends HttpServlet {
 
             // Validate input
             if (scaleId < 1 || scaleId > 2) {
-                request.setAttribute("checkError", "Scale ID must be 1 or 2.");
+                request.setAttribute("checkErrorUpdateProductMain", "Scale ID must be 1 or 2.");
                 return returnUpdateWithAuthState(request);
             }
             if (brandId < 1 || brandId > 10) {
-                request.setAttribute("checkError", "Brand ID must be between 1 and 10.");
+                request.setAttribute("checkErrorUpdateProductMain", "Brand ID must be between 1 and 10.");
                 return returnUpdateWithAuthState(request);
             }
             if (price < 0) {
-                request.setAttribute("checkError", "Price cannot be less than 0.");
+                request.setAttribute("checkErrorUpdateProductMain", "Price cannot be less than 0.");
                 return returnUpdateWithAuthState(request);
             }
             if (quantity < -1) {
-                request.setAttribute("checkError", "Quantity cannot be less than -1.");
+                request.setAttribute("checkErrorUpdateProductMain", "Quantity cannot be less than -1.");
                 return returnUpdateWithAuthState(request);
             }
 
@@ -690,9 +724,9 @@ public class ProductController extends HttpServlet {
 
             if (success) {
                 request.getSession().removeAttribute("cachedProductListEdit");
-                request.setAttribute("message", "Product information updated successfully.");
+                request.setAttribute("messageUpdateProductMain", "Product information updated successfully.");
             } else {
-                request.setAttribute("checkError", "Failed to update product information.");
+                request.setAttribute("checkErrorUpdateProductMain", "Failed to update product information.");
             }
 
             // Reload sản phẩm cập nhật
@@ -719,7 +753,7 @@ public class ProductController extends HttpServlet {
         }
     }
 
-// ✅ Hàm phụ trợ để set lại JSTL login/admin state
+// Hàm phụ trợ để set lại JSTL login/admin state
     private String returnUpdateWithAuthState(HttpServletRequest request) {
         request.setAttribute("isLoggedIn", AuthUtils.isLoggedIn(request));
         request.setAttribute("isAdmin", AuthUtils.isAdmin(request));
@@ -786,6 +820,12 @@ public class ProductController extends HttpServlet {
                     imageIndex++;
                 }
             }
+            if (success) {
+                request.getSession().removeAttribute("cachedProductListEdit");
+                request.setAttribute("messageUpdateProductImage", "Product information updated successfully.");
+            } else {
+                request.setAttribute("checkErrorUpdateProductImage", "Failed to update product information.");
+            }
 
             ModelCarDAO modelDao = new ModelCarDAO();
             ModelCar product = modelDao.getById(modelId);
@@ -803,7 +843,7 @@ public class ProductController extends HttpServlet {
         }
     }
 
-// ✅ Helper: set trạng thái đăng nhập
+// Helper: set trạng thái đăng nhập
     private void setAuthAttributes(HttpServletRequest request) {
         request.setAttribute("isLoggedIn", AuthUtils.isLoggedIn(request));
         request.setAttribute("isAdmin", AuthUtils.isAdmin(request));
@@ -811,11 +851,28 @@ public class ProductController extends HttpServlet {
         request.setAttribute("loginURL", AuthUtils.getLoginURL());
     }
 
-// ✅ Helper: return với lỗi và gán các JSTL login variables
+// Helper: return với lỗi và gán các JSTL login variables
     private String returnUpdateImageError(HttpServletRequest request, String errorMessage) {
         request.setAttribute("checkError", errorMessage);
         setAuthAttributes(request);
         return "productsUpdate.jsp";
+    }
+
+    private String handleShowAddFormAccessory(HttpServletRequest request, HttpServletResponse response) {
+        if (!AuthUtils.isAdmin(request)) {
+            request.setAttribute("isLoggedIn", AuthUtils.isLoggedIn(request));
+            request.setAttribute("isAdmin", false);
+            request.setAttribute("accessDeniedMessage", AuthUtils.getAccessDeniedMessage("login.jsp"));
+            request.setAttribute("loginURL", AuthUtils.getLoginURL());
+            return "error.jsp";
+        }
+
+        request.setAttribute("isLoggedIn", true); // vì bạn đã là admin ở trên
+        request.setAttribute("isAdmin", true);
+        request.setAttribute("accessDeniedMessage", "");
+        request.setAttribute("loginURL", "login.jsp");
+
+        return "accessoryUpdate.jsp";
     }
 
     private String handleAccessoryAdding(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -832,7 +889,7 @@ public class ProductController extends HttpServlet {
             int quantity = Integer.parseInt(request.getParameter("quantity"));
 
             if (quantity < -1) {
-                request.setAttribute("checkError", "Quantity cannot be less than -1.");
+                request.setAttribute("checkErrorAddAccessory", "Quantity cannot be less than -1.");
                 return "accessoryUpdate.jsp";
             }
 
@@ -871,12 +928,16 @@ public class ProductController extends HttpServlet {
             boolean success = dao.create(accessory);
 
             if (success) {
-                request.setAttribute("message", "New accessory added successfully.");
+                request.setAttribute("messageAddAccessory", "New accessory added successfully.");
             } else {
-                request.setAttribute("checkError", "Failed to add accessory.");
+                request.setAttribute("checkErrorAddAccessory", "Failed to add accessory.");
             }
 
             request.setAttribute("accessory", accessory);
+            request.setAttribute("isLoggedIn", AuthUtils.isLoggedIn(request));
+            request.setAttribute("isAdmin", AuthUtils.isAdmin(request));
+            request.setAttribute("accessDeniedMessage", AuthUtils.getAccessDeniedMessage("login.jsp"));
+            request.setAttribute("loginURL", AuthUtils.getLoginURL());
             return "accessoryUpdate.jsp";
 
         } catch (Exception e) {
@@ -911,19 +972,19 @@ public class ProductController extends HttpServlet {
 
             // Kiểm tra logic
             if (price < 0) {
-                request.setAttribute("checkError", "Price cannot be negative.");
+                request.setAttribute("checkErrorUpdateAccessory", "Price cannot be negative.");
                 return "accessoryUpdate.jsp";
             }
 
             if (quantity < -1) {
-                request.setAttribute("checkError", "Quantity cannot be less than -1.");
+                request.setAttribute("checkErrorUpdateAccessory", "Quantity cannot be less than -1.");
                 return "accessoryUpdate.jsp";
             }
 
             AccessoryDAO dao = new AccessoryDAO();
             Accessory existingAcc = dao.getById(accessoryId);
             if (existingAcc == null) {
-                request.setAttribute("checkError", "Accessory not found.");
+                request.setAttribute("checkErrorUpdateAccessory", "Accessory not found.");
                 return "accessoryUpdate.jsp";
             }
 
@@ -953,14 +1014,18 @@ public class ProductController extends HttpServlet {
             boolean success = dao.update(existingAcc);
 
             if (success) {
-                request.setAttribute("message", "Accessory updated successfully.");
+                request.setAttribute("messageUpdateAccessory", "Accessory updated successfully.");
             } else {
-                request.setAttribute("checkError", "Failed to update accessory.");
+                request.setAttribute("checkErrorUpdateAccessory", "Failed to update accessory.");
             }
 
             // Lấy lại bản cập nhật mới nhất để hiển thị
             Accessory refreshedAcc = dao.getById(accessoryId);
             request.setAttribute("accessory", refreshedAcc);
+            request.setAttribute("isLoggedIn", AuthUtils.isLoggedIn(request));
+            request.setAttribute("isAdmin", AuthUtils.isAdmin(request));
+            request.setAttribute("accessDeniedMessage", AuthUtils.getAccessDeniedMessage("login.jsp"));
+            request.setAttribute("loginURL", AuthUtils.getLoginURL());
 
         } catch (NumberFormatException e) {
             request.setAttribute("checkError", "Invalid number format: " + e.getMessage());
@@ -993,12 +1058,16 @@ public class ProductController extends HttpServlet {
         }
 
         request.setAttribute("accessory", acc);
+        request.setAttribute("isLoggedIn", AuthUtils.isLoggedIn(request));
+        request.setAttribute("isAdmin", AuthUtils.isAdmin(request));
+        request.setAttribute("accessDeniedMessage", AuthUtils.getAccessDeniedMessage("login.jsp"));
+        request.setAttribute("loginURL", AuthUtils.getLoginURL());
         return "accessoryUpdate.jsp";
     }
 
     private String handleChangeAccessoryQuantity(HttpServletRequest request, HttpServletResponse response) {
         if (!AuthUtils.isAdmin(request)) {
-            request.setAttribute("checkError", "❌ You do not have permission to access this page.");
+            request.setAttribute("checkError", "You do not have permission to access this page.");
             return "error.jsp";
         }
 
@@ -1014,7 +1083,7 @@ public class ProductController extends HttpServlet {
         }
 
         if (accessoryId == null || accessoryId.trim().isEmpty()) {
-            request.setAttribute("checkError", "❌ Missing accessory ID.");
+            request.setAttribute("checkError", "Missing accessory ID.");
             return "editProduct.jsp";
         }
 
@@ -1025,7 +1094,7 @@ public class ProductController extends HttpServlet {
             accessoryList = new ArrayList<>();
         }
 
-        // ✅ ModelCar với keyword, phân trang
+        // ModelCar với keyword, phân trang
         ModelCarDAO modelCarDAO = new ModelCarDAO();
         List<ModelCar> fullList = modelCarDAO.searchByName(keyword != null ? keyword : "");
         if (fullList == null) {
@@ -1054,10 +1123,16 @@ public class ProductController extends HttpServlet {
         request.setAttribute("keyword", keyword);
 
         if (success) {
-            request.setAttribute("message", "✅ Quantity for accessory [" + accessoryId + "] has been updated to -1.");
+            request.getSession().removeAttribute("cachedProductListEdit");
+            request.setAttribute("messageChangeQuantityAccessory", "Quantity for accessory [" + accessoryId + "] has been updated to -1.");
         } else {
-            request.setAttribute("checkError", "❌ Failed to update quantity. Please check the ID.");
+            request.setAttribute("checkErrorChangeQuantityAccessory", "Failed to update quantity. Please check the ID.");
         }
+
+        request.setAttribute("isLoggedIn", AuthUtils.isLoggedIn(request));
+        request.setAttribute("isAdmin", AuthUtils.isAdmin(request));
+        request.setAttribute("accessDeniedMessage", AuthUtils.getAccessDeniedMessage("login.jsp"));
+        request.setAttribute("loginURL", AuthUtils.getLoginURL());
 
         return "editProduct.jsp";
     }

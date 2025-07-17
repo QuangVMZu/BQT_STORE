@@ -38,15 +38,15 @@
                                         </c:otherwise>
                                     </c:choose>
                                 </c:when>
-                                <c:when test="${not empty message}">
+                                <c:when test="${not empty messageiewAccount}">
                                     <div class="alert alert-success alert-dismissible fade show text-center shadow-sm rounded" role="alert">
-                                        ${message}
+                                        ${messageiewAccount}
                                         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                                     </div>
                                 </c:when>
-                                <c:when test="${not empty checkError}">
+                                <c:when test="${not empty checkErrorViewAccount}">
                                     <div class="alert alert-danger alert-dismissible fade show text-center shadow-sm rounded" role="alert">
-                                        ${checkError}
+                                        ${checkErrorViewAccount}
                                         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                                     </div>
                                 </c:when>

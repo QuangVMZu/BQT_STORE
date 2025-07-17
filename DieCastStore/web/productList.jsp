@@ -126,6 +126,12 @@
             <a title="Welly"><img src="assets/image/logoW.png" alt="Welly" style="width: 120px;"></a>
         </div>
 
+        <script id="chatbase-script"
+                src="https://www.chatbase.co/embed.min.js"
+                chatbotId="24voNCBYpeJgbiYuJUH4Z"
+                domain="www.chatbase.co"
+                popup="true">
+        </script>
         <jsp:include page="footer.jsp" />
         <script src="assets/js/productList.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

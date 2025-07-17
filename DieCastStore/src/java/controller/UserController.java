@@ -201,6 +201,7 @@ public class UserController extends HttpServlet {
             }
 
             session.setAttribute("cart", savedCart);
+            session.setAttribute("cartSize", savedCart.getTotalQuantity());
 
             // Redirect nếu có
             String redirectAfterLogin = (String) session.getAttribute("redirectAfterLogin");
@@ -541,8 +542,8 @@ public class UserController extends HttpServlet {
             String message = (String) request.getAttribute("message");
             String updatedUserId = (String) request.getAttribute("updatedUserId");
 
-            request.setAttribute("checkError", checkError);
-            request.setAttribute("message", message);
+            request.setAttribute("checkErrorViewAccount", checkError);
+            request.setAttribute("messageViewAccount", message);
             request.setAttribute("updatedUserId", updatedUserId);
 
             // Gửi các thông điệp hỗ trợ khi bị chặn truy cập (dùng trong JSTL)
@@ -553,7 +554,7 @@ public class UserController extends HttpServlet {
 
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("checkError", "❌ Error while getting account list: " + e.getMessage());
+            request.setAttribute("checkError", " Error while getting account list: " + e.getMessage());
             return "manageAccounts.jsp";
         }
     }
@@ -580,15 +581,15 @@ public class UserController extends HttpServlet {
             // Chỉ báo cho đúng user vừa cập nhật
             if (updated) {
                 request.setAttribute("updatedUserId", customerId);
-                request.setAttribute("message", "✅ Permissions updated successfully.");
+                request.setAttribute("messageUpdateRole", " Permissions updated successfully.");
             } else {
                 request.setAttribute("updatedUserId", customerId);
-                request.setAttribute("checkError", "❌ Unable to update permissions.");
+                request.setAttribute("checkErrorUpdateRole", " Unable to update permissions.");
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("checkError", "❌ Error updating permissions: " + e.getMessage());
+            request.setAttribute("checkError", " Error updating permissions: " + e.getMessage());
         }
 
         return "manageAccounts.jsp";

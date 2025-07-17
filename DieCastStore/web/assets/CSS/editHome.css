@@ -78,3 +78,65 @@ textarea.form-control {
     margin-top: 40px;
     font-size: 1.15rem;
 }
+
+/* Responsive: Tablet (≤768px) */
+@media (max-width: 768px) {
+    .form-section,
+    .container {
+        padding: 30px 20px;
+        margin: 20px;
+    }
+
+    .section-title {
+        font-size: 1.6rem;
+    }
+
+    .btn-return {
+        font-size: 0.95rem;
+        padding: 10px 20px;
+    }
+
+    .error-message,
+    .success-message {
+        font-size: 0.95rem;
+    }
+
+    .access-denied {
+        font-size: 1rem;
+        margin-top: 30px;
+    }
+}
+
+/* Responsive: Mobile (≤480px) */
+@media (max-width: 480px) {
+    .form-section,
+    .container {
+        padding: 25px 15px;
+        margin: 15px 10px;
+    }
+
+    .section-title {
+        font-size: 1.4rem;
+    }
+
+    .btn-return {
+        width: 100%;
+        padding: 10px;
+        font-size: 0.9rem;
+        border-radius: 8px;
+    }
+
+    .error-message,
+    .success-message {
+        font-size: 0.9rem;
+        text-align: center;
+    }
+
+    .access-denied {
+        font-size: 0.95rem;
+    }
+
+    textarea.form-control {
+        font-size: 0.9rem;
+    }
+}

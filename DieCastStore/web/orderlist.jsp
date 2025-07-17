@@ -19,9 +19,12 @@
                 <div class="container">
                     <h2 class="mb-4">My Orders</h2>
 
-                    <c:if test="${not empty message}">
-                        <div class="alert alert-info">${message}</div>
+                    <c:if test="${not empty messageCancelOrder}">
+                        <div class="alert alert-info">${messageCancelOrder}</div>
                     </c:if>
+                    <c:if test="${not empty checkErrorCancelOrder}">
+                        <div class="alert alert-info">${checkErrorCancelOrder}</div>
+                    </c:if>    
 
                     <table class="table table-bordered table-hover">
                         <thead class="table-dark text-center">
@@ -45,11 +48,11 @@
                                         <td>${o.orderDate}</td>
                                         <td>
                                             <span class="badge
-                                                  ${o.status == 'Pending' ? 'bg-warning' :
-                                                    o.status == 'Processing' ? 'bg-info' :
-                                                    o.status == 'Shipped' ? 'bg-primary' :
-                                                    o.status == 'Delivered' ? 'bg-success' :
-                                                    o.status == 'Cancelled' ? 'bg-danger' : 'bg-secondary'}">
+                                                  ${o.status == 'PENDING' ? 'bg-warning' :
+                                                    o.status == 'PROCESSING' ? 'bg-info' :
+                                                    o.status == 'SHIPPED' ? 'bg-primary' :
+                                                    o.status == 'DELIVERED' ? 'bg-success' :
+                                                    o.status == 'CANCELLED' ? 'bg-danger' : 'bg-secondary'}">
                                                       ${o.status}
                                                   </span>
                                             </td>

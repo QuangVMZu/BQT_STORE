@@ -33,3 +33,40 @@ body {
     border-radius: 50px;
     padding: 10px 24px;
 }
+
+/* Responsive: Tablet (≤768px) */
+@media (max-width: 768px) {
+    .error-code {
+        font-size: 80px;
+    }
+
+    .error-message {
+        font-size: 20px;
+    }
+
+    .back-btn {
+        font-size: 0.95rem;
+        padding: 10px 20px;
+    }
+}
+
+/* Responsive: Mobile (≤480px) */
+@media (max-width: 480px) {
+    .error-code {
+        font-size: 60px;
+    }
+
+    .error-message {
+        font-size: 18px;
+    }
+
+    .error-container {
+        padding: 30px 20px;
+    }
+
+    .back-btn {
+        font-size: 0.9rem;
+        padding: 10px 16px;
+        width: 100%;
+    }
+}

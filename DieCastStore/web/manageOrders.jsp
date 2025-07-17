@@ -20,8 +20,12 @@
                         <div class="table-container">
                             <h2 style="color: #007bff;">Manage All Orders</h2>
 
-                            <c:if test="${not empty message}">
-                                <div class="alert alert-info text-center">${message}</div>
+                            <c:if test="${not empty messageViewAllOrder}">
+                                <div class="alert alert-info text-center">${messageViewAllOrder}</div>
+                            </c:if>
+
+                            <c:if test="${not empty checkErrorViewAllOrder}">
+                                <div class="alert alert-info text-center">${checkErrorViewAllOrder}</div>
                             </c:if>
 
                             <c:if test="${not empty orders}">
@@ -56,11 +60,11 @@
                                                                 <input type="hidden" name="action" value="updateOrderStatus">
                                                                 <input type="hidden" name="orderId" value="${order.orderId}">
                                                                 <select name="status" class="form-select form-select-sm w-auto">
-                                                                    <option value="Pending" <c:if test="${order.status eq 'Pending'}">selected</c:if>>Pending</option>
-                                                                    <option value="Processing" <c:if test="${order.status eq 'Processing'}">selected</c:if>>Processing</option>
-                                                                    <option value="Shipped" <c:if test="${order.status eq 'Shipped'}">selected</c:if>>Shipped</option>
-                                                                    <option value="Delivered" <c:if test="${order.status eq 'Delivered'}">selected</c:if>>Delivered</option>
-                                                                    <option value="Cancelled" <c:if test="${order.status eq 'Cancelled'}">selected</c:if>>Cancelled</option>
+                                                                    <option value="PENDING" <c:if test="${order.status eq 'PENDING'}">selected</c:if>>PENDING</option>
+                                                                    <option value="PROCESSING" <c:if test="${order.status eq 'PROCESSING'}">selected</c:if>>PROCESSING</option>
+                                                                    <option value="SHIPPED" <c:if test="${order.status eq 'SHIPPED'}">selected</c:if>>SHIPPED</option>
+                                                                    <option value="DELIVERED" <c:if test="${order.status eq 'DELIVERED'}">selected</c:if>>DELIVERED</option>
+                                                                    <option value="CANCELLED" <c:if test="${order.status eq 'CANCELLED'}">selected</c:if>>CANCELLED</option>
                                                                     </select>
                                                                     <button type="submit" class="btn btn-sm btn-primary">Save</button>
                                                                 </form>

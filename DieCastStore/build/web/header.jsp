@@ -2,6 +2,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <link rel="stylesheet" href="assets/css/header.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
 <header>
     <div class="header-container">
@@ -48,6 +49,13 @@
                             <span class="greeting">Hello, <strong>${userName}</strong></span>
                             <div class="avatar-circle">${avatarChar}</div>
                         </div>
+
+                        <a href="cart" class="cart-icon" title="Cart">
+                            <i class="bi bi-cart-fill"></i>
+                            <c:if test="${sessionScope.cartSize > 0}">
+                                <span class="cart-badge">${sessionScope.cartSize}</span>
+                            </c:if>
+                        </a>
                         <div class="dropdown-menu" id="dropdownMenu">
                             <a href="profileForm.jsp" class="edit">My Profile</a>
 

@@ -22,3 +22,54 @@ table th, table td {
     font-weight: 500;
     font-size: 1.05rem;
 }
+
+/* Responsive: Tablet (≤768px) */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+    }
+
+    .btn-confirm {
+        width: 100%;
+        font-size: 1rem;
+    }
+
+    table {
+        font-size: 0.95rem;
+    }
+
+    .order-summary {
+        margin-top: 25px;
+    }
+}
+
+/* Responsive: Mobile (≤480px) */
+@media (max-width: 480px) {
+    .container {
+        margin-top: 30px;
+        padding: 15px;
+    }
+
+    .btn-confirm {
+        width: 100%;
+        font-size: 0.95rem;
+        padding: 10px;
+    }
+
+    table {
+        font-size: 0.85rem;
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .form-label {
+        font-size: 0.95rem;
+    }
+
+    .order-summary {
+        margin-top: 20px;
+        font-size: 0.95rem;
+        text-align: center;
+    }
+}

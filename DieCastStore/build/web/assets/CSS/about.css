@@ -55,3 +55,58 @@ body {
     margin-bottom: 6px;
     color: #2e7d32;
 }
+
+@media (max-width: 768px) {
+    .about-container {
+        padding: 20px;
+        margin: 30px 15px;
+    }
+
+    .about-container h1 {
+        font-size: 1.5rem;
+    }
+
+    .about-container p {
+        font-size: 0.95rem;
+        line-height: 1.5;
+    }
+
+    .customer-experience h2 {
+        font-size: 1.25rem;
+    }
+
+    .benefit {
+        padding: 15px;
+    }
+
+    .benefit strong {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .about-container {
+        padding: 15px;
+        margin: 20px 10px;
+    }
+
+    .about-container h1 {
+        font-size: 1.3rem;
+    }
+
+    .about-container p {
+        font-size: 0.9rem;
+    }
+
+    .customer-experience h2 {
+        font-size: 1.1rem;
+    }
+
+    .benefit {
+        padding: 12px;
+    }
+
+    .benefit strong {
+        font-size: 0.95rem;
+    }
+}

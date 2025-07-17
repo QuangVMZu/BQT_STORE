@@ -166,6 +166,12 @@
                 <img src="assets/image/logoW.png" alt="Welly" style="width: 120px; height: auto; cursor: pointer; transition: transform 0.3s;">
             </a>
         </div><br>
+        <script id="chatbase-script"
+                src="https://www.chatbase.co/embed.min.js"
+                chatbotId="24voNCBYpeJgbiYuJUH4Z"
+                domain="www.chatbase.co"
+                popup="true">
+        </script>
         <jsp:include page="footer.jsp" />
     </body>
     <script src="assets/js/home.js"></script>

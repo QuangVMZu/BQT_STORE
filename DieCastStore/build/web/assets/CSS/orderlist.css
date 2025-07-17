@@ -36,3 +36,60 @@ h2 {
 .alert-info {
     font-size: 16px;
 }
+
+/* ============ Responsive: Tablet (≤768px) ============ */
+@media (max-width: 768px) {
+    .container {
+        padding: 30px 20px;
+        margin-top: 40px;
+    }
+
+    .table {
+        font-size: 0.9rem;
+    }
+
+    .btn-info,
+    .btn-danger,
+    .btn-secondary {
+        font-size: 0.85rem;
+        padding: 6px 12px;
+    }
+
+    .alert-info {
+        font-size: 15px;
+    }
+}
+
+/* ============ Responsive: Mobile (≤480px) ============ */
+@media (max-width: 480px) {
+    .container {
+        padding: 25px 15px;
+        margin-top: 30px;
+    }
+
+    .table {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        white-space: nowrap;
+        font-size: 0.85rem;
+    }
+
+    .btn-info,
+    .btn-danger,
+    .btn-secondary {
+        display: block;
+        width: 100%;
+        margin-bottom: 8px;
+        font-size: 0.85rem;
+        text-align: center;
+    }
+
+    h2 {
+        font-size: 1.4rem;
+    }
+
+    .alert-info {
+        font-size: 14px;
+    }
+}

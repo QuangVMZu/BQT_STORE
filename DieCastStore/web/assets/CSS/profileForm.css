@@ -156,3 +156,53 @@ body {
         margin: 0.5rem 0;
     }
 }
+@media (max-width: 576px) {
+    .profile-title {
+        font-size: 1.6rem;
+    }
+
+    .card-header h3 {
+        font-size: 1.2rem;
+    }
+
+    .info-table th,
+    .info-table td {
+        display: block;
+        width: 100%;
+        text-align: left;
+        padding: 0.6rem;
+        font-size: 0.85rem;
+        border: none;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .info-table tr {
+        display: block;
+        margin-bottom: 1rem;
+    }
+
+    .nav-btn {
+        font-size: 0.95rem;
+        padding: 10px 16px;
+    }
+}
+
+@media (max-width: 400px) {
+    .profile-title {
+        font-size: 1.4rem;
+    }
+
+    .nav-btn {
+        font-size: 0.85rem;
+        min-width: 120px;
+        padding: 8px 14px;
+    }
+
+    .profile-container {
+        padding: 0.5rem;
+    }
+
+    .card-header h3 {
+        font-size: 1.05rem;
+    }
+}
