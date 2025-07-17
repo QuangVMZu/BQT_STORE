@@ -15,12 +15,7 @@
         <nav class="main-nav">
             <ul>
                 <li><a href="home.jsp">Home</a></li>
-                <li>
-                    <form action="MainController" method="get" style="display:inline;">
-                        <input type="hidden" name="action" value="list">
-                        <button type="submit" class="link-button" style="font-size: 1.5rem">Products</button>
-                    </form>
-                </li>
+                <li><a href="MainController?action=list">Products</a></li>
                 <li><a href="about.jsp">About Us</a></li>
                 <li><a href="contact.jsp">Contact</a></li>
             </ul>
