@@ -151,7 +151,7 @@ Các bảng đều có khóa chính – khóa ngoại rõ ràng, chuẩn hóa d�
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-## 🔹 10. Kết luận
+## 🔹 10. Tổng kết
 
 **BQT STORE** là một dự án thương mại điện tử hoàn chỉnh quy mô nhỏ, thể hiện được khả năng áp dụng lý thuyết vào thực tiễn, từ xử lý backend đến thiết kế frontend. Dự án mang tính ứng dụng cao, có thể triển khai thực tế với một số nâng cấp nhỏ. Đây cũng là nền tảng quan trọng giúp nhóm thành viên nâng cao kỹ năng lập trình, thiết kế hệ thống, làm việc nhóm, và giải quyết vấn đề.
 
