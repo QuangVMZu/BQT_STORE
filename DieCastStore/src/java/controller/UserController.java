@@ -3,6 +3,7 @@ package controller;
 import dao.CartDAO;
 import dao.CustomerAccountDAO;
 import dao.CustomerDAO;
+import dao.ResetTokenDAO;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -10,12 +11,15 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.sql.Timestamp;
 import java.util.List;
 import model.Cart;
 import model.CartItem;
 import model.Customer;
 import model.CustomerAccount;
+import model.ResetToken;
 import utils.AuthUtils;
+import utils.MailUtils;
 import utils.PasswordUtils;
 
 @WebServlet(name = "UserController", urlPatterns = {"/UserController"})
@@ -76,6 +80,15 @@ public class UserController extends HttpServlet {
                         break;
                     case "updateRole":
                         url = handleUpdateRole(request, response);
+                        break;
+                    case "forgotPassword":
+                        url = handlePasswordForgotting(request, response);
+                        break;
+                    case "resetPassword":
+                        url = handlePasswordResetting(request, response);
+                        break;
+                    case "showForgotPassword":
+                        url = "forgotPassword.jsp";
                         break;
                     default:
                         request.setAttribute("message", "Invalid action: " + action);
@@ -593,5 +606,73 @@ public class UserController extends HttpServlet {
         }
 
         return "manageAccounts.jsp";
+    }
+
+    private String handlePasswordForgotting(HttpServletRequest request, HttpServletResponse response) {
+        String email = request.getParameter("email");
+        CustomerDAO cusDAO = new CustomerDAO();
+        Customer cus = cusDAO.getByEmail(email);
+        if (cus == null) {
+            request.setAttribute("message", "Wrong Email!");
+            return "forgotPassword.jsp";
+        }
+        CustomerAccountDAO accDAO = new CustomerAccountDAO();
+        CustomerAccount acc = accDAO.getById(cus.getCustomerId());
+        if (acc == null) {
+            request.setAttribute("message", "Account not found!");
+            return "forgotPassword.jsp";
+        }
+
+        String token = java.util.UUID.randomUUID().toString();
+        Timestamp expiry = new Timestamp(System.currentTimeMillis() + 15 * 60 * 1000);
+        ResetTokenDAO tokenDAO = new ResetTokenDAO();
+        tokenDAO.createToken(cus.getCustomerId(), token, expiry);
+        String baseUrl = request.getRequestURL().toString().replace(request.getServletPath(), "");
+        String resetLink = baseUrl + "/MainController?action=resetPassword&token=" + token;
+
+        String subject = "Reset Password";
+        String content = "Click on the following link to reset your password:" + resetLink;
+        try {
+            MailUtils.sendMail(email, subject, content);
+            request.setAttribute("message", "Password reset email sent, please check your inbox!");
+        } catch (Exception e) {
+            request.setAttribute("message", "Email sending failed!");
+        }
+        return "forgotPassword.jsp";
+    }
+
+    private String handlePasswordResetting(HttpServletRequest request, HttpServletResponse response) {
+        String token = request.getParameter("token");
+        String newPassword = request.getParameter("newPassword");
+
+        ResetTokenDAO tokenDAO = new ResetTokenDAO();
+        ResetToken rt = tokenDAO.findByToken(token);
+
+        if (newPassword == null || newPassword.trim().isEmpty()) {
+            return "resetPassword.jsp";
+        }
+
+        if (rt == null || rt.isUsed()
+                || rt.getExpiry().before(new Timestamp(System.currentTimeMillis()))) {
+            request.setAttribute("message", "Token is invalid or expired!");
+            return "resetPassword.jsp";
+        }
+
+        CustomerAccountDAO accDAO = new CustomerAccountDAO();
+        CustomerAccount acc = accDAO.getById(rt.getCustomerId());
+        if (acc == null) {
+            request.setAttribute("message", "Account not found!");
+            return "resetPassword.jsp";
+        }
+
+        acc.setPassword(newPassword);
+        boolean success = accDAO.changePassword(acc);
+        if (success) {
+            tokenDAO.markUsed(token);
+            request.setAttribute("message", "Password reset successful!");
+        } else {
+            request.setAttribute("message", "Password reset failed!");
+        }
+        return "resetPassword.jsp";
     }
 }

@@ -8,18 +8,37 @@ import java.util.ArrayList;
 import java.util.List;
 import model.ImageModel;
 import model.ModelCar;
+import utils.BrandPrefixUtils;
 import utils.DBUtils;
 
 public class ModelCarDAO implements IDAO<ModelCar, String> {
 
     private static final String GET_ALL = "SELECT * FROM modelCar";
-    private static final String GET_BY_ID = "SELECT * FROM modelCar WHERE modelId LIKE ?";
+    private static final String GET_BY_ID = "SELECT * FROM modelCar WHERE modelId = ?";
     private static final String GET_BY_NAME = "SELECT * FROM modelCar WHERE modelName LIKE ?";
-    private static final String GET_IMAGES_BY_MODEL_ID = "SELECT imageId, imageUrl, caption FROM imageModel WHERE modelId like ?";
-    private static final String SEARCH_BY_NAME = "SELECT * FROM modelCar WHERE modelName LIKE ?";
+    private static final String GET_IMAGES_BY_MODEL_ID = "SELECT imageId, imageUrl, caption FROM imageModel WHERE modelId = ?";
     private static final String CREATE = "INSERT INTO modelCar (modelId, modelName, scaleId, brandId, price, description, quantity) VALUES (?, ?, ?, ?, ?, ?, ?)";
-    private static final String UPDATE = "UPDATE ModelCar SET modelName = ?, scaleId = ?, brandId = ?, price = ?, description = ?, quantity = ?  WHERE modelId LIKE ?";
+    private static final String UPDATE = "UPDATE ModelCar SET modelName = ?, price = ?, description = ?, quantity = ?  WHERE modelId LIKE ?";
     private static final String UPDATE_QUANTITY = "UPDATE modelCar SET quantity = - 1 WHERE modelId = ?";
+    private static final String MAX = "SELECT MAX(modelId) FROM modelCar WHERE modelId LIKE ?";
+    private static final String GET_BRAND_NAME_BY_BRAND_ID = "SELECT * FROM brandModel WHERE brandId = ?";
+
+    private void closeResources(Connection c, PreparedStatement st, ResultSet rs) {
+        try {
+            if (rs != null) {
+                rs.close();
+            }
+            if (st != null) {
+                st.close();
+            }
+            if (c != null) {
+                c.close();
+            }
+        } catch (Exception e) {
+            System.err.println("Error closing resources: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public ModelCar getById(String id) {
@@ -117,23 +136,6 @@ public class ModelCarDAO implements IDAO<ModelCar, String> {
         return car;
     }
 
-    private void closeResources(Connection c, PreparedStatement st, ResultSet rs) {
-        try {
-            if (rs != null) {
-                rs.close();
-            }
-            if (st != null) {
-                st.close();
-            }
-            if (c != null) {
-                c.close();
-            }
-        } catch (Exception e) {
-            System.err.println("Error closing resources: " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
-
     @Override
     public List<ModelCar> getAll() {
         List<ModelCar> list = new ArrayList<>();
@@ -192,6 +194,11 @@ public class ModelCarDAO implements IDAO<ModelCar, String> {
 
         try {
             c = DBUtils.getConnection();
+
+            String prefix = getPrefixByBrandId(car.getBrandId());
+            String modelId = generateModelCarId(prefix);
+            car.setModelId(modelId);
+
             st = c.prepareStatement(CREATE);
             st.setString(1, car.getModelId());
             st.setString(2, car.getModelName());
@@ -212,6 +219,49 @@ public class ModelCarDAO implements IDAO<ModelCar, String> {
         return false;
     }
 
+    public String getPrefixByBrandId(int brandId) throws SQLException, ClassNotFoundException {
+        Connection c = null;
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+            c = DBUtils.getConnection();
+            st = c.prepareStatement(GET_BRAND_NAME_BY_BRAND_ID);
+            st.setInt(1, brandId);
+            rs = st.executeQuery();
+            if (rs.next()) {
+                String brandName = rs.getString("brandName");
+                return BrandPrefixUtils.getPrefix(brandName);
+            }
+        } finally {
+            closeResources(c, st, rs);
+        }
+        return "NB" + brandId;
+    }
+
+    public String generateModelCarId(String prefix) throws ClassNotFoundException, SQLException {
+        Connection c = null;
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+            c = DBUtils.getConnection();
+            st = c.prepareStatement(MAX);
+            st.setString(1, prefix + "%");
+            rs = st.executeQuery();
+            String maxId = null;
+            if (rs.next()) {
+                maxId = rs.getString(1);
+            }
+            int nextNum = 1;
+            if (maxId != null && !maxId.isEmpty()) {
+                int currentNum = Integer.parseInt(maxId.substring(prefix.length()));
+                nextNum = currentNum + 1;
+            }
+            return String.format("%s%03d", prefix, nextNum);
+        } finally {
+            closeResources(c, st, rs);
+        }
+    }
+
     @Override
     public boolean update(ModelCar car) {
 
@@ -224,12 +274,10 @@ public class ModelCarDAO implements IDAO<ModelCar, String> {
             st = c.prepareStatement(UPDATE);
 
             st.setString(1, car.getModelName());
-            st.setInt(2, car.getScaleId());
-            st.setInt(3, car.getBrandId());
-            st.setDouble(4, car.getPrice());
-            st.setString(5, car.getDescription());
-            st.setInt(6, car.getQuantity());
-            st.setString(7, car.getModelId());
+            st.setDouble(2, car.getPrice());
+            st.setString(3, car.getDescription());
+            st.setInt(4, car.getQuantity());
+            st.setString(5, car.getModelId());
 
             return st.executeUpdate() > 0;
 
@@ -330,7 +378,7 @@ public class ModelCarDAO implements IDAO<ModelCar, String> {
 
         try {
             c = DBUtils.getConnection();
-            st = c.prepareStatement(SEARCH_BY_NAME);
+            st = c.prepareStatement(GET_BY_NAME);
             st.setString(1, "%" + keyword + "%");
             rs = st.executeQuery();
 
@@ -434,11 +482,11 @@ public class ModelCarDAO implements IDAO<ModelCar, String> {
     }
 
     public boolean updateQuantityForCart(String modelId, int newQuantity) {
-        
+
         Connection c = null;
         PreparedStatement st = null;
         ResultSet rs = null;
-        
+
         String sql = "UPDATE modelCar SET quantity = ? WHERE modelId = ?";
         try ( Connection conn = DBUtils.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
 

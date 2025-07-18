@@ -175,47 +175,30 @@ public class OrderDAO {
     // lấy chi tiết 1 đơn
     public Order getOrderById(String orderId) {
         String sql = "SELECT * FROM orders WHERE orderId = ?";
-        try {
-            Connection conn = DBUtils.getConnection();
-            PreparedStatement ps = conn.prepareStatement(sql);
+        try ( Connection conn = DBUtils.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
+
             ps.setString(1, orderId);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                Order o = new Order();
-                o.setOrderId(rs.getString("orderId"));
-                o.setCustomerId(rs.getString("customerId"));
-                o.setOrderDate(rs.getTimestamp("orderDate"));
-                o.setStatus(rs.getString("status"));
-                o.setTotalAmount(rs.getDouble("total_amount"));
-                return o;
+            try ( ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    Order o = new Order();
+                    o.setOrderId(rs.getString("orderId"));
+                    o.setCustomerId(rs.getString("customerId"));
+                    o.setOrderDate(rs.getTimestamp("orderDate"));
+                    o.setStatus(rs.getString("status"));
+                    o.setTotalAmount(rs.getDouble("total_amount"));
+
+                    // Gọi DAO để lấy danh sách item kèm itemName
+                    OrderDetailDAO orderDetailDAO = new OrderDetailDAO();
+                    List<OrderDetail> itemList = orderDetailDAO.getItemsByOrderId(orderId);
+                    o.setOrderDetails(itemList);
+
+                    return o;
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
-    }
-
-    public List<OrderDetail> getOrderDetails(String orderId) {
-        List<OrderDetail> detailList = new ArrayList<>();
-        String sql = "SELECT * FROM orderDetail WHERE orderId = ?";
-        try {
-            Connection conn = DBUtils.getConnection();
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1, orderId);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                OrderDetail ord = new OrderDetail();
-                ord.setOrderId(rs.getString("orderId"));
-                ord.setItemType(rs.getString("itemType"));
-                ord.setItemId(rs.getString("itemId"));
-                ord.setUnitPrice(rs.getDouble("unitPrice"));
-                ord.setUnitQuantity(rs.getInt("unitQuantity"));
-                detailList.add(ord);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return detailList;
     }
 
     public boolean updateOrderStatus(String orderId, String status) {

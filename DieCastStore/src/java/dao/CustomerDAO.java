@@ -17,6 +17,7 @@ public class CustomerDAO implements IDAO<Customer, String> {
 
     private static final String GET_ALL = "SELECT * FROM customer";
     private static final String GET_BY_ID = "SELECT * FROM customer WHERE customerId = ?";
+    private static final String GET_BY_EMAIL = "SELECT * FROM customer WHERE email = ?";
     private static final String CREATE = "INSERT INTO customer(customerId, customerName, email, phone, address) VALUES (?, ?, ?, ?, ?)";
     private static final String UPDATE = "UPDATE customer SET customerName = ?, email = ?, phone = ?, address = ? WHERE customerId = ?";
     private static final String DELETE = "DELETE FROM customer WHERE customerId = ?";
@@ -176,6 +177,25 @@ public class CustomerDAO implements IDAO<Customer, String> {
         }
     }
 
+    public Customer getByEmail(String email) {
+        Connection c = null;
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+            c = DBUtils.getConnection();
+            st = c.prepareStatement(GET_BY_EMAIL);
+            st.setString(1, email);
+            rs = st.executeQuery();
+            if (rs.next()) {
+                return mapResultSet(rs);
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+        } finally {
+            closeResources(c, st, rs);
+        }
+        return null;
+    }
+
     public Boolean isEmailExists(String email) {
         Connection c = null;
         PreparedStatement st = null;
@@ -220,10 +240,9 @@ public class CustomerDAO implements IDAO<Customer, String> {
         String address = null;
         String sql = "SELECT address FROM customer WHERE customerId = ?";
 
-        try (Connection conn = DBUtils.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try ( Connection conn = DBUtils.getConnection();  PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, customerId);
-            try (ResultSet rs = stmt.executeQuery()) {
+            try ( ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     address = rs.getString("address");
                 }

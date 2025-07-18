@@ -19,6 +19,33 @@ body {
     text-decoration: underline;
 }
 
+.table-container {
+    max-height: 400px; /* Điều chỉnh chiều cao mong muốn */
+    overflow-y: auto;
+    border: 1px solid #dee2e6;
+    margin-bottom: 20px;
+}
+
+.sticky-header th {
+    position: sticky;
+    top: 0;
+    background-color: #f8f9fa; /* Cùng màu với .table-light */
+    z-index: 2;
+}
+
+.table-body td {
+    vertical-align: middle;
+    text-align: center;
+}
+
+.order-img {
+    width: 120px;
+    height: 109.09px;
+    object-fit: cover;
+    display: block;       /* cần thiết để margin auto hoạt động */
+    margin: 0 auto;       /* căn giữa ngang */
+}
+
 /* ============ Responsive: Tablet (≤768px) ============ */
 @media (max-width: 768px) {
     .container {

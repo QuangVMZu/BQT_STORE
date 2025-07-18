@@ -387,3 +387,12 @@ select *from brandModel
 select *from home_gallery
 
 select *from accessory
+
+CREATE TABLE reset_tokens (
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    customerId VARCHAR(50) NOT NULL,
+    token VARCHAR(255) NOT NULL,
+    expiry DATETIME NOT NULL,
+    used BIT DEFAULT 0,
+    FOREIGN KEY (customerId) REFERENCES customer(customerId)
+);

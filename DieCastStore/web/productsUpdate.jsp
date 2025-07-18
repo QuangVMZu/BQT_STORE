@@ -57,9 +57,6 @@
                                         <div class="card shadow-sm">
                                             <div class="card-header bg-success text-white"><h5 class="mb-0">Add Product</h5></div>
                                             <div class="card-body">
-                                                <label>Model ID *</label>
-                                                <input type="text" name="modelId" class="form-control mb-3" required />
-
                                                 <label>Model Name *</label>
                                                 <input type="text" name="modelName" class="form-control mb-3" required />
 
@@ -114,14 +111,17 @@
                                                 <input type="hidden" name="modelId" value="${product.modelId}" />
                                                 <input type="hidden" name="keyword" value="${keyword}" />
 
+                                                <label>Model ID *</label>
+                                                <input type="text" name="modelId" class="form-control mb-3" value="${product.modelId}" readonly/>
+                                                
                                                 <label>Model Name *</label>
-                                                <input type="text" name="modelName" class="form-control mb-3" value="${product.modelName}" required />
+                                                <input type="text" name="modelName" class="form-control mb-3" value="${product.modelName}" required/>
 
                                                 <label>Scale ID *</label>
-                                                <input type="number" name="scale" class="form-control mb-3" value="${product.scaleId}" required min="1" max="2" step="1" />
+                                                <input type="number" name="scale" class="form-control mb-3" value="${product.scaleId}" readonly/>
 
                                                 <label>Brand ID *</label>
-                                                <input type="number" name="brandId" class="form-control mb-3" value="${product.brandId}" required min="1" max="10" step="1" />
+                                                <input type="number" name="brandId" class="form-control mb-3" value="${product.brandId}" readonly/>
 
                                                 <label>Price *</label>
                                                 <input type="number" step="0.01" name="price" class="form-control mb-3" value="${product.price}" required min="0" />

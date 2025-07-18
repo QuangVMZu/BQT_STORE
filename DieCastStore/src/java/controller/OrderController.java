@@ -154,11 +154,11 @@ public class OrderController extends HttpServlet {
             return;
         }
 
-        List<OrderDetail> details = orderDAO.getOrderDetails(orderId);
+//        List<OrderDetail> details = orderDAO.getOrderDetails(orderId);
 
         // Gán các thông tin cơ bản
         request.setAttribute("order", order);
-        request.setAttribute("details", details);
+        request.setAttribute("details", order.getOrderDetails());
 
         // Lấy thông tin khách hàng (có thể null)
         try {

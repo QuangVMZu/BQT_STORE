@@ -94,7 +94,8 @@
                                 Create Account
                             </button>
                         </form>
-                    </div>
+                    </div><br>
+                    <a href="MainController?action=showForgotPassword" class="text-primary text-decoration-none small d-block text-center"><i class="bi bi-question-circle"></i> Forgot Password?</a>
                 </div>
             </div>
         </div>

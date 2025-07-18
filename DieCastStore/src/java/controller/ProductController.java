@@ -511,6 +511,7 @@ public class ProductController extends HttpServlet {
     }
 
     private String handleProductAdding(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        ModelCarDAO dao = new ModelCarDAO();
         if (!AuthUtils.isAdmin(request)) {
             request.setAttribute("checkError", "You do not have permission to add products.");
             return "error.jsp";
@@ -518,7 +519,7 @@ public class ProductController extends HttpServlet {
 
         try {
             // Lấy dữ liệu từ form
-            String modelId = request.getParameter("modelId");
+//            String modelId = request.getParameter("modelId");
             String modelName = request.getParameter("modelName");
             int scaleId = Integer.parseInt(request.getParameter("scale"));
             int brandId = Integer.parseInt(request.getParameter("brandId"));
@@ -526,6 +527,8 @@ public class ProductController extends HttpServlet {
             double price = Double.parseDouble(request.getParameter("price"));
             int quantity = Integer.parseInt(request.getParameter("quantity"));
 
+            String prefix = dao.getPrefixByBrandId(brandId);
+            String modelId = dao.generateModelCarId(prefix);
             if (quantity < -1) {
                 request.setAttribute("checkErrorAddProduct", "Quantity cannot be less than -1.");
                 return "productsUpdate.jsp";
@@ -675,7 +678,6 @@ public class ProductController extends HttpServlet {
 
     private String handleProductUpdateMain(HttpServletRequest request, HttpServletResponse response) {
         if (!AuthUtils.isAdmin(request)) {
-            // Cần set đầy đủ các biến JSTL khi bị chặn truy cập
             request.setAttribute("isLoggedIn", AuthUtils.isLoggedIn(request));
             request.setAttribute("isAdmin", false);
             request.setAttribute("accessDeniedMessage", AuthUtils.getAccessDeniedMessage("login.jsp"));
@@ -689,47 +691,34 @@ public class ProductController extends HttpServlet {
             String modelName = request.getParameter("modelName");
             String description = request.getParameter("description");
             String keyword = request.getParameter("keyword");
-
-            int scaleId = Integer.parseInt(request.getParameter("scale"));
-            int brandId = Integer.parseInt(request.getParameter("brandId"));
             double price = Double.parseDouble(request.getParameter("price"));
             int quantity = Integer.parseInt(request.getParameter("quantity"));
+            
+            ModelCar tempProduct = new ModelCar();
+            tempProduct.setModelId(modelId);
+            tempProduct.setModelName(modelName);
+            tempProduct.setDescription(description);
+            tempProduct.setPrice(price);
+            tempProduct.setQuantity(quantity);
 
-            // Tạm lưu để trả về lại form khi có lỗi
-            ModelCar tempProduct = new ModelCar(modelId, modelName, scaleId, brandId, price, description, quantity, null);
             request.setAttribute("product", tempProduct);
             request.setAttribute("keyword", keyword);
 
-            // Validate input
-            if (scaleId < 1 || scaleId > 2) {
-                request.setAttribute("checkErrorUpdateProductMain", "Scale ID must be 1 or 2.");
-                return returnUpdateWithAuthState(request);
-            }
-            if (brandId < 1 || brandId > 10) {
-                request.setAttribute("checkErrorUpdateProductMain", "Brand ID must be between 1 and 10.");
-                return returnUpdateWithAuthState(request);
-            }
             if (price < 0) {
                 request.setAttribute("checkErrorUpdateProductMain", "Price cannot be less than 0.");
                 return returnUpdateWithAuthState(request);
             }
-            if (quantity < -1) {
-                request.setAttribute("checkErrorUpdateProductMain", "Quantity cannot be less than -1.");
-                return returnUpdateWithAuthState(request);
-            }
 
-            // Cập nhật
             ModelCarDAO dao = new ModelCarDAO();
-            boolean success = dao.update(tempProduct);
+            boolean success = dao.update(tempProduct); // <- gọi phương thức update 3 field
 
             if (success) {
                 request.getSession().removeAttribute("cachedProductListEdit");
-                request.setAttribute("messageUpdateProductMain", "Product information updated successfully.");
+                request.setAttribute("messageUpdateProductMain", "Product name/description/price updated successfully.");
             } else {
-                request.setAttribute("checkErrorUpdateProductMain", "Failed to update product information.");
+                request.setAttribute("checkErrorUpdateProductMain", "Failed to update product.");
             }
 
-            // Reload sản phẩm cập nhật
             ModelCar refreshedProduct = dao.getById(modelId);
             request.setAttribute("product", refreshedProduct);
             request.setAttribute("keyword", keyword);
@@ -742,13 +731,10 @@ public class ProductController extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
             request.setAttribute("checkError", "Unexpected error: " + e.getMessage());
-
-            // Cũng cần set auth state khi chuyển về error
             request.setAttribute("isLoggedIn", AuthUtils.isLoggedIn(request));
             request.setAttribute("isAdmin", AuthUtils.isAdmin(request));
             request.setAttribute("accessDeniedMessage", AuthUtils.getAccessDeniedMessage("login.jsp"));
             request.setAttribute("loginURL", AuthUtils.getLoginURL());
-
             return "error.jsp";
         }
     }

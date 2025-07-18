@@ -15,16 +15,36 @@ public class OrderDetail {
     private String itemId;
     private double unitPrice;
     private int unitQuantity;
+    private String itemName;
+    private String itemImage;
 
     public OrderDetail() {
     }
 
-    public OrderDetail(String orderId, String itemType, String itemId, double unitPrice, int unitQuantity) {
+    public OrderDetail(String orderId, String itemType, String itemId, double unitPrice, int unitQuantity, String itemName, String itemImage) {
         this.orderId = orderId;
         this.itemType = itemType;
         this.itemId = itemId;
         this.unitPrice = unitPrice;
         this.unitQuantity = unitQuantity;
+        this.itemName = itemName;
+        this.itemImage = itemImage;
+    }
+
+    public String getItemImage() {
+        return itemImage;
+    }
+
+    public void setItemImage(String itemImage) {
+        this.itemImage = itemImage;
+    }
+
+    public String getItemName() {
+        return itemName;
+    }
+
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
     }
 
     public String getOrderId() {
@@ -66,7 +86,5 @@ public class OrderDetail {
     public void setUnitQuantity(int unitQuantity) {
         this.unitQuantity = unitQuantity;
     }
-
-    
 
 }

@@ -11,7 +11,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import model.Accessory;
-import model.ModelCar;
 import utils.DBUtils;
 
 /**
@@ -27,7 +26,6 @@ public class AccessoryDAO implements IDAO<Accessory, String> {
     private static final String UPDATE = "UPDATE accessory SET accessoryName = ?, detail = ?, price = ?, quantity = ?, imageUrl = ? WHERE accessoryId = ?";
     private static final String DELETE = "DELETE FROM accessory WHERE accessoryId = ?";
     private static final String MAX = "SELECT MAX(accessoryId) FROM accessory WHERE accessoryId LIKE 'ACS%'";
-    private static final String COUNT = "SELECT COUNT(*) FROM accessory";
     private static final String UPDATE_QUANTITY = "UPDATE accessory SET quantity = - 1 WHERE accessoryId = ?";
 
     @Override
@@ -35,9 +33,10 @@ public class AccessoryDAO implements IDAO<Accessory, String> {
         Connection c = null;
         PreparedStatement st = null;
         try {
+            c = DBUtils.getConnection();
+
             entity.setAccessoryId(generateAccessoryId());
 
-            c = DBUtils.getConnection();
             st = c.prepareStatement(CREATE);
             st.setString(1, entity.getAccessoryId());
             st.setString(2, entity.getAccessoryName());

@@ -53,10 +53,11 @@
                     <table class="table table-bordered table-hover">
                         <thead class="table-light text-center">
                             <tr>
-                                <th>Item Type</th>
-                                <th>Model ID</th>
-                                <th>Quantity</th>
-                                <th>Price</th>
+                                <th style="width: 120px;">Item Type</th>
+                                <th style="width: 150px;">Image</th>
+                                <th style="width: 270px;">Model Name</th>
+                                <th style="width: 50px;">Quantity</th>
+                                <th style="width: 100px;">Price</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -65,7 +66,10 @@
                                     <c:forEach var="d" items="${details}">
                                         <tr>
                                             <td>${d.itemType}</td>
-                                            <td>${d.itemId}</td>
+                                            <td style="text-align: center; vertical-align: middle;">
+                                                <img src="${d.itemImage}" alt="${d.itemName}" class="order-img">
+                                            </td>
+                                            <td>${d.itemName}</td>
                                             <td class="text-center">${d.unitQuantity}</td>
                                             <td class="text-end">
                                                 $<fmt:formatNumber value="${d.unitPrice * d.unitQuantity}" type="number" maxFractionDigits="2"/>

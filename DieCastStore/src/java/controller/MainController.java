@@ -23,7 +23,10 @@ public class MainController extends HttpServlet {
                 || "showLogin".equals(action)
                 || "showRegister".equals(action)
                 || "viewAllAccount".equals(action)
-                || "updateRole".equals(action);
+                || "updateRole".equals(action)
+                || "forgotPassword".equals(action)
+                || "resetPassword".equals(action)
+                || "showForgotPassword".equals(action);
     }
 
     private boolean isProductAction(String action) {

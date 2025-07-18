@@ -76,6 +76,13 @@
                                     </div>
                                 </div>
 
+                                <div class="mb-3">
+                                    <label for="paymentMethod" class="form-label"><i class="bi bi-truck"></i> Payment Method:</label>
+                                    <select class="form-select" id="paymentMethod" name="paymentMethod">
+                                        <option value="cod" selected>Cash on Delivery</option>
+                                    </select>
+                                </div>
+
                                 <div class="col-12 order-summary">
                                     <h4 class="mb-3">Your Order</h4>
                                     <table class="table table-bordered table-hover">

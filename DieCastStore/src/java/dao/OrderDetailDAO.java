@@ -21,7 +21,27 @@ public class OrderDetailDAO {
 
     public List<OrderDetail> getItemsByOrderId(String orderId) throws SQLException, ClassNotFoundException {
         List<OrderDetail> items = new ArrayList<>();
-        String sql = "SELECT * FROM orderDetail WHERE orderId = ?";
+        String sql = "SELECT \n"
+                + "    od.orderId, \n"
+                + "    od.itemType, \n"
+                + "    od.itemId, \n"
+                + "    od.unitPrice, \n"
+                + "    od.unitQuantity,\n"
+                + "    ISNULL(mc.modelName, ac.accessoryName) AS itemName,\n"
+                + "    ISNULL(img.imageURL, ac.imageURL) AS itemImage\n"
+                + "FROM orderDetail od\n"
+                + "LEFT JOIN ModelCar mc \n"
+                + "    ON od.itemType = 'model' AND od.itemId = mc.modelId\n"
+                + "LEFT JOIN (\n"
+                + "    SELECT modelId, MIN(imageURL) AS imageURL\n"
+                + "    FROM imageModel\n"
+                + "    GROUP BY modelId\n"
+                + ") img \n"
+                + "    ON od.itemType = 'model' AND od.itemId = img.modelId\n"
+                + "LEFT JOIN Accessory ac \n"
+                + "    ON od.itemType = 'accessory' AND od.itemId = ac.accessoryId\n"
+                + "WHERE od.orderId = ?";
+
         try ( Connection conn = DBUtils.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, orderId);
             try ( ResultSet rs = ps.executeQuery()) {
@@ -32,6 +52,8 @@ public class OrderDetailDAO {
                     item.setItemId(rs.getString("itemId"));
                     item.setUnitPrice(rs.getDouble("unitPrice"));
                     item.setUnitQuantity(rs.getInt("unitQuantity"));
+                    item.setItemName(rs.getString("itemName"));
+                    item.setItemImage(rs.getString("itemImage"));
                     items.add(item);
                 }
             }
