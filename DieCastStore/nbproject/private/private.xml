@@ -2,28 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/D:/PRJ301/pr/DieCastStore/web/orderdetail.jsp</file>
-            <file>file:/D:/PRJ301/pr/DieCastStore/src/java/controller/UserController.java</file>
-            <file>file:/D:/PRJ301/pr/DieCastStore/web/assets/css/productsUpdate.css</file>
-            <file>file:/D:/PRJ301/pr/DieCastStore/src/java/controller/OrderController.java</file>
-            <file>file:/D:/PRJ301/pr/DieCastStore/web/productsUpdate.jsp</file>
-            <file>file:/D:/PRJ301/pr/DieCastStore/web/resetPassword.jsp</file>
-            <file>file:/D:/PRJ301/pr/DieCastStore/web/assets/css/login.css</file>
-            <file>file:/D:/PRJ301/pr/DieCastStore/web/forgotPassword.jsp</file>
-            <file>file:/D:/PRJ301/pr/DieCastStore/web/assets/css/profileForm.css</file>
-            <file>file:/D:/PRJ301/pr/DieCastStore/web/cart.jsp</file>
-            <file>file:/D:/PRJ301/pr/DieCastStore/src/java/model/Order.java</file>
-            <file>file:/D:/PRJ301/pr/DieCastStore/web/login.jsp</file>
-            <file>file:/D:/PRJ301/pr/DieCastStore/src/java/model/OrderDetail.java</file>
-            <file>file:/D:/PRJ301/pr/DieCastStore/web/assets/css/home.css</file>
-            <file>file:/D:/PRJ301/pr/DieCastStore/web/productSearch.jsp</file>
-            <file>file:/D:/PRJ301/pr/DieCastStore/src/java/controller/ProductController.java</file>
-            <file>file:/D:/PRJ301/pr/DieCastStore/src/java/utils/BrandPrefixUtils.java</file>
-            <file>file:/D:/PRJ301/pr/DieCastStore/web/checkout.jsp</file>
-            <file>file:/D:/PRJ301/pr/DieCastStore/src/java/dao/OrderDetailDAO.java</file>
-            <file>file:/D:/PRJ301/pr/DieCastStore/src/java/dao/ModelCarDAO.java</file>
-            <file>file:/D:/PRJ301/pr/DieCastStore/src/java/utils/MailUtils.java</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

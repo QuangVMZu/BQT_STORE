@@ -19,15 +19,15 @@
 
             <h2 class="form-title"><i class="bi bi-shield-lock"></i> Forgot Password</h2>
 
-            <c:if test="${not empty message}">
+            <c:if test="${not empty messageForgotPassword}">
                 <div class="alert alert-success text-center">
-                    <i class="bi bi-exclamation-circle-fill"></i> ${message}
+                    <i class="bi bi-exclamation-circle-fill"></i> ${messageForgotPassword}
                 </div>
             </c:if>
             
-            <c:if test="${not empty checkError}">
+            <c:if test="${not empty checkErrorForgotPassword}">
                 <div class="alert alert-danger text-center">
-                    <i class="bi bi-exclamation-circle-fill"></i> ${checkError}
+                    <i class="bi bi-exclamation-circle-fill"></i> ${checkErrorForgotPassword}
                 </div>
             </c:if>
 

@@ -613,13 +613,13 @@ public class UserController extends HttpServlet {
         CustomerDAO cusDAO = new CustomerDAO();
         Customer cus = cusDAO.getByEmail(email);
         if (cus == null) {
-            request.setAttribute("checkError", "Wrong Email!");
+            request.setAttribute("checkErrorForgotPassword", "Wrong Email!");
             return "forgotPassword.jsp";
         }
         CustomerAccountDAO accDAO = new CustomerAccountDAO();
         CustomerAccount acc = accDAO.getById(cus.getCustomerId());
         if (acc == null) {
-            request.setAttribute("checkError", "Account not found!");
+            request.setAttribute("checkErrorForgotPassword", "Account not found!");
             return "forgotPassword.jsp";
         }
 
@@ -634,9 +634,9 @@ public class UserController extends HttpServlet {
         String content = "Click on the following link to reset your password:" + resetLink;
         try {
             MailUtils.sendMail(email, subject, content);
-            request.setAttribute("message", "Password reset email sent, please check your inbox!");
+            request.setAttribute("messageForgotPassword", "Password reset email sent, please check your inbox!");
         } catch (Exception e) {
-            request.setAttribute("checkError", "Email sending failed!");
+            request.setAttribute("checkErrorForgotPassword", "Email sending failed!");
         }
         return "forgotPassword.jsp";
     }
@@ -654,14 +654,14 @@ public class UserController extends HttpServlet {
 
         if (rt == null || rt.isUsed()
                 || rt.getExpiry().before(new Timestamp(System.currentTimeMillis()))) {
-            request.setAttribute("checkError", "Token is invalid or expired!");
+            request.setAttribute("checkErrorResetPassword", "Token is invalid or expired!");
             return "resetPassword.jsp";
         }
 
         CustomerAccountDAO accDAO = new CustomerAccountDAO();
         CustomerAccount acc = accDAO.getById(rt.getCustomerId());
         if (acc == null) {
-            request.setAttribute("checkError", "Account not found!");
+            request.setAttribute("checkErrorResetPassword", "Account not found!");
             return "resetPassword.jsp";
         }
 
@@ -669,9 +669,9 @@ public class UserController extends HttpServlet {
         boolean success = accDAO.changePassword(acc);
         if (success) {
             tokenDAO.markUsed(token);
-            request.setAttribute("message", "Password reset successful!");
+            request.setAttribute("messageResetPassword", "Password reset successful!");
         } else {
-            request.setAttribute("checkError", "Password reset failed!");
+            request.setAttribute("checkErrorResetPassword", "Password reset failed!");
         }
         return "resetPassword.jsp";
     }

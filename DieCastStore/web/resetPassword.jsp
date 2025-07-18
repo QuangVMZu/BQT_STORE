@@ -18,31 +18,39 @@
         <div class="reset-box">
             <h2><i class="bi bi-shield-lock-fill me-2"></i>Reset Password</h2>
 
-            <c:if test="${not empty message}">
-                <div class="alert alert-success text-center">${message}</div>
+            <c:if test="${not empty messageResetPassword}">
+                <div class="alert alert-success text-center">${messageResetPassword}</div>
             </c:if>
 
-            <c:if test="${not empty checkError}">
-                <div class="alert alert-danger text-center">${checkError}</div>
+            <c:if test="${not empty checkErrorResetPassword}">
+                <div class="alert alert-danger text-center">${checkErrorResetPassword}</div>
             </c:if>
 
             <form action="MainController" method="post">
                 <input type="hidden" name="action" value="resetPassword">
                 <input type="hidden" name="token" value="${param.token}">
 
+                <!-- New Password -->
                 <div class="mb-3">
                     <label for="newPassword" class="form-label">New Password</label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="bi bi-key-fill"></i></span>
                         <input type="password" class="form-control" id="newPassword" name="newPassword" required>
+                        <span class="input-group-text">
+                            <i class="bi bi-eye-slash toggle-password" data-target="newPassword" style="cursor: pointer;"></i>
+                        </span>
                     </div>
                 </div>
 
+                <!-- Confirm Password -->
                 <div class="mb-4">
                     <label for="confirmPassword" class="form-label">Confirm Password</label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="bi bi-key-fill"></i></span>
                         <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+                        <span class="input-group-text">
+                            <i class="bi bi-eye-slash toggle-password" data-target="confirmPassword" style="cursor: pointer;"></i>
+                        </span>
                     </div>
                 </div>
 
