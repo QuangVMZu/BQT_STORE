@@ -613,13 +613,13 @@ public class UserController extends HttpServlet {
         CustomerDAO cusDAO = new CustomerDAO();
         Customer cus = cusDAO.getByEmail(email);
         if (cus == null) {
-            request.setAttribute("message", "Wrong Email!");
+            request.setAttribute("checkError", "Wrong Email!");
             return "forgotPassword.jsp";
         }
         CustomerAccountDAO accDAO = new CustomerAccountDAO();
         CustomerAccount acc = accDAO.getById(cus.getCustomerId());
         if (acc == null) {
-            request.setAttribute("message", "Account not found!");
+            request.setAttribute("checkError", "Account not found!");
             return "forgotPassword.jsp";
         }
 
@@ -636,7 +636,7 @@ public class UserController extends HttpServlet {
             MailUtils.sendMail(email, subject, content);
             request.setAttribute("message", "Password reset email sent, please check your inbox!");
         } catch (Exception e) {
-            request.setAttribute("message", "Email sending failed!");
+            request.setAttribute("checkError", "Email sending failed!");
         }
         return "forgotPassword.jsp";
     }
@@ -654,14 +654,14 @@ public class UserController extends HttpServlet {
 
         if (rt == null || rt.isUsed()
                 || rt.getExpiry().before(new Timestamp(System.currentTimeMillis()))) {
-            request.setAttribute("message", "Token is invalid or expired!");
+            request.setAttribute("checkError", "Token is invalid or expired!");
             return "resetPassword.jsp";
         }
 
         CustomerAccountDAO accDAO = new CustomerAccountDAO();
         CustomerAccount acc = accDAO.getById(rt.getCustomerId());
         if (acc == null) {
-            request.setAttribute("message", "Account not found!");
+            request.setAttribute("checkError", "Account not found!");
             return "resetPassword.jsp";
         }
 
@@ -671,7 +671,7 @@ public class UserController extends HttpServlet {
             tokenDAO.markUsed(token);
             request.setAttribute("message", "Password reset successful!");
         } else {
-            request.setAttribute("message", "Password reset failed!");
+            request.setAttribute("checkError", "Password reset failed!");
         }
         return "resetPassword.jsp";
     }

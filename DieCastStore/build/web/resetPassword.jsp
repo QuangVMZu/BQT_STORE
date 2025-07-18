@@ -11,83 +11,19 @@
         <!-- Bootstrap Icons -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
-        <style>
-            :root {
-                --navy-blue: #2c3e50;
-                --light-pastel-blue: #a8cfd1;
-                --gray-teal: #5c7d7a;
-                --deep-sky-blue: #4a90e2;
-            }
-            body {
-                background: linear-gradient(135deg, var(--light-pastel-blue) 0%, #e8f4f8 100%);
-                height: 100vh;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                font-family: 'Segoe UI', sans-serif;
-            }
-
-            .reset-box {
-                background-color: #ffffff;
-                padding: 35px 40px;
-                border-radius: 16px;
-                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-                width: 100%;
-                max-width: 450px;
-            }
-
-            .reset-box h2 {
-                font-weight: 600;
-                color: #0d6efd;
-                text-align: center;
-                margin-bottom: 25px;
-            }
-
-            .form-label {
-                font-weight: 500;
-            }
-
-            .form-control:focus {
-                border-color: #0d6efd;
-                box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
-            }
-
-            .btn-primary {
-                border-radius: 50px;
-                padding: 10px;
-                font-weight: 500;
-            }
-
-            .btn-primary:hover {
-                background-color: #0b5ed7;
-            }
-
-            .back-link {
-                display: inline-block;
-                font-size: 1rem;
-                font-weight: 500;
-                color: #6c757d;
-                text-decoration: none;
-                transition: all 0.3s ease;
-            }
-
-            .back-link:hover {
-                color: #0d6efd;
-                transform: translateX(-3px);
-                text-decoration: none;
-            }
-
-            .input-group-text {
-                background-color: #f1f3f5;
-            }
-        </style>
+        <link rel="stylesheet" href="assets/css/resetPassword.css">
+        <script src="assets/js/resetPassword.js"></script>
     </head>
     <body>
         <div class="reset-box">
             <h2><i class="bi bi-shield-lock-fill me-2"></i>Reset Password</h2>
 
             <c:if test="${not empty message}">
-                <div class="alert alert-danger text-center">${message}</div>
+                <div class="alert alert-success text-center">${message}</div>
+            </c:if>
+
+            <c:if test="${not empty checkError}">
+                <div class="alert alert-danger text-center">${checkError}</div>
             </c:if>
 
             <form action="MainController" method="post">
@@ -124,18 +60,5 @@
 
         <!-- Bootstrap JS -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-        <!-- JS Password Validation -->
-        <script>
-            document.querySelector('form').addEventListener('submit', function (e) {
-                const newPassword = document.getElementById('newPassword').value;
-                const confirmPassword = document.getElementById('confirmPassword').value;
-
-                if (newPassword !== confirmPassword) {
-                    e.preventDefault();
-                    alert('Confirmation password does not match!');
-                }
-            });
-        </script>
     </body>
 </html>
