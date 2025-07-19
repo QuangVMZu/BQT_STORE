@@ -60,6 +60,9 @@ public class ProductController extends HttpServlet {
                     case "search":
                         url = handleSearch(request, response);
                         break;
+                    case "searchToUpdate":
+                        url = handleSearchToUpdate(request, response);
+                        break;
                     case "searchID":
                         url = handleSearchID(request, response);
                         break;
@@ -195,22 +198,27 @@ public class ProductController extends HttpServlet {
         }
 
         ModelCarDAO dao = new ModelCarDAO();
-        List<ModelCar> fullResults = dao.searchByName(keyword);
+        AccessoryDAO adao = new AccessoryDAO();
 
-        if (fullResults.isEmpty() || fullResults == null) {
+        List<ModelCar> fullResults = dao.searchByName(keyword);
+        List<Accessory> fullAccResults = adao.searchByName(keyword);
+
+        if ((fullResults == null || fullResults.isEmpty())
+                && (fullAccResults == null || fullAccResults.isEmpty())) {
             request.setAttribute("checkError", "No matching results found for the keyword: " + keyword);
             return "productSearch.jsp";
         }
 
+        // ModelCar Pagination
         int totalItems = fullResults.size();
         int totalPages = (int) Math.ceil((double) totalItems / itemsPerPage);
-
         int start = (page - 1) * itemsPerPage;
         int end = Math.min(start + itemsPerPage, totalItems);
+        List<ModelCar> paginatedResults = (totalItems == 0) ? new ArrayList<>() : fullResults.subList(start, end);
 
-        List<ModelCar> paginatedResults = fullResults.subList(start, end);
-
+        // Set Attributes
         request.setAttribute("searchResults", paginatedResults);
+        request.setAttribute("searchAccResults", fullAccResults); // no pagination
         request.setAttribute("keyword", keyword);
         request.setAttribute("currentPage", page);
         request.setAttribute("totalPages", totalPages);
@@ -324,6 +332,7 @@ public class ProductController extends HttpServlet {
             return "error.jsp";
         }
 
+        String keyword = request.getParameter("keyword");
         final int ITEMS_PER_PAGE = 10;
         int currentPage = 1;
         String pageParam = request.getParameter("page");
@@ -336,16 +345,30 @@ public class ProductController extends HttpServlet {
             currentPage = 1;
         }
 
-        HttpSession session = request.getSession();
-        ModelCarDAO carDao = new ModelCarDAO();
+        boolean isSearch = false;
 
-        // Lấy danh sách sản phẩm từ session cache
-        List<ModelCar> fullList = (List<ModelCar>) session.getAttribute("cachedProductListEdit");
-        if (fullList == null) {
-            fullList = carDao.getAll();
-            session.setAttribute("cachedProductListEdit", fullList);
+        ModelCarDAO carDao = new ModelCarDAO();
+        AccessoryDAO accDao = new AccessoryDAO();
+
+        List<ModelCar> fullList;
+        List<Accessory> accessoryList;
+
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            isSearch = true;
+            fullList = carDao.searchByName(keyword);
+            accessoryList = accDao.searchByName(keyword);
+        } else {
+            // Lấy từ session cache (nếu có) để giảm truy vấn DB
+            HttpSession session = request.getSession();
+            fullList = (List<ModelCar>) session.getAttribute("cachedProductListEdit");
+            if (fullList == null) {
+                fullList = carDao.getAll();
+                session.setAttribute("cachedProductListEdit", fullList);
+            }
+            accessoryList = accDao.getAll();
         }
 
+        // Tính phân trang cho ModelCar
         int totalItems = (fullList != null) ? fullList.size() : 0;
         int totalPages = (int) Math.ceil((double) totalItems / ITEMS_PER_PAGE);
         int start = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -356,17 +379,15 @@ public class ProductController extends HttpServlet {
             pageList = fullList.subList(start, end);
         }
 
-        // Lấy danh sách phụ kiện
-        AccessoryDAO accDao = new AccessoryDAO();
-        List<Accessory> accessoryList = accDao.getAll();
-
         // Gửi dữ liệu về JSP
         request.setAttribute("pageList", pageList);
+        request.setAttribute("accessoryList", accessoryList);
         request.setAttribute("currentPage", currentPage);
         request.setAttribute("totalPages", totalPages);
-        request.setAttribute("accessoryList", accessoryList);
+        request.setAttribute("isSearch", isSearch);
+        request.setAttribute("keyword", keyword);
 
-        // Các biến hỗ trợ cho JSTL
+        // Thêm thông tin quyền và điều hướng
         request.setAttribute("isLoggedIn", AuthUtils.isLoggedIn(request));
         request.setAttribute("isAdmin", true);
         request.setAttribute("accessDeniedMessage", "");
@@ -693,7 +714,7 @@ public class ProductController extends HttpServlet {
             String keyword = request.getParameter("keyword");
             double price = Double.parseDouble(request.getParameter("price"));
             int quantity = Integer.parseInt(request.getParameter("quantity"));
-            
+
             ModelCar tempProduct = new ModelCar();
             tempProduct.setModelId(modelId);
             tempProduct.setModelName(modelName);
@@ -1113,6 +1134,43 @@ public class ProductController extends HttpServlet {
             request.setAttribute("messageChangeQuantityAccessory", "Quantity for accessory [" + accessoryId + "] has been updated to -1.");
         } else {
             request.setAttribute("checkErrorChangeQuantityAccessory", "Failed to update quantity. Please check the ID.");
+        }
+
+        request.setAttribute("isLoggedIn", AuthUtils.isLoggedIn(request));
+        request.setAttribute("isAdmin", AuthUtils.isAdmin(request));
+        request.setAttribute("accessDeniedMessage", AuthUtils.getAccessDeniedMessage("login.jsp"));
+        request.setAttribute("loginURL", AuthUtils.getLoginURL());
+
+        return "editProduct.jsp";
+    }
+
+    private String handleSearchToUpdate(HttpServletRequest request, HttpServletResponse response) {
+        if (!AuthUtils.isAdmin(request)) {
+            request.setAttribute("checkError", "You do not have permission to update the product.");
+            return "error.jsp";
+        }
+
+        String keyword = request.getParameter("keyword");
+        if (keyword == null) {
+            keyword = "";
+        }
+
+        try {
+            ModelCarDAO modelDao = new ModelCarDAO();
+            AccessoryDAO accessoryDao = new AccessoryDAO();
+
+            List<ModelCar> searchResults = modelDao.searchByName(keyword);
+            List<Accessory> accResults = accessoryDao.searchByName(keyword);
+
+            request.setAttribute("pageList", searchResults);
+            request.setAttribute("accessoryList", accResults);
+
+            request.setAttribute("keyword", keyword);
+            request.setAttribute("isSearch", true);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("error", "Search failed: " + e.getMessage());
         }
 
         request.setAttribute("isLoggedIn", AuthUtils.isLoggedIn(request));

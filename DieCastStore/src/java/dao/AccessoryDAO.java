@@ -21,7 +21,7 @@ public class AccessoryDAO implements IDAO<Accessory, String> {
 
     private static final String GET_ALL = "SELECT * FROM accessory";
     private static final String GET_BY_ID = "SELECT * FROM accessory WHERE accessoryId = ?";
-    private static final String GET_BY_NAME = "SELECT * FROM accessory WHERE accessoryName = ?";
+    private static final String GET_BY_NAME = "SELECT * FROM accessory WHERE accessoryName LIKE ?";
     private static final String CREATE = "INSERT INTO accessory(accessoryId, accessoryName, detail, price, quantity, imageUrl) VALUES (?, ?, ?, ?, ?, ?)";
     private static final String UPDATE = "UPDATE accessory SET accessoryName = ?, detail = ?, price = ?, quantity = ?, imageUrl = ? WHERE accessoryId = ?";
     private static final String DELETE = "DELETE FROM accessory WHERE accessoryId = ?";
@@ -252,6 +252,40 @@ public class AccessoryDAO implements IDAO<Accessory, String> {
         }
 
         return false;
+    }
+
+    public List<Accessory> searchByName(String keyword) {
+        List<Accessory> list = new ArrayList<>();
+
+        Connection c = null;
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        try {
+            c = DBUtils.getConnection();
+            st = c.prepareStatement(GET_BY_NAME);
+            st.setString(1, "%" + keyword + "%");
+            rs = st.executeQuery();
+
+            while (rs.next()) {
+                Accessory accessory = new Accessory();
+                accessory.setAccessoryId(rs.getString("accessoryId"));
+                accessory.setAccessoryName(rs.getString("accessoryName"));
+                accessory.setDetail(rs.getString("detail"));
+                accessory.setPrice(rs.getDouble("price"));
+                accessory.setQuantity(rs.getInt("quantity"));
+                accessory.setImageUrl(rs.getString("imageUrl"));
+
+                list.add(accessory);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            closeResources(c, st, rs);
+        }
+
+        return list;
     }
 
 }

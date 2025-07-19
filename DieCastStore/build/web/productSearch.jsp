@@ -24,20 +24,21 @@
             <c:if test="${not empty keyword}">
                 <h2 class="text-center mb-4">Search results for: "${keyword}"</h2>
             </c:if>
-
             <c:choose>
-                <c:when test="${not empty searchResults}">
+                <c:when test="${not empty searchResults or not empty searchAccResults}">
                     <div class="row g-4">
+
+                        <!-- MODEL CAR PRODUCTS -->
                         <c:forEach var="car" items="${searchResults}">
                             <c:if test="${car.quantity gt -1}">
-                                <c:set var="imgUrl" value="no-image.jpg" />
+                                <c:set var="imgUrl" value="assets/img/no-image.jpg" />
                                 <c:if test="${not empty car.images}">
                                     <c:set var="imgUrl" value="${car.images[0].imageUrl}" />
                                 </c:if>
                                 <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                                     <div class="card product-card h-100 shadow-sm">
                                         <a href="ProductController?action=detail&amp;modelId=${car.modelId}">
-                                            <img src="${imgUrl}" class="product-img w-100" alt="Product Image">
+                                            <img src="${imgUrl}" class="product-img w-100" alt="Model Image">
                                         </a>
                                         <div class="card-body text-center d-flex flex-column justify-content-between">
                                             <div class="product-name">${car.modelName}</div>
@@ -49,13 +50,38 @@
                                 </div>
                             </c:if>
                         </c:forEach>
+
+                        <!-- ACCESSORY PRODUCTS -->
+                        <c:forEach var="acc" items="${searchAccResults}">
+                            <c:if test="${acc.quantity gt -1}">
+                                <c:set var="imgUrl" value="assets/img/no-image.jpg" />
+                                <c:if test="${not empty acc.imageUrl}">
+                                    <c:set var="imgUrl" value="${acc.imageUrl}" />
+                                </c:if>
+                                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                                    <div class="card product-card h-100 shadow-sm">
+                                        <a href="ProductController?action=detail&amp;accessoryId=${acc.accessoryId}">
+                                            <img src="${imgUrl}" class="product-img w-100" alt="Accessory Image">
+                                        </a>
+                                        <div class="card-body text-center d-flex flex-column justify-content-between">
+                                            <div class="product-name">${acc.accessoryName}</div>
+                                            <div class="product-price">
+                                                $<fmt:formatNumber value="${acc.price}" type="number" maxFractionDigits="2"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </c:if>
+                        </c:forEach>
+
                     </div>
                 </c:when>
+
                 <c:otherwise>
                     <p class="text-center text-danger mt-5">${checkError}</p>
                 </c:otherwise>
             </c:choose>
-
+                    
             <!-- Pagination -->
             <c:if test="${totalPages > 1}">
                 <nav class="mt-5">
@@ -79,33 +105,6 @@
                 </nav>
             </c:if>
         </main>
-
-        <!-- Social Media -->
-        <section class="py-5" style="background-color: #e3f2fd;">
-            <h2 class="text-center fw-bold mb-4">★ Social Media ★</h2>
-            <div class="d-flex justify-content-center gap-4 social-media-wrapper">
-                <img src="assets/image/fb.png" alt="Facebook" class="img-fluid" style="width: 50px;">
-                <img src="assets/image/ig.png" alt="Instagram" class="img-fluid" style="width: 50px;">
-                <img src="assets/image/tik.png" alt="TikTok" class="img-fluid" style="width: 50px;">
-                <img src="assets/image/ytb.png" alt="YouTube" class="img-fluid" style="width: 50px;">
-            </div>
-        </section>
-
-        <!-- Partners -->
-        <section class="py-5" style="background-color: #e3f2fd;">
-            <hr class="w-50 mx-auto mb-4" style="margin-top: -20px; margin-bottom: 10px"></br>
-            <h2 class="text-center fw-bold mb-4">★ Our Partners ★</h2>
-            <div class="d-flex flex-wrap justify-content-center gap-4 brand-slider-wrapper">
-                <img src="assets/image/logoAA.png" alt="AutoArt" class="img-fluid" style="width: 120px;">
-                <img src="assets/image/logoB.png" alt="Bburago" class="img-fluid" style="width: 120px;">
-                <img src="assets/image/logoGL.png" alt="GreenLight" class="img-fluid" style="width: 120px;">
-                <img src="assets/image/logoHW.png" alt="Hot Wheels" class="img-fluid" style="width: 120px;">
-                <img src="assets/image/logoKS.png" alt="Kyosho" class="img-fluid" style="width: 120px;">
-                <img src="assets/image/logoMS.png" alt="Maisto" class="img-fluid" style="width: 120px;">
-                <img src="assets/image/logoMini.png" alt="Minichamps" class="img-fluid" style="width: 120px;">
-                <img src="assets/image/logoW.png" alt="Welly" class="img-fluid" style="width: 120px;">
-            </div>
-        </section>
 
         <jsp:include page="footer.jsp" />
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

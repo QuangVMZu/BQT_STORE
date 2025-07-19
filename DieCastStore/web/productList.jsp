@@ -102,30 +102,6 @@
             </c:choose>
         </div>
 
-        <!-- Social Media -->
-        <h2 style="text-align:center; margin-top: 50px; margin-bottom: 20px; font-weight: bold; color: #333;">★  Social Media  ★</h2>
-        <div class="brand-slider-wrapper" style="display: flex; justify-content: center; gap: 20px; margin-bottom: 50px;">
-            <a title="Facebook"><img src="assets/image/fb.png" alt="Facebook" style="width: 50px; height: 50px;"></a>
-            <a title="Instagram"><img src="assets/image/ig.png" alt="Instagram" style="width: 50px; height: 50px;"></a>
-            <a title="TikTok"><img src="assets/image/tik.png" alt="TikTok" style="width: 50px; height: 50px;"></a>
-            <a title="YouTube"><img src="assets/image/ytb.png" alt="YouTube" style="width: 50px; height: 50px;"></a>
-        </div>
-
-        <hr style="border: none; height: 1.5px; background-color: #90caf9; margin: 0 auto; width: 50%;">
-
-        <!-- Partners -->
-        <h2 style="text-align:center; margin-top: 50px; margin-bottom: 20px; font-weight: bold; color: #333;">★  Our Partners  ★</h2>
-        <div class="brand-slider-wrapper" style="display: flex; justify-content: center; gap: 20px; padding: 10px 0;">
-            <a title="AutoArt"><img src="assets/image/logoAA.png" alt="AutoArt" style="width: 120px;"></a>
-            <a title="Bburago"><img src="assets/image/logoB.png" alt="Bburago" style="width: 120px;"></a>
-            <a title="GreenLight"><img src="assets/image/logoGL.png" alt="GreenLight" style="width: 120px;"></a>
-            <a title="Hot Wheels"><img src="assets/image/logoHW.png" alt="Hot Wheels" style="width: 120px;"></a>
-            <a title="Kyosho"><img src="assets/image/logoKS.png" alt="Kyosho" style="width: 120px;"></a>
-            <a title="Maisto"><img src="assets/image/logoMS.png" alt="Maisto" style="width: 120px;"></a>
-            <a title="Minichamps"><img src="assets/image/logoMini.png" alt="Minichamps" style="width: 120px; margin-top: 35px;"></a>
-            <a title="Welly"><img src="assets/image/logoW.png" alt="Welly" style="width: 120px;"></a>
-        </div>
-
         <script id="chatbase-script"
                 src="https://www.chatbase.co/embed.min.js"
                 chatbotId="24voNCBYpeJgbiYuJUH4Z"

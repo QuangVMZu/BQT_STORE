@@ -66,7 +66,7 @@ CREATE TABLE orders (
     orderId VARCHAR(50) PRIMARY KEY,
     customerId VARCHAR(50) NOT NULL,
     orderDate DATETIME DEFAULT GETDATE(),
-    status VARCHAR(20) DEFAULT 'Pending', -- PENDING, CONFIRMED, DELIVERED, SHIPPED, CANCELLED
+    status VARCHAR(20) DEFAULT 'PENDING', -- PENDING, CONFIRMED, DELIVERED, SHIPPED, CANCELLED
 	total_amount FLOAT,
     FOREIGN KEY (customerId) REFERENCES customer(customerId)
 )
@@ -131,7 +131,7 @@ INSERT INTO customerAccount (userName, customerId, password, role) VALUES
 ('banned1', 'C003', '6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b', 0);
 
 INSERT INTO brandModel (brandName) VALUES 
-( 'MiniGT'),
+('MiniGT'),
 ('Hot Wheels'),
 ('Bburago'),
 ('Maisto'),
@@ -387,3 +387,13 @@ select *from brandModel
 select *from home_gallery
 
 select *from accessory
+select *from reset_tokens
+
+CREATE TABLE reset_tokens (
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    customerId VARCHAR(50) NOT NULL,
+    token VARCHAR(255) NOT NULL,
+    expiry DATETIME NOT NULL,
+    used BIT DEFAULT 0,
+    FOREIGN KEY (customerId) REFERENCES customer(customerId)
+);

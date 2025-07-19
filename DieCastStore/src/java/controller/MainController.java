@@ -43,7 +43,8 @@ public class MainController extends HttpServlet {
                 || "accessoryAdding".equals(action)
                 || "accessoryUpdate".equals(action)
                 || "editAccessory".equals(action)
-                || "changeAccessoryQuantity".equals(action);
+                || "changeAccessoryQuantity".equals(action)
+                || "searchToUpdate".equals(action);
     }
 
     private boolean isUploadAction(String action) {

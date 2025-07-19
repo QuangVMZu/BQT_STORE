@@ -11,7 +11,7 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
         <link rel="stylesheet" href="assets/css/editProduct.css">
     </head>
-    <body style="background-color: #f1f6fb;">
+    <body style="background-color: #e3f2fd;">
         <jsp:include page="header.jsp" />
         <br>
 
@@ -42,6 +42,13 @@
                         </a>
 
                     </div>
+                    <form method="get" action="MainController" class="mb-4">
+                        <input type="hidden" name="action" value="searchToUpdate">
+                        <div class="input-group w-50 mx-auto">
+                            <input type="text" name="keyword" value="${keyword}" placeholder="Search products or accessories..." class="form-control"/>
+                            <button type="submit" class="btn btn-primary">Search</button>
+                        </div>
+                    </form>
 
                     <c:if test="${not empty pageList}">
                         <div class="table-responsive">
@@ -88,22 +95,25 @@
                             </table>
                         </div>
 
-                        <!-- Pagination -->
+                        <!-- ✅ Pagination -->
                         <nav class="mt-4 text-center">
                             <div class="pagination justify-content-center">
                                 <c:forEach var="i" begin="1" end="${totalPages}">
-                                    <a href="MainController?action=listEdit&page=${i}" class="btn btn-sm ${i == currentPage ? 'btn-success' : 'btn-outline-success'} mx-1">
+                                    <a href="MainController?action=listEdit&page=${i}&keyword=${keyword}" 
+                                       class="btn btn-sm ${i == currentPage ? 'btn-success' : 'btn-outline-success'} mx-1">
                                         ${i}
                                     </a>
                                 </c:forEach>
                             </div>
                         </nav>
                     </c:if>
-                    <c:if test="${empty pageList}">
-                        <div class="alert alert-warning">No products found.</div>
+
+                    <c:if test="${empty pageList and isSearch}">
+                        <div class="alert alert-warning text-center">No cars found matching your search.</div>
                     </c:if>
 
                     <hr class="my-5">
+
                     <h2 class="text-center mb-4">Manage Accessories</h2>
                     <div class="d-flex justify-content-end mb-3">
                         <a href="ProductController?action=showAddFormAccessory" class="btn btn-success rounded-pill">
@@ -163,8 +173,12 @@
                             </table>
                         </div>
                     </c:if>
-                    <c:if test="${empty accessoryList}">
-                        <div class="alert alert-warning">No accessories found.</div>
+                    <c:if test="${empty accessoryList and isSearch}">
+                        <div class="alert alert-warning text-center">No accessories found matching your search.</div>
+                    </c:if>
+
+                    <c:if test="${empty pageList and empty accessoryList and not isSearch}">
+                        <div class="alert alert-info text-center">No products or accessories available.</div>
                     </c:if>
                 </div>
             </c:when>

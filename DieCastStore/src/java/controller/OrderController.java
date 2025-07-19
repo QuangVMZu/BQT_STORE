@@ -203,7 +203,7 @@ public class OrderController extends HttpServlet {
         ModelCarDAO modelCarDAO = new ModelCarDAO();
         AccessoryDAO accessoryDAO = new AccessoryDAO();
 
-        boolean result = orderDAO.updateOrderStatus(orderId, "Cancelled");
+        boolean result = orderDAO.updateOrderStatus(orderId, "CANCELLED");
 
         if (result) {
             // Trả hàng vào kho
