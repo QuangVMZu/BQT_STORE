@@ -735,7 +735,7 @@ public class ProductController extends HttpServlet {
 
             if (success) {
                 request.getSession().removeAttribute("cachedProductListEdit");
-                request.setAttribute("messageUpdateProductMain", "Product name/description/price updated successfully.");
+                request.setAttribute("messageUpdateProductMain", "Product updated successfully.");
             } else {
                 request.setAttribute("checkErrorUpdateProductMain", "Failed to update product.");
             }

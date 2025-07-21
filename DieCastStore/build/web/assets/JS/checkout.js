@@ -21,15 +21,15 @@ function validateForm() {
         const phonePattern = /^[0-9]{10,11}$/;
 
         if (!name || !phone || !address) {
-            alert("Vui lòng điền đầy đủ thông tin giao hàng.");
+            alert("Please fill in the shipping information completely.");
             return false;
         }
 
         if (!phonePattern.test(phone)) {
-            alert("Số điện thoại không hợp lệ. Vui lòng nhập 10-11 chữ số.");
+            alert("Invalid phone number. Please enter 10-11 digits.");
             return false;
         }
     }
 
-    return confirm("Bạn chắc chắn muốn đặt đơn hàng?");
+    return confirm("Are you sure you want to place an order?");
 }

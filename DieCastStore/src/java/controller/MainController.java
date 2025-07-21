@@ -64,7 +64,8 @@ public class MainController extends HttpServlet {
     private boolean isCheckoutAction(String action) {
         return "show".equals(action)
                 || "process".equals(action)
-                || "showSelected".equals(action);
+                || "showSelected".equals(action)
+                || "cancelBuyNow".equals(action);
     }
 
     private boolean isOrderAction(String action) {

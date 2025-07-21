@@ -221,7 +221,8 @@ public class CartController extends HttpServlet {
                 session.setAttribute("successMessage", "Product added to cart successfully.");
             }
 
-            response.sendRedirect("cart?action=view");
+//            response.sendRedirect("cart?action=view");
+            response.sendRedirect(request.getHeader("Referer"));
         } catch (NumberFormatException e) {
             e.printStackTrace();
             request.getSession().setAttribute("errorMessage", "Invalid quantity");
@@ -463,7 +464,7 @@ public class CartController extends HttpServlet {
                 if (model != null) {
                     availableQuantity = model.getQuantity();
 
-                    // ✅ Lấy ảnh đầu tiên nếu có
+                    // Lấy ảnh đầu tiên nếu có
                     if (model.getImages() != null && !model.getImages().isEmpty()) {
                         imageUrl = model.getImages().get(0).getImageUrl();
                     }

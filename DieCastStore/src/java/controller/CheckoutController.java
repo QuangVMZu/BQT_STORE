@@ -73,6 +73,9 @@ public class CheckoutController extends HttpServlet {
                 case "showSelected":
                     showCheckoutSelected(request, response);
                     break;
+                case "cancelBuyNow":
+                    cancelBuyNow(request, response);
+                    break;
                 default:
                     showCheckout(request, response);
                     break;
@@ -475,5 +478,13 @@ public class CheckoutController extends HttpServlet {
         request.setAttribute("cart", selectedCart);
         request.setAttribute("totalAmount", selectedCart.getTotalAmount());
         request.getRequestDispatcher("checkout.jsp").forward(request, response);
+    }
+
+    private void cancelBuyNow(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        HttpSession session = request.getSession();
+        session.removeAttribute("buyNowCart");
+        session.removeAttribute("isBuyNow");
+        session.removeAttribute("cartSize");
+        response.setStatus(HttpServletResponse.SC_OK); // Trả về 200 để trình duyệt không báo lỗi
     }
 }

@@ -140,4 +140,12 @@
         </c:choose>
         <jsp:include page="footer.jsp" />
     </body>
+    <script>
+        window.addEventListener('beforeunload', function (e) {
+            const isBuyNow = <%= session.getAttribute("isBuyNow") != null && (Boolean) session.getAttribute("isBuyNow") ? "true" : "false" %>;
+            if (isBuyNow) {
+                navigator.sendBeacon("checkout?action=cancelBuyNow");
+            }
+        });
+    </script>
 </html>
