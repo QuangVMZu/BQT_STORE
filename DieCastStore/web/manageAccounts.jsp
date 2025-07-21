@@ -113,18 +113,20 @@
                         <!-- Not Admin -->
                         <div class="container access-denied text-center mt-5 shadow-sm p-4 bg-white rounded">
                             <h2 class="text-danger">Access Denied</h2>
-                            <p>${accessDeniedMessage}</p>
-                            <a href="${loginURL}" class="btn btn-primary mt-2">Login Now</a>
+                            <p class="text-danger">${AuthUtils.getAccessDeniedMessage("login.jsp")}</p>
                         </div><br>
                     </c:otherwise>
                 </c:choose>
             </c:when>
             <c:otherwise>
-                <!-- Not Logged In -->
-                <div class="container access-denied text-center mt-5 shadow-sm p-4 bg-white rounded">
+                <div class="container access-denied text-center mt-5">
                     <h2 class="text-danger">Access Denied</h2>
-                    <p>${accessDeniedMessage}</p>
-                    <a href="${loginURL}" class="btn btn-primary mt-2">Login Now</a>
+                    <p class="text-danger">${AuthUtils.getAccessDeniedMessage("login.jsp")}</p>
+
+                    <!-- Chỉ hiện nếu chưa đăng nhập -->
+                    <c:if test="${empty sessionScope.user}">
+                        <a href="${loginURL}" class="btn btn-primary mt-2">Login Now</a>
+                    </c:if>
                 </div><br>
             </c:otherwise>
         </c:choose>

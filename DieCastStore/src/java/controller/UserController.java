@@ -613,7 +613,7 @@ public class UserController extends HttpServlet {
         CustomerDAO cusDAO = new CustomerDAO();
         Customer cus = cusDAO.getByEmail(email);
         if (cus == null) {
-            request.setAttribute("checkErrorForgotPassword", "Wrong Email!");
+            request.setAttribute("checkErrorForgotPassword", "This email is not registered or does not exist!");
             return "forgotPassword.jsp";
         }
         CustomerAccountDAO accDAO = new CustomerAccountDAO();

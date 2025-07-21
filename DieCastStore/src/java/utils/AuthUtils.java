@@ -54,7 +54,7 @@ public class AuthUtils {
     }
 
     public static String getAccessDeniedMessage(String action) {
-        return "You can not access to " + action + ". Please contact administrator";
+        return "You can not access to this page. Please contact administrator!";
     }
 
     public static String getLoginURL() {

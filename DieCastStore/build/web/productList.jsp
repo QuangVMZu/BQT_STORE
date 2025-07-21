@@ -9,6 +9,7 @@
         <link rel="stylesheet" href="assets/css/productList.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     </head>
+
     <body style="background: #e3f2fd;">
 
         <jsp:include page="header.jsp" />
@@ -19,9 +20,8 @@
                 <img src="assets/image/BQT_STORE.png" class="banner-slide" alt="Banner 1">
                 <img src="assets/image/banner_2.png" class="banner-slide" alt="Banner 2">
                 <img src="assets/image/banner_3.png" class="banner-slide" alt="Banner 3">
+                <img src="assets/image/banner.png" class="banner-slide" alt="Banner 4">
             </div>
-            <button class="banner-btn prev-btn">&#10094;</button>
-            <button class="banner-btn next-btn">&#10095;</button>
         </div>
 
         <!-- Model Cars -->
@@ -52,7 +52,7 @@
                                                     <div class="product-price">$<fmt:formatNumber value="${product.price}" type="number" minFractionDigits="2" /></div>
                                                 </div>
                                             </div>
-                                        </a>            
+                                        </a>     
                                     </div>
                                 </c:if>
                             </c:forEach>

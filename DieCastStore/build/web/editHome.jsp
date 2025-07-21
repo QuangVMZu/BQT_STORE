@@ -93,18 +93,20 @@
         } else { // not admin 
         %>
         <div class="container access-denied">
-            <h2 style="color: #00695c">Access Denied</h2>
+            <h2 class="text-danger">Access Denied</h2>
             <p><%= AuthUtils.getAccessDeniedMessage("login.jsp") %></p>
-            <a href="<%= AuthUtils.getLoginURL() %>" class="btn btn-primary mt-2">Login Now</a>
         </div><br>
         <% 
             } // end if admin
         } else { // not logged in
         %>
-        <div class="container access-denied">
+        <div class="container access-denied text-center mt-5">
             <h2 class="text-danger">Access Denied</h2>
             <p><%= AuthUtils.getAccessDeniedMessage("login.jsp") %></p>
+
+            <% if (!AuthUtils.isLoggedIn(request)) { %>
             <a href="<%= AuthUtils.getLoginURL() %>" class="btn btn-primary mt-2">Login Now</a>
+            <% } %>
         </div><br>
         <% } %>
         <!-- Bootstrap JS -->

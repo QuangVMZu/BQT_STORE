@@ -6,11 +6,12 @@ package controller;
 
 import dao.AccessoryDAO;
 import dao.CartDAO;
+import dao.CustomerDAO;
 import dao.ModelCarDAO;
 import dao.OrderDAO;
+import dao.OrderDetailDAO;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletResponse;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,8 +22,13 @@ import java.util.List;
 import model.Accessory;
 import model.Cart;
 import model.CartItem;
+import model.Customer;
 import model.CustomerAccount;
+import model.Order;
+import model.OrderDetail;
+import utils.MailUtils;
 import model.ModelCar;
+import utils.OrderEmailBuilder;
 
 /**
  *
@@ -35,6 +41,8 @@ public class CheckoutController extends HttpServlet {
     private AccessoryDAO accessoryDAO;
     private OrderDAO orderDAO;
     private CartDAO cartDAO;
+    private CustomerDAO cusDAO;
+    private OrderDetailDAO oDetailDAO;
 
     @Override
     public void init() throws ServletException {
@@ -42,6 +50,8 @@ public class CheckoutController extends HttpServlet {
         accessoryDAO = new AccessoryDAO();
         orderDAO = new OrderDAO();
         cartDAO = new CartDAO();
+        cusDAO = new CustomerDAO();
+        oDetailDAO = new OrderDetailDAO();
     }
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -350,7 +360,39 @@ public class CheckoutController extends HttpServlet {
                 cartDAO.clearCart(customerId);
             }
 
+            Order order = orderDAO.getOrderById(orderId);
+            Customer customer = cusDAO.getById(customerId);
+            List<OrderDetail> orderDetails = oDetailDAO.getItemsByOrderId(orderId);
+
+            // Nếu bạn cần lấy danh sách Car và Accessory, tuỳ vào hệ thống của bạn:
+            List<ModelCar> cars = new ArrayList<>();
+            List<Accessory> accessories = new ArrayList<>();
+            for (OrderDetail detail : orderDetails) {
+                if ("MODEL".equals(detail.getItemType())) {
+                    cars.add(modelCarDAO.getById(detail.getItemId()));
+                } else if ("ACCESSORY".equals(detail.getItemType())) {
+                    accessories.add(accessoryDAO.getById(detail.getItemId()));
+                }
+            }
+
+            // Build email content
+            String emailContent = OrderEmailBuilder.buildOrderConfirmationEmail(
+                    order,
+                    customer,
+                    orderDetails,
+                    cars,
+                    accessories
+            );
+
+            // Send email (try-catch để nếu lỗi gửi mail vẫn không crash hệ thống)
+            try {
+                MailUtils.sendMail(customer.getEmail(), "Order Confirmation", emailContent);
+            } catch (Exception mailEx) {
+                mailEx.printStackTrace();
+                // Optionally: ghi log hoặc thông báo admin về lỗi gửi mail
+            }
             // Thành công → forward tới trang thông báo
+
             request.setAttribute("orderId", orderId);
             request.setAttribute("totalAmount", totalAmount);
             request.setAttribute("success", "Order successful!");

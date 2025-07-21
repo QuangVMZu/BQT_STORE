@@ -40,33 +40,33 @@
                         <tbody>
                             <c:set var="index" value="0" />
                             <c:forEach var="o" items="${orders}">
-                                    <c:set var="index" value="${index + 1}" />
-                                    <tr class="text-center">
-                                        <td>${index}</td>
-                                        <td>${o.orderId}</td>
-                                        <td>${o.orderDate}</td>
+                                <c:set var="index" value="${index + 1}" />
+                                <tr class="text-center">
+                                    <td>${index}</td>
+                                    <td>${o.orderId}</td>
+                                    <td>${o.orderDate}</td>
+                                    <td>
+                                        <span class="badge
+                                              ${o.status == 'PENDING' ? 'bg-warning' :
+                                                o.status == 'PROCESSING' ? 'bg-info' :
+                                                o.status == 'SHIPPED' ? 'bg-primary' :
+                                                o.status == 'DELIVERED' ? 'bg-success' :
+                                                o.status == 'CANCELLED' ? 'bg-danger' : 'bg-secondary'}">
+                                                  ${o.status}
+                                              </span>
+                                        </td>
                                         <td>
-                                            <span class="badge
-                                                  ${o.status == 'PENDING' ? 'bg-warning' :
-                                                    o.status == 'PROCESSING' ? 'bg-info' :
-                                                    o.status == 'SHIPPED' ? 'bg-primary' :
-                                                    o.status == 'DELIVERED' ? 'bg-success' :
-                                                    o.status == 'CANCELLED' ? 'bg-danger' : 'bg-secondary'}">
-                                                      ${o.status}
-                                                  </span>
-                                            </td>
-                                            <td>
-                                                $<fmt:formatNumber value="${o.totalAmount}" type="number" maxFractionDigits="2" />
-                                            </td>
-                                            <td>
-                                                <a href="order?action=vieworder&amp;orderId=${o.orderId}" class="btn btn-sm btn-info">View</a>
-                                                <c:if test="${fn:trim(fn:toLowerCase(o.status)) == 'pending' || fn:trim(fn:toLowerCase(o.status)) == 'processing'}">
-                                                    <a href="order?action=cancel&amp;orderId=${o.orderId}"
-                                                       onclick="return confirm('Cancel this order?')"
-                                                       class="btn btn-sm btn-danger ms-2">Cancel</a>
-                                                </c:if>
-                                            </td>
-                                        </tr>
+                                            $<fmt:formatNumber value="${o.totalAmount}" type="number" maxFractionDigits="2" />
+                                        </td>
+                                        <td>
+                                            <a href="order?action=vieworder&amp;orderId=${o.orderId}" class="btn btn-sm btn-info">View</a>
+                                            <c:if test="${fn:trim(fn:toLowerCase(o.status)) == 'pending' || fn:trim(fn:toLowerCase(o.status)) == 'processing'}">
+                                                <a href="order?action=cancel&amp;orderId=${o.orderId}"
+                                                   onclick="return confirm('Cancel this order?')"
+                                                   class="btn btn-sm btn-danger ms-2">Cancel</a>
+                                            </c:if>
+                                        </td>
+                                    </tr>
                                 </c:forEach>
 
                                 <c:if test="${empty orders}">
@@ -84,10 +84,14 @@
                 </c:when>
 
                 <c:otherwise>
-                    <div class="container access-denied text-center mt-5 shadow-sm p-4 bg-white rounded">
+                    <div class="container access-denied text-center mt-5">
                         <h2 class="text-danger">Access Denied</h2>
-                        <p class="text-danger">${accessDeniedMessage}</p>
-                        <a href="${loginURL}" class="btn btn-primary mt-2">Login Now</a>
+                        <p class="text-danger">${AuthUtils.getAccessDeniedMessage("login.jsp")}</p>
+
+                        <!-- Chỉ hiện nếu chưa đăng nhập -->
+                        <c:if test="${empty sessionScope.user}">
+                            <a href="${loginURL}" class="btn btn-primary mt-2">Login Now</a>
+                        </c:if>
                     </div><br>
                 </c:otherwise>
             </c:choose>

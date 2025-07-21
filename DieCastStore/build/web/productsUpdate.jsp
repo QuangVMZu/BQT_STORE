@@ -113,7 +113,7 @@
 
                                                 <label>Model ID *</label>
                                                 <input type="text" name="modelId" class="form-control mb-3" value="${product.modelId}" readonly/>
-                                                
+
                                                 <label>Model Name *</label>
                                                 <input type="text" name="modelName" class="form-control mb-3" value="${product.modelName}" required/>
 
@@ -181,13 +181,15 @@
             </c:when>
 
             <c:otherwise>
-                <div class="container access-denied">
+                <div class="container access-denied text-center mt-5">
                     <h2 class="text-danger">Access Denied</h2>
-                    <c:out value="isLoggedIn: ${isLoggedIn}" /><br />
-                    <c:out value="isAdmin: ${isAdmin}" /><br />
-                    <p>${accessDeniedMessage}</p>
-                    <a href="${loginURL}" class="btn btn-primary mt-2">Login Now</a>
-                </div><br />
+                    <p class="text-danger">${AuthUtils.getAccessDeniedMessage("login.jsp")}</p>
+
+                    <!-- Chỉ hiện nếu chưa đăng nhập -->
+                    <c:if test="${empty sessionScope.user}">
+                        <a href="${loginURL}" class="btn btn-primary mt-2">Login Now</a>
+                    </c:if>
+                </div><br>
             </c:otherwise>
         </c:choose>
 

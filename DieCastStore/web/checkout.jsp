@@ -127,11 +127,15 @@
                 </div><br />
             </c:when>
             <c:otherwise>
-                <div class="container access-denied text-center mt-5 shadow-sm p-4 bg-white rounded">
+                <div class="container access-denied text-center mt-5">
                     <h2 class="text-danger">Access Denied</h2>
                     <p class="text-danger">${AuthUtils.getAccessDeniedMessage("login.jsp")}</p>
-                    <a href="${AuthUtils.getLoginURL()}" class="btn btn-primary mt-2">Login Now</a>
-                </div><br />
+
+                    <!-- Chỉ hiện nếu chưa đăng nhập -->
+                    <c:if test="${empty sessionScope.user}">
+                        <a href="${loginURL}" class="btn btn-primary mt-2">Login Now</a>
+                    </c:if>
+                </div><br>
             </c:otherwise>
         </c:choose>
         <jsp:include page="footer.jsp" />

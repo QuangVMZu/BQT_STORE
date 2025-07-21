@@ -35,8 +35,9 @@ public class MailUtils {
         msg.setFrom(new InternetAddress(fromEmail));
         msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
         msg.setSubject(subject);
-        msg.setText(content);
+        msg.setContent(content, "text/html; charset=UTF-8");
 
         Transport.send(msg);
     }
+
 }
