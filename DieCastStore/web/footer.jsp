@@ -103,7 +103,7 @@
 
     <div class="bottom-footer">
         <p>
-            &copy; 2025 BQT Store. All rights reserved. &nbsp;&nbsp;|&nbsp;&nbsp; 
+            &copy; 2025 BQT STORE. All rights reserved. &nbsp;&nbsp;|&nbsp;&nbsp; 
             <a href="about.jsp">About us</a> &nbsp;|&nbsp; 
             <a href="contact.jsp">Contact</a>
         </p>

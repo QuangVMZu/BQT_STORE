@@ -156,7 +156,7 @@
                                         <button id="checkoutBtn" class="btn btn-secondary text-white" onclick="checkoutSelected()" disabled>
                                             ✅ Pay Selected
                                         </button>
-                                        <a href="checkout?action=show" class="btn btn-success">💳 Pay All</a>
+<!--                                        <a href="checkout?action=show" class="btn btn-success">💳 Pay All</a>-->
                                     </div>
                                 </c:otherwise>
                             </c:choose>
