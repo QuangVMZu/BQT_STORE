@@ -21,14 +21,25 @@
     </head>
     <body style="background: #e3f2fd;">
         <jsp:include page="header.jsp" />
-
+        <c:if test="${not empty sessionScope.successMessage}">
+            <div class="container mt-3">
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <div class="alert alert-success text-center">
+                            <strong>✓</strong> ${sessionScope.successMessage}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <c:remove var="successMessage" scope="session" />
+        </c:if>
         <c:choose>
             <c:when test="${not empty productDetail}">
                 <c:set var="images" value="${productDetail.images}" />
                 <c:set var="imageUrl" value="${not empty images ? images[0].imageUrl : ''}" />
 
                 <div class="detail-container">
-                    
+
                     <div class="product-top">
                         <div>
                             <img class="detail-image" id="mainImage" src="${imageUrl}" alt="${productDetail.modelName}" />
