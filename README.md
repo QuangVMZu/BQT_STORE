@@ -28,6 +28,7 @@ Mục tiêu của dự án là tạo ra một website dễ sử dụng, có giao
 | Xử lý động frontend  | JSTL (JSP Standard Tag Library), Expression Language (EL) |
 | Cơ sở dữ liệu        | SQL Server                                                |
 | IDE phát triển       | Apache NetBeans                                           |
+| ChatBot              | ChatBase(bản thử nghiệm)                                  |
 | Deploy thử nghiệm    | Ngrok (xuất localhost ra Internet)                        |
 | Upload hình ảnh      | Apache Commons FileUpload                                 |
 
@@ -106,7 +107,16 @@ Các bảng đều có khóa chính – khóa ngoại rõ ràng, chuẩn hóa d�
   * **Chỉnh sửa nội dung giới thiệu homepage (text + ảnh)**.
   * **Quản lý đơn hàng**: xem chi tiết và cập nhật trạng thái.
   * **Phân quyền truy cập**: servlet kiểm tra `isAdmin`.
-
+ 
+ ### 5.8 Chatbot hỗ trợ khách hàng (Chatbase)
+* Tích hợp chatbot từ nền tảng Chatbase AI dưới dạng cửa sổ popup giống Messenger.
+* Giao diện bật/tắt qua nút tròn nhỏ ở góc phải dưới trang.
+* Lưu lịch sử trò chuyện theo session người dùng (ẩn danh hoặc đã đăng nhập).
+* Ẩn API key trong Servlet, đảm bảo an toàn truy cập khi gửi truy vấn đến Chatbase.
+* Hỗ trợ người dùng:
+  ** Tìm kiếm sản phẩm nhanh.
+  ** Gợi ý sản phẩm phổ biến.
+* Có thể dễ dàng mở rộng để hỗ trợ thêm FAQ, phản hồi khách hàng, hoặc tư vấn sản phẩm theo ngữ cảnh.
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ## 🔹 6. Giao diện & UX/UI
